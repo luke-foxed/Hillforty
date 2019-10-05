@@ -7,13 +7,11 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/splashColor"
-    tools:context=".activites.SplashActivity">
+    tools:context=".activities.LoginActivity">
 
     <ImageView
         android:layout_width="329dp"
         android:layout_height="316dp"
         android:src="@drawable/splash"
         />
-
-
 </LinearLayout>

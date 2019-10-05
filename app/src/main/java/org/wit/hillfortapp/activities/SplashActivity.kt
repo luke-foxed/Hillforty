@@ -1,4 +1,4 @@
-package org.wit.hillfortapp.activites
+package org.wit.hillfortapp.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import org.wit.hillfortapp.MainActivity
 import org.wit.hillfortapp.R
 
 class SplashActivity : AppCompatActivity() {
@@ -22,10 +21,9 @@ class SplashActivity : AppCompatActivity() {
         //4second splash time
         Handler().postDelayed({
             //start main activity
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             //finish this activity
             finish()
         },4000)
-
     }
 }
