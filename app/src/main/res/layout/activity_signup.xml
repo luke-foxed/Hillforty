@@ -63,7 +63,7 @@
             android:textColorHint="@color/fontHint" />
 
         <Button
-            android:id="@+id/loginButton"
+            android:id="@+id/signupButton"
             android:layout_width="141dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="39dp"

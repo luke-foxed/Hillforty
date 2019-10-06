@@ -5,9 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import org.wit.hillfortapp.R
 import android.widget.Button
+import org.jetbrains.anko.AnkoLogger
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), AnkoLogger{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
