@@ -6,12 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import org.wit.hillfortapp.R
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.models.UserModel
 
-class SignUpActivity: AppCompatActivity(), AnkoLogger{
+class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
     var user = UserModel()
     lateinit var app: MainApp
@@ -34,30 +33,27 @@ class SignUpActivity: AppCompatActivity(), AnkoLogger{
     }
 
     private fun signUp() {
-
-        info("Button clicked")
-
         val emailText = email!!.text.toString()
         val password1Text = password!!.text.toString()
         val password2Text = password2!!.text.toString()
 
-        if(listOf(
+        if (listOf(
                 emailText,
                 password1Text,
                 password2Text
-            ).contains("")) {
+            ).contains("")
+        ) {
             toast("Please fill out all fields")
         }
 
-        if(password1Text != password2Text){
+        if (password1Text != password2Text) {
             toast("Passwords do not match")
-        }
-        else{
+        } else {
             user.email = emailText
             user.password = password1Text
             app.users.create(user.copy())
+            //  app.users.export(this.applicationContext)
             toast("Account created!")
         }
     }
-
 }
