@@ -7,7 +7,8 @@
     android:orientation="vertical"
     android:gravity="center"
     android:background="@color/splashColor"
-    tools:context=".activities.LoginActivity">
+    tools:context=".activities.LoginActivity"
+    android:backgroundTint="@color/colorPrimary">
 
     <ImageView
         android:layout_width="329dp"

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -9,44 +10,66 @@
     tools:context=".activities.SplashActivity">
 
     <TextView
+        android:layout_marginBottom="100dp"
         android:id="@+id/welcomeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="50dp"
+
         android:text="Welcome!"
         android:textAllCaps="true"
-        android:textColor="@color/fontPrimary"
-        android:textSize="30sp" />
+        android:textColor="@android:color/white"
+        android:textSize="35sp" />
 
     <EditText
         android:id="@+id/emailInput"
         android:layout_width="238dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/fontPrimary"
+        android:backgroundTint="@android:color/white"
         android:ems="10"
         android:hint="Email..."
         android:inputType="textEmailAddress"
-        android:textColor="@color/fontPrimary"
+        android:textColor="@android:color/white"
         android:textColorHint="@color/fontHint" />
 
     <EditText
         android:id="@+id/passwordInput"
         android:layout_width="238dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/fontPrimary"
+        android:backgroundTint="@android:color/white"
         android:ems="10"
         android:hint="Password..."
         android:textColorHint="@color/fontHint"
         android:inputType="textPassword"
-        android:textColor="@color/fontPrimary" />
+        android:textColor="@android:color/white" />
 
     <Button
+        android:layout_marginTop="39dp"
         android:id="@+id/loginButton"
         android:layout_width="141dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_border"
+        android:background="@drawable/rounded_button_outline"
         android:text="Login"
-        android:textColor="@color/fontPrimary"
+        android:textColor="@android:color/white"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/welcomeText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:gravity="center"
+        android:text="or..."
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="111dp"
+        android:layout_height="34dp"
+        android:background="@drawable/rounded_button_outline"
+        android:text="Sign up"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
 </LinearLayout>

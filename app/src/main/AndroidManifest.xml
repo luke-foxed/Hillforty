@@ -35,6 +35,7 @@
                 <category android:name="android.int ent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.SignUpActivity" />
     </application>
 
 </manifest>
