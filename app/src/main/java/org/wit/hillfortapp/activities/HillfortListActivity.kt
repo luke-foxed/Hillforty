@@ -17,12 +17,15 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hillfort_list)
         app = application as MainApp
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
+
+        println(app.hillforts.findAll())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

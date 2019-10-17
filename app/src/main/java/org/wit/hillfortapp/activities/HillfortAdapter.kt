@@ -10,7 +10,7 @@ import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.models.HillfortModel
 
 interface HillfortListener {
-    fun onHillfortClick(placemark: HillfortModel)
+    fun onHillfortClick(hillfort: HillfortModel)
 }
 
 class HillfortAdapter constructor(private var hillforts: List<HillfortModel>,

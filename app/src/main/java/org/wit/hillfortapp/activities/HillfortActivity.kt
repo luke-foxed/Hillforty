@@ -42,6 +42,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             name.setText(hillfort.name)
             description.setText(hillfort.description)
             hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
+            visited.isChecked = hillfort.visited
+            dateVisited.setText(hillfort.dateVisited)
             if (hillfort.image != null) {
                 chooseImage.setText("PLACEHOLDER")
             }
@@ -53,7 +55,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             hillfort.description = description.text.toString()
             hillfort.visited = visited.isChecked
             hillfort.dateVisited = dateVisited.text.toString()
-            hillfort.image = hillfort.toString()
             if (hillfort.name.isEmpty()) {
                 toast("PLACEHOLDER")
             } else {
