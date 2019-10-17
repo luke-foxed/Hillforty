@@ -1,5 +1,6 @@
 package org.wit.hillfortapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -54,6 +55,8 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
             app.users.create(user.copy())
             //  app.users.export(this.applicationContext)
             toast("Account created!")
+            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+
         }
     }
 }

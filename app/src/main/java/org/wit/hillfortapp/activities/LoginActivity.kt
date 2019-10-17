@@ -1,6 +1,5 @@
 package org.wit.hillfortapp.activities
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -53,8 +52,9 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
             toast("Please fill out all fields")
         } else {
             try {
-                val user: UserModel = app.users.findOne(emailText, passwordText)
-                toast("Welcome back, ${user.email}")
+                //val user: UserModel = app.users.findOne(emailText, passwordText)
+                // toast("Welcome back, ${user.email}")
+                startActivity(Intent(this@LoginActivity, HillfortListActivity::class.java))
             } catch (e: Exception) {
                 info(e.message)
                 toast("No user found!")
