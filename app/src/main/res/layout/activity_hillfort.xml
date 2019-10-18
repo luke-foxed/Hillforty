@@ -70,41 +70,51 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/chooseImage"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@color/colorPrimary"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="Edit Image"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            <Button
-                android:id="@+id/hillfortLocation"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:gravity="center"
                 android:layout_margin="8dp"
-                android:background="@color/colorPrimary"
-                android:paddingTop="8dp"
-                android:paddingBottom="4dp"
-                android:stateListAnimator="@null"
-                android:text="Edit Location"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:layout_height="53dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/hillfortLocation"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/rounded_button"
+                    android:text="Edit Location"
+                    style="?android:attr/buttonBarStyle"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/chooseImage"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    style="?android:attr/buttonBarStyle"
+                    android:background="@drawable/rounded_button"
+                    android:text="Edit Image"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnAdd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="74dp"
+                android:layout_height="69dp"
                 android:layout_margin="16dp"
-                android:background="@color/colorPrimary"
+                android:background="@drawable/ic_add_circle_black_24dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:stateListAnimator="@null"
-                android:text="Add Hilfort"
+                android:text=""
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 

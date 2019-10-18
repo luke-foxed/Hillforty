@@ -1,12 +1,11 @@
 package org.wit.hillfortapp.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import kotlinx.android.synthetic.main.activity_hillfort.description
 import kotlinx.android.synthetic.main.card_placement.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -25,10 +24,12 @@ import org.wit.placemark.activities.MapActivity
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     var hillfort = HillfortModel()
+
     lateinit var app: MainApp
+
     val IMAGE_REQUEST = 1
     val LOCATION_REQUEST = 2
-    var location = Location(22.245696, -7.139102, 15f)
+    var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,28 +48,37 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
             if (hillfort.image != null) {
-                chooseImage.setText("PLACEHOLDER")
+                chooseImage.text = "Change Image"
             }
-            btnAdd.setText("PLACEHOLDER")
         }
 
         btnAdd.setOnClickListener {
-            hillfort.name = name.text.toString()
-            hillfort.description = description.text.toString()
-            hillfort.visited = visited.isChecked
-            hillfort.dateVisited = dateVisited.text.toString()
-            if (hillfort.name.isEmpty()) {
-                toast("PLACEHOLDER")
+
+            if (listOf(
+                    name.text.toString(),
+                    description.text.toString(),
+                    dateVisited.text.toString()
+                ).contains("")
+            ) {
+                toast("Please fill out all fields")
             } else {
+
+                hillfort.name = name.text.toString()
+                hillfort.description = description.text.toString()
+                hillfort.visited = visited.isChecked
+                hillfort.dateVisited = dateVisited.text.toString()
+                hillfort.location = location
+
                 if (edit) {
                     app.hillforts.update(hillfort.copy())
                 } else {
                     app.hillforts.create(hillfort.copy())
                 }
+
+                info("add Button Pressed: $hillfortName")
+                setResult(RESULT_OK)
+                finish()
             }
-            info("add Button Pressed: $hillfortName")
-            setResult(RESULT_OK)
-            finish()
         }
 
         chooseImage.setOnClickListener {
@@ -94,7 +104,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 finish()
             }
         }
-        return super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item!!)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -102,9 +112,9 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         when (requestCode) {
             IMAGE_REQUEST -> {
                 if (data != null) {
-                    hillfort.image = data.getData().toString()
+                    hillfort.image = data.data.toString()
                     hillfortImage.setImageBitmap(readImage(this, resultCode, data))
-                    chooseImage.setText("Edit Image")
+                    chooseImage.text = "Edit Image"
                 }
             }
             LOCATION_REQUEST -> {

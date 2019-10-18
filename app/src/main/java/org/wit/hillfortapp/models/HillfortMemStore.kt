@@ -1,12 +1,7 @@
 package org.wit.hillfortapp.models
 
-import android.content.Context
-import android.util.Log
-import com.google.gson.Gson
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
-import java.io.*
-
 
 var lastHillfortId = 0L
 
@@ -16,7 +11,6 @@ internal fun getHillfortId(): Long {
 
 class HillfortMemStore : HillfortStore, AnkoLogger {
     val hillforts = ArrayList<HillfortModel>()
-    var gson = Gson()
 
     override fun findAll(): List<HillfortModel> {
         return hillforts

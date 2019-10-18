@@ -11,13 +11,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.Location
 
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener, AnkoLogger {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
     var location = Location()
@@ -33,14 +31,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        map.setOnMarkerDragListener(this)
         val loc = LatLng(location.lat, location.lng)
         val options = MarkerOptions()
-            .title("Placemark")
+            .title("Hillfort")
             .snippet("GPS : " + loc.toString())
             .draggable(true)
             .position(loc)
         map.addMarker(options)
+        map.setOnMarkerDragListener(this)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
     }
 
@@ -48,7 +46,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
     }
 
     override fun onMarkerDrag(marker: Marker) {
-
     }
 
     override fun onMarkerDragEnd(marker: Marker) {

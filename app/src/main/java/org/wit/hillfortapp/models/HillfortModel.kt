@@ -8,7 +8,7 @@ data class HillfortModel(
     var id: Long = 0,
     var name: String = "",
     var description: String = "",
-    var location: String = "",
+    var location: Location = Location(),
     var image: String = "",
     var notes: String= "",
     var visited: Boolean = false,
