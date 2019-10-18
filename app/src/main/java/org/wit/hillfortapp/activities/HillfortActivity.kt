@@ -5,6 +5,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapsInitializer
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.card_placement.*
 import org.jetbrains.anko.AnkoLogger
@@ -24,6 +29,7 @@ import org.wit.placemark.activities.MapActivity
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     var hillfort = HillfortModel()
+    var edit = false
 
     lateinit var app: MainApp
 
@@ -36,8 +42,17 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         setContentView(R.layout.activity_hillfort)
         info("Hillfort Activity started..")
 
+        with(mapView) {
+            onCreate(null)
+            // Set the map ready callback to receive the GoogleMap object
+            getMapAsync {
+                MapsInitializer.initialize(applicationContext)
+                setMapLocation(it)
+            }
+        }
+
         app = application as MainApp
-        var edit = false
+
 
         if (intent.hasExtra("hillfort_edit")) {
             edit = true
@@ -47,6 +62,11 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
+            location = hillfort.location
+            mapView.getMapAsync {
+                setMapLocation(it)
+            }
+
             if (hillfort.image != null) {
                 chooseImage.text = "Change Image"
             }
@@ -121,6 +141,29 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 if (data != null) {
                     location = data.extras?.getParcelable<Location>("location")!!
                 }
+            }
+        }
+    }
+
+    // source: https://stackoverflow.com/questions/16536414/how-to-use-mapview-in-android-using-google-map-v2
+    private fun setMapLocation(map: GoogleMap) {
+
+        if (edit) {
+
+            val lat: Double = hillfort.location.lat
+            val lng: Double = hillfort.location.lng
+
+            val location = LatLng(lat, lng)
+
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
+
+            with(map) {
+                addMarker(
+                    MarkerOptions().position(
+                        location
+                    )
+                )
+                mapType = GoogleMap.MAP_TYPE_NORMAL
             }
         }
     }
