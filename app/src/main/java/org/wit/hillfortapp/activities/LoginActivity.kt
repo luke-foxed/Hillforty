@@ -1,18 +1,16 @@
 package org.wit.hillfortapp.activities
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import org.wit.hillfortapp.R
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
+import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
-import java.lang.Exception
 
 class LoginActivity : AppCompatActivity(), AnkoLogger {
 
@@ -55,6 +53,8 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
             try {
                 val user: UserModel = app.users.findOne(emailText, passwordText)
                 toast("Welcome back, ${user.email}")
+                app.activeUser = user
+                startActivity(Intent(this@LoginActivity, HillfortListActivity::class.java))
             } catch (e: Exception) {
                 info(e.message)
                 toast("No user found!")
