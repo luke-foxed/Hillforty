@@ -25,7 +25,7 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
         recyclerView.layoutManager = layoutManager
 
         // TODO: Find way to access Hillfort MemStore functions
-        recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
+        recyclerView.adapter = HillfortAdapter(app.activeUser.hillforts, this)
 
         println(app.hillforts.findAll())
     }
