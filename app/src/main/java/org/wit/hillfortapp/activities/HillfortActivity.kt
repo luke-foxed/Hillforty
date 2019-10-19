@@ -24,6 +24,7 @@ import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
+import org.wit.hillfortapp.models.UserModel
 import org.wit.placemark.activities.MapActivity
 
 
@@ -33,7 +34,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     private var edit = false
 
     lateinit var app: MainApp
-    var activeUser = app.activeUser
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
@@ -92,11 +92,11 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
                 // TODO: Find way to access Hillfort MemStore functions
                 if (edit) {
-                    // activeUser.hillforts[hillfort.id] = hillfort
-                    app.hillforts.update(hillfort.copy())
+                    app.activeUser.hillforts[hillfort.id] = hillfort
+                    // app.hillforts.update(hillfort.copy())
                 } else {
-                    // activeUser.hillforts.add(hillfort.copy())
-                    app.hillforts.create(hillfort.copy())
+                    app.activeUser.hillforts.add(hillfort.copy())
+                    // app.hillforts.create(hillfort.copy())
                 }
 
                 setResult(RESULT_OK)
