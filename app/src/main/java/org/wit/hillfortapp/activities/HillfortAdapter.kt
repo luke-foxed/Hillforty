@@ -30,7 +30,10 @@ class HillfortAdapter constructor(private var hillforts: List<HillfortModel>,
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(hillfort: HillfortModel, listener: HillfortListener) {
-            itemView.hillfortName.text = hillfort.name
+            val location = "LAT: ${hillfort.location.lat} | LNG: ${hillfort.location.lng}"
+            itemView.hillfortCardName.text = hillfort.name
+            itemView.hillfortCardLocation.text = location
+            itemView.hillfortCardVisited.text = "Visited: ${hillfort.visited}"
             itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, hillfort.image))
             itemView.setOnClickListener { listener.onHillfortClick(hillfort) }
         }

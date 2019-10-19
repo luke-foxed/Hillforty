@@ -65,21 +65,23 @@
 
             <EditText
                 android:id="@+id/dateVisited"
+                android:inputType="date"
                 android:layout_width="200dp"
                 android:layout_height="45dp"
                 android:layout_margin="8dp"
                 android:autofillHints=""
                 android:hint="Date Visited"
-                android:inputType="textMultiLine"
+
                 android:padding="8dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
-                android:layout_width="307dp"
+                android:layout_width="300dp"
                 android:layout_height="240dp"
                 android:adjustViewBounds="true"
+                android:background="@drawable/map_border"
                 android:clickable="false" />
 
             <LinearLayout

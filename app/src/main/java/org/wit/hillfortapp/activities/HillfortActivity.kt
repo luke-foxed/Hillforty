@@ -1,6 +1,10 @@
 package org.wit.hillfortapp.activities
 
+import android.annotation.TargetApi
+import android.app.DatePickerDialog
 import android.content.Intent
+import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,10 +15,7 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.R.drawable
@@ -24,7 +25,6 @@ import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
-import org.wit.hillfortapp.models.UserModel
 import org.wit.placemark.activities.MapActivity
 
 
@@ -70,6 +70,21 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             }
 
             btnAdd.setBackgroundResource(drawable.ic_check_circle)
+        }
+
+        // if targetAPI is not met
+//        dateVisited.setOnClickListener {
+//
+//        }
+
+        dateVisited.setOnFocusChangeListener { view, hasFocus ->
+            if(hasFocus) {
+                try {
+                    showDateDialog()
+                } catch (e: Exception) {
+                    warn(e.message)
+                }
+            }
         }
 
         btnAdd.setOnClickListener {
@@ -148,6 +163,24 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
+    @TargetApi(Build.VERSION_CODES.N)
+    private fun showDateDialog() {
+        // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                dateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
+            },
+            year, month, day
+        )
+        dpd.show()
+    }
+
     // source: https://stackoverflow.com/questions/16536414/how-to-use-mapview-in-android-using-google-map-v2
     private fun setMapLocation(map: GoogleMap, location: LatLng) {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
@@ -159,7 +192,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 )
                 mapType = GoogleMap.MAP_TYPE_NORMAL
             }
-
     }
 
     // mapView methods

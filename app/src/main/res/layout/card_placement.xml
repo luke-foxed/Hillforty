@@ -20,7 +20,7 @@
             android:layout_marginRight="16dp"/>
 
         <TextView
-            android:id="@+id/hillfortName"
+            android:id="@+id/hillfortCardName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -28,10 +28,17 @@
             android:textSize="30sp"/>
 
         <TextView
-            android:id="@+id/hillfortDescription"
+            android:id="@+id/hillfortCardLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hillfortName"
+            android:layout_below="@id/hillfortCardName"
+            android:layout_toRightOf="@+id/imageIcon"/>
+
+        <TextView
+            android:id="@+id/hillfortCardVisited"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hillfortCardLocation"
             android:layout_toRightOf="@+id/imageIcon"/>
 
     </RelativeLayout>

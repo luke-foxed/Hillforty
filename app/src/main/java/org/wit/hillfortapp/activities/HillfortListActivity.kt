@@ -50,4 +50,5 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
         recyclerView.adapter?.notifyDataSetChanged()
         super.onActivityResult(requestCode, resultCode, data)
     }
+
 }
