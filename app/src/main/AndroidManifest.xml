@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+
         android:name=".MainApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -33,7 +34,9 @@
         <activity
             android:name="org.wit.placemark.activities.MapActivity"
             android:label="@string/title_activity_maps"></activity>
-        <activity android:name=".activities.HillfortActivity" />
+        <activity
+            android:name=".activities.HillfortActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".activities.HillfortListActivity" />
         <activity
             android:name=".activities.SplashActivity"

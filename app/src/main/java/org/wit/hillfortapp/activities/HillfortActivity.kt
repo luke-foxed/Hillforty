@@ -11,13 +11,14 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import kotlinx.android.synthetic.main.card_placement.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.R.drawable
+import org.wit.hillfortapp.R.layout
 import org.wit.hillfortapp.helpers.readImage
 import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
@@ -28,18 +29,19 @@ import org.wit.placemark.activities.MapActivity
 
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
-    var hillfort = HillfortModel()
-    var edit = false
+    private var hillfort = HillfortModel()
+    private var edit = false
 
     lateinit var app: MainApp
+    var activeUser = app.activeUser
 
-    val IMAGE_REQUEST = 1
-    val LOCATION_REQUEST = 2
-    var location = Location()
+    private val IMAGE_REQUEST = 1
+    private val LOCATION_REQUEST = 2
+    private var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hillfort)
+        setContentView(layout.activity_hillfort)
         info("Hillfort Activity started..")
 
         with(mapView) {
@@ -47,33 +49,32 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             // Set the map ready callback to receive the GoogleMap object
             getMapAsync {
                 MapsInitializer.initialize(applicationContext)
-                setMapLocation(it)
             }
         }
 
         app = application as MainApp
 
-
         if (intent.hasExtra("hillfort_edit")) {
+
             edit = true
-            hillfort = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
+            hillfort = intent.extras?.getParcelable("hillfort_edit")!!
             name.setText(hillfort.name)
             description.setText(hillfort.description)
             hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
             location = hillfort.location
+            val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
             mapView.getMapAsync {
-                setMapLocation(it)
+                setMapLocation(it, latLng)
             }
 
-            if (hillfort.image != null) {
-                chooseImage.text = "Change Image"
-            }
+            btnAdd.setBackgroundResource(drawable.ic_check_circle)
         }
 
         btnAdd.setOnClickListener {
 
+            println("ACTIVE USER --> ${app.activeUser}")
             if (listOf(
                     name.text.toString(),
                     description.text.toString(),
@@ -89,13 +90,15 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 hillfort.dateVisited = dateVisited.text.toString()
                 hillfort.location = location
 
+                // TODO: Find way to access Hillfort MemStore functions
                 if (edit) {
+                    // activeUser.hillforts[hillfort.id] = hillfort
                     app.hillforts.update(hillfort.copy())
                 } else {
+                    // activeUser.hillforts.add(hillfort.copy())
                     app.hillforts.create(hillfort.copy())
                 }
 
-                info("add Button Pressed: $hillfortName")
                 setResult(RESULT_OK)
                 finish()
             }
@@ -134,7 +137,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 if (data != null) {
                     hillfort.image = data.data.toString()
                     hillfortImage.setImageBitmap(readImage(this, resultCode, data))
-                    chooseImage.text = "Edit Image"
+                    chooseImage.text = "Add Image"
                 }
             }
             LOCATION_REQUEST -> {
@@ -146,17 +149,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     }
 
     // source: https://stackoverflow.com/questions/16536414/how-to-use-mapview-in-android-using-google-map-v2
-    private fun setMapLocation(map: GoogleMap) {
-
-        if (edit) {
-
-            val lat: Double = hillfort.location.lat
-            val lng: Double = hillfort.location.lng
-
-            val location = LatLng(lat, lng)
-
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
-
+    private fun setMapLocation(map: GoogleMap, location: LatLng) {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
             with(map) {
                 addMarker(
                     MarkerOptions().position(
@@ -165,6 +159,27 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 )
                 mapType = GoogleMap.MAP_TYPE_NORMAL
             }
-        }
+
+    }
+
+    // mapView methods
+    public override fun onResume() {
+        mapView.onResume()
+        super.onResume()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        mapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
     }
 }
