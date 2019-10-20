@@ -3,6 +3,9 @@ package org.wit.hillfortapp.activities
 import android.annotation.TargetApi
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
@@ -10,8 +13,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.drawToBitmap
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
@@ -64,15 +70,29 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             name.setText(hillfort.name)
             description.setText(hillfort.description)
 
-//            for(i in hillfort.image) {
-//                var newImageView = ImageView(this)
-//                
-//            }
-
             hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image[0]))
-            hillfortImage2.setImageBitmap(readImageFromPath(this, hillfort.image[1]))
-            hillfortImage3.setImageBitmap(readImageFromPath(this, hillfort.image[2]))
-            hillfortImage4.setImageBitmap(readImageFromPath(this, hillfort.image[3]))
+
+            // get density for imageview size
+            val scale = resources.displayMetrics.density
+
+            // create new imageview for each image, ignore first image
+            for((index) in (hillfort.image.withIndex().drop(1))) {
+                val newImageView = ImageView(this)
+                moreImages.addView(newImageView)
+
+                newImageView.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
+                newImageView.layoutParams.width = (160*scale).toInt()
+                newImageView.setImageBitmap(readImageFromPath(this, hillfort.image[index]))
+
+                // listener to switch small imageview it main imageview
+                newImageView.setOnClickListener {
+                    val thisDrawable = newImageView.drawable
+                    val mainImageDrawable = hillfortImage.drawable
+
+                    hillfortImage.setImageDrawable(thisDrawable)
+                    newImageView.setImageDrawable(mainImageDrawable)
+                }
+            }
 
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
@@ -84,12 +104,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
             btnAdd.setBackgroundResource(drawable.ic_check_circle)
         }
-
-        // if targetAPI is not met
-//        dateVisited.setOnClickListener {
-//
-//        }
-
+        
         dateVisited.setOnFocusChangeListener { view, hasFocus ->
             if(hasFocus) {
                 try {

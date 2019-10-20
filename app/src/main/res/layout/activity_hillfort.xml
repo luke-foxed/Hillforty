@@ -31,26 +31,7 @@
                 android:layout_height="83dp"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/hillfortImage2"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic[4]" />
 
-                <ImageView
-                    android:id="@+id/hillfortImage3"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic[4]" />
-
-                <ImageView
-                    android:id="@+id/hillfortImage4"
-                    android:layout_width="160dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic[4]" />
             </LinearLayout>
 
             <View
