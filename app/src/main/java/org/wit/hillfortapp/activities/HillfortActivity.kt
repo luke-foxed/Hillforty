@@ -143,14 +143,18 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 if (data != null) {
                     val clipImages = ArrayList<String>()
                     // if multiple images selected
-
                     if (data.clipData != null) {
-                        val mClipData = data.clipData
-                        var counter = 0
-                        while (counter < mClipData!!.itemCount) {
-                            info("URI--> " + mClipData.getItemAt(counter).uri)
-                            clipImages.add(mClipData.getItemAt(counter).uri.toString())
-                            counter++
+                        if (data.clipData!!.itemCount > 4) {
+                            toast("Exceeded maximum of 4 images")
+                            return
+                        } else {
+                            val mClipData = data.clipData
+                            var counter = 0
+                            while (counter < mClipData!!.itemCount) {
+                                info("URI--> " + mClipData.getItemAt(counter).uri)
+                                clipImages.add(mClipData.getItemAt(counter).uri.toString())
+                                counter++
+                            }
                         }
                     } else {
                         clipImages.add(data.data.toString())
