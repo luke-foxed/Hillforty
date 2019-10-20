@@ -9,7 +9,7 @@ data class HillfortModel(
     var name: String = "",
     var description: String = "",
     var location: Location = Location(),
-    var image: String = "",
+    var image: ArrayList<String> = ArrayList(),
     var notes: String= "",
     var visited: Boolean = false,
     var dateVisited: String = ""

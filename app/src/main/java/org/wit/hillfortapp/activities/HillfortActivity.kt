@@ -55,12 +55,11 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         app = application as MainApp
 
         if (intent.hasExtra("hillfort_edit")) {
-
             edit = true
             hillfort = intent.extras?.getParcelable("hillfort_edit")!!
             name.setText(hillfort.name)
             description.setText(hillfort.description)
-            hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
+            hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image[0]))
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
             location = hillfort.location
@@ -89,7 +88,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
         btnAdd.setOnClickListener {
 
-            println("ACTIVE USER --> ${app.activeUser}")
             if (listOf(
                     name.text.toString(),
                     description.text.toString(),
@@ -149,9 +147,22 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             IMAGE_REQUEST -> {
-                if (data != null) {
-                    hillfort.image = data.data.toString()
-                    hillfortImage.setImageBitmap(readImage(this, resultCode, data))
+                if (data != null && data.clipData != null) {
+
+                    val mClipData = data.clipData
+                    var clipImages = ArrayList<String>()
+                    var counter = 0
+
+                    while (counter < mClipData!!.itemCount) {
+                        info("URI--> " + mClipData.getItemAt(counter).uri)
+                        clipImages.add(mClipData.getItemAt(counter).uri.toString())
+                        counter++
+                    }
+
+                    hillfort.image = clipImages
+                    info("IMAGES --> " + hillfort.image)
+
+                    hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
                     chooseImage.text = "Add Image"
                 }
             }
