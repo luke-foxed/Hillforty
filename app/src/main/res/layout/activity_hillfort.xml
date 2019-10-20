@@ -25,17 +25,21 @@
                 app:srcCompat="@mipmap/ic_launcher"
                 tools:srcCompat="@tools:sample/backgrounds/scenic[4]" />
 
+            <View
+                android:id="@+id/dividerTop"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/divider" />
+
             <LinearLayout
                 android:id="@+id/moreImages"
                 android:layout_width="match_parent"
-                android:layout_height="83dp"
+                android:layout_height="80dp"
                 android:orientation="horizontal">
-
-
             </LinearLayout>
 
             <View
-                android:id="@+id/divider"
+                android:id="@+id/dividerBottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@drawable/divider" />
