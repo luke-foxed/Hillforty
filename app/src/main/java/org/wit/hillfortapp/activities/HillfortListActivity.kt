@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
@@ -19,25 +22,32 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hillfort_list)
+        setContentView(R.layout.activity_main)
         app = application as MainApp
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
 
-        // TODO: Find way to access Hillfort MemStore functions
-        recyclerView.adapter = HillfortAdapter(app.activeUser.hillforts, this)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
-        println(app.hillforts.findAll())
+        // TODO: Find way to access Hillfort MemStore functions
+        // recyclerView.adapter = HillfortAdapter(app.activeUser.hillforts, this)
+        recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.main, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.item_add -> startActivityForResult<HillfortActivity>(0)
+            R.id.item_add -> {
+                println("IVE BEEN CLICKED")
+                startActivityForResult<HillfortActivity>(0)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

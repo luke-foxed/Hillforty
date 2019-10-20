@@ -37,7 +37,9 @@
         <activity
             android:name=".activities.HillfortActivity"
             android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".activities.HillfortListActivity" />
+        <activity
+            android:name=".activities.HillfortListActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

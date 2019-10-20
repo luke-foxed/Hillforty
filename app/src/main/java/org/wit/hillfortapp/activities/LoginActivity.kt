@@ -51,9 +51,9 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
             toast("Please fill out all fields")
         } else {
             try {
-                val user: UserModel = app.users.findOne(emailText, passwordText)
-                toast("Welcome back, ${user.email}")
-                app.activeUser = user
+                // val user: UserModel = app.users.findOne(emailText, passwordText)
+                // toast("Welcome back, ${user.email}")
+               //  app.activeUser = user
                 startActivity(Intent(this@LoginActivity, HillfortListActivity::class.java))
             } catch (e: Exception) {
                 info(e.message)
