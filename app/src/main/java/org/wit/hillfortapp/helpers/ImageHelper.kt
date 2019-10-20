@@ -7,13 +7,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
-import org.wit.hillfortapp.R
 import java.io.IOException
 
 fun showImagePicker(parent: Activity, id: Int) {
     val intent = Intent()
     intent.type = "image/*"
     intent.action = Intent.ACTION_OPEN_DOCUMENT
+    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
     intent.addCategory(Intent.CATEGORY_OPENABLE)
     val chooser = Intent.createChooser(intent, "placeholder")
     parent.startActivityForResult(chooser, id)
@@ -41,6 +41,12 @@ fun readImageFromPath(context: Context, path: String): Bitmap? {
             bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
             parcelFileDescriptor?.close()
         } catch (e: Exception) {
+        }
+    }
+    if (bitmap != null) {
+        if (bitmap.height > 2000 || bitmap.width > 2000) {
+            println("RESIZING")
+            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 2, bitmap.height / 2, false)
         }
     }
     return bitmap

@@ -8,6 +8,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -20,7 +22,6 @@ import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.R.drawable
 import org.wit.hillfortapp.R.layout
-import org.wit.hillfortapp.helpers.readImage
 import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
@@ -42,11 +43,10 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_hillfort)
-        info("Hillfort Activity started..")
 
+        // set blank map
         with(mapView) {
             onCreate(null)
-            // Set the map ready callback to receive the GoogleMap object
             getMapAsync {
                 MapsInitializer.initialize(applicationContext)
             }
@@ -55,14 +55,16 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         app = application as MainApp
 
         if (intent.hasExtra("hillfort_edit")) {
-
             edit = true
             hillfort = intent.extras?.getParcelable("hillfort_edit")!!
             name.setText(hillfort.name)
             description.setText(hillfort.description)
-            hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
+
+            hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
+            renderImages(hillfort.images)
+
             location = hillfort.location
             val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
             mapView.getMapAsync {
@@ -71,11 +73,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
             btnAdd.setBackgroundResource(drawable.ic_check_circle)
         }
-
-        // if targetAPI is not met
-//        dateVisited.setOnClickListener {
-//
-//        }
 
         dateVisited.setOnFocusChangeListener { view, hasFocus ->
             if(hasFocus) {
@@ -88,8 +85,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         }
 
         btnAdd.setOnClickListener {
-
-            println("ACTIVE USER --> ${app.activeUser}")
             if (listOf(
                     name.text.toString(),
                     description.text.toString(),
@@ -98,7 +93,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             ) {
                 toast("Please fill out all fields")
             } else {
-
                 hillfort.name = name.text.toString()
                 hillfort.description = description.text.toString()
                 hillfort.visited = visited.isChecked
@@ -108,12 +102,9 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 // TODO: Find way to access Hillfort MemStore functions
                 if (edit) {
                     app.activeUser.hillforts[hillfort.id] = hillfort
-                    // app.hillforts.update(hillfort.copy())
                 } else {
                     app.activeUser.hillforts.add(hillfort.copy())
-                    // app.hillforts.create(hillfort.copy())
                 }
-
                 setResult(RESULT_OK)
                 finish()
             }
@@ -150,22 +141,64 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         when (requestCode) {
             IMAGE_REQUEST -> {
                 if (data != null) {
-                    hillfort.image = data.data.toString()
-                    hillfortImage.setImageBitmap(readImage(this, resultCode, data))
-                    chooseImage.text = "Add Image"
+                    val clipImages = ArrayList<String>()
+                    // if multiple images selected
+                    if (data.clipData != null) {
+                        if (data.clipData!!.itemCount > 4) {
+                            toast("Exceeded maximum of 4 images")
+                            return
+                        } else {
+                            val mClipData = data.clipData
+                            var counter = 0
+                            while (counter < mClipData!!.itemCount) {
+                                info("URI--> " + mClipData.getItemAt(counter).uri)
+                                clipImages.add(mClipData.getItemAt(counter).uri.toString())
+                                counter++
+                            }
+                        }
+                    } else {
+                        clipImages.add(data.data.toString())
+                    }
+
+                    renderImages(clipImages)
+                    hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
+
                 }
             }
             LOCATION_REQUEST -> {
                 if (data != null) {
-                    location = data.extras?.getParcelable<Location>("location")!!
+                    location = data.extras?.getParcelable("location")!!
                 }
             }
         }
     }
 
+    // mapView methods
+    public override fun onResume() {
+        mapView.onResume()
+        super.onResume()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        mapView.onPause()
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        mapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView.onLowMemory()
+    }
+
+    // helper methods
+
+    // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
     @TargetApi(Build.VERSION_CODES.N)
     private fun showDateDialog() {
-        // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
@@ -194,24 +227,29 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             }
     }
 
-    // mapView methods
-    public override fun onResume() {
-        mapView.onResume()
-        super.onResume()
-    }
+    private fun renderImages(images: ArrayList<String>) {
+        // clear images to add new ones
+        hillfort.images = images
 
-    public override fun onPause() {
-        super.onPause()
-        mapView.onPause()
-    }
+        // get density for imageview size
+        val scale = resources.displayMetrics.density
 
-    public override fun onDestroy() {
-        super.onDestroy()
-        mapView.onDestroy()
-    }
+        // create new imageview for each image, ignore first image
+        for ((index) in (images.withIndex().drop(1))) {
+            val newImageView = ImageView(this)
+            moreImages.addView(newImageView)
+            newImageView.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
+            newImageView.layoutParams.width = (160 * scale).toInt()
+            newImageView.setImageBitmap(readImageFromPath(this, images[index]))
 
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView.onLowMemory()
+            // listener to switch small imageview it main imageview
+            newImageView.setOnClickListener {
+                val thisImageDrawable = newImageView.drawable
+                val mainImageDrawable = hillfortImage.drawable
+
+                hillfortImage.setImageDrawable(thisImageDrawable)
+                newImageView.setImageDrawable(mainImageDrawable)
+            }
+        }
     }
 }

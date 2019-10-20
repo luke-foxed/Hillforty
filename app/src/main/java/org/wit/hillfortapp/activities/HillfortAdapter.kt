@@ -34,7 +34,7 @@ class HillfortAdapter constructor(private var hillforts: List<HillfortModel>,
             itemView.hillfortCardName.text = hillfort.name
             itemView.hillfortCardLocation.text = location
             itemView.hillfortCardVisited.text = "Visited: ${hillfort.visited}"
-            itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, hillfort.image))
+            itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, hillfort.images[0]))
             itemView.setOnClickListener { listener.onHillfortClick(hillfort) }
         }
     }
