@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
-import org.wit.hillfortapp.R
 import java.io.IOException
 
 fun showImagePicker(parent: Activity, id: Int) {
@@ -42,6 +41,12 @@ fun readImageFromPath(context: Context, path: String): Bitmap? {
             bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
             parcelFileDescriptor?.close()
         } catch (e: Exception) {
+        }
+    }
+    if (bitmap != null) {
+        if (bitmap.height > 2000 || bitmap.width > 2000) {
+            println("RESIZING")
+            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 2, bitmap.height / 2, false)
         }
     }
     return bitmap

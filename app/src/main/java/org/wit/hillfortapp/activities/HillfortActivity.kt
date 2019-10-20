@@ -8,6 +8,9 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -15,6 +18,7 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
+import kotlinx.android.synthetic.main.card_placement.*
 import org.jetbrains.anko.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
@@ -59,7 +63,17 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             hillfort = intent.extras?.getParcelable("hillfort_edit")!!
             name.setText(hillfort.name)
             description.setText(hillfort.description)
+
+//            for(i in hillfort.image) {
+//                var newImageView = ImageView(this)
+//                
+//            }
+
             hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image[0]))
+            hillfortImage2.setImageBitmap(readImageFromPath(this, hillfort.image[1]))
+            hillfortImage3.setImageBitmap(readImageFromPath(this, hillfort.image[2]))
+            hillfortImage4.setImageBitmap(readImageFromPath(this, hillfort.image[3]))
+
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
             location = hillfort.location
