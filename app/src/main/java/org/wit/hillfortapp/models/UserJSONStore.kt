@@ -70,7 +70,7 @@ class UserJSONStore : UserStore, AnkoLogger {
     }
 
     override fun createHillfort(hillfort: HillfortModel, activeUser: UserModel) {
-        hillfort.id = getHillfortId()
+        hillfort.id = activeUser.hillforts.size+1
         activeUser.hillforts.add(hillfort)
         serialize()
     }
@@ -78,6 +78,12 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel) {
         val foundHillfort = findOneHillfort(hillfort.id, activeUser)
         activeUser.hillforts[foundHillfort.id] = hillfort
+        serialize()
+    }
+
+    override fun deleteHillfort(hillfort: HillfortModel, activeUser: UserModel) {
+        val foundHillfort = findOneHillfort(hillfort.id, activeUser)
+        activeUser.hillforts.remove(foundHillfort)
         serialize()
     }
 

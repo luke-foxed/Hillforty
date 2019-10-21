@@ -63,8 +63,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
 
-            hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
-            renderImages(hillfort.images)
+            if (hillfort.images.size != 0) {
+                hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
+                renderImages(hillfort.images)
+            } else {
+                hillfortImage.setImageResource(drawable.placeholder)
+            }
 
             location = hillfort.location
             val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
@@ -133,6 +137,20 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         when (item?.itemId) {
             R.id.item_cancel -> {
                 finish()
+            }
+
+            R.id.item_delete -> {
+                val builder = AlertDialog.Builder(this@HillfortActivity)
+                builder.setMessage("Are you sure you want to delete this Hillfort?")
+                builder.setPositiveButton("Yes") { dialog, which ->
+                    app.users.deleteHillfort(hillfort, app.activeUser)
+                    finish()
+                }
+                builder.setNegativeButton("No") { dialog, which ->
+                    // do nothing
+                }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
             }
         }
         return super.onOptionsItemSelected(item!!)
