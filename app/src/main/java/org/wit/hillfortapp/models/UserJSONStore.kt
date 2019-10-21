@@ -77,7 +77,7 @@ class UserJSONStore : UserStore, AnkoLogger {
 
     override fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel) {
         val foundHillfort = findOneHillfort(hillfort.id, activeUser)
-        activeUser.hillforts[foundHillfort.id] = hillfort
+        activeUser.hillforts[foundHillfort.id - 1] = hillfort
         serialize()
     }
 

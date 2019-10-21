@@ -268,11 +268,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun renderImages(images: ArrayList<String>) {
-        // clear images to add new ones
+        // reassign array to images from gallery
         hillfort.images = images
-
-        // get density for imageview size
-        val scale = resources.displayMetrics.density
 
         // create new imageview for each image, ignore first image
         for ((index) in (images.withIndex().drop(1))) {
