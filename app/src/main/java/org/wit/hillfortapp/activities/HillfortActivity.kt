@@ -160,6 +160,10 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                         clipImages.add(data.data.toString())
                     }
 
+                    // clear all images from view
+                    moreImages.removeAllViews()
+
+                    // add new image(s) into view
                     renderImages(clipImages)
                     hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
 
@@ -168,6 +172,10 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             LOCATION_REQUEST -> {
                 if (data != null) {
                     location = data.extras?.getParcelable("location")!!
+                    val latLng = LatLng(location.lat, location.lng)
+                    mapView.getMapAsync {
+                        setMapLocation(it, latLng)
+                    }
                 }
             }
         }
