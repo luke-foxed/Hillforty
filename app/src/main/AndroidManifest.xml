@@ -50,7 +50,9 @@
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".activities.SignUpActivity" />
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>
