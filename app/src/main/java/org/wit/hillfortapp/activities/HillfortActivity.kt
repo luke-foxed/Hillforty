@@ -1,6 +1,7 @@
 package org.wit.hillfortapp.activities
 
 import android.annotation.TargetApi
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
@@ -140,34 +141,44 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             IMAGE_REQUEST -> {
-                if (data != null) {
-                    val clipImages = ArrayList<String>()
-                    // if multiple images selected
-                    if (data.clipData != null) {
-                        if (data.clipData!!.itemCount > 4) {
-                            toast("Exceeded maximum of 4 images")
-                            return
-                        } else {
-                            val mClipData = data.clipData
-                            var counter = 0
-                            while (counter < mClipData!!.itemCount) {
-                                info("URI--> " + mClipData.getItemAt(counter).uri)
-                                clipImages.add(mClipData.getItemAt(counter).uri.toString())
-                                counter++
+                val builder = AlertDialog.Builder(this@HillfortActivity)
+                builder.setMessage("This will reset the existing images, continue?")
+                builder.setPositiveButton("YES") { dialog, which ->
+                    if (data != null) {
+                        val clipImages = ArrayList<String>()
+                        // if multiple images selected
+                        if (data.clipData != null) {
+                            if (data.clipData!!.itemCount > 4) {
+                                toast("Exceeded maximum of 4 images")
+                            } else {
+                                val mClipData = data.clipData
+                                var counter = 0
+                                while (counter < mClipData!!.itemCount) {
+                                    info("URI--> " + mClipData.getItemAt(counter).uri)
+                                    clipImages.add(mClipData.getItemAt(counter).uri.toString())
+                                    counter++
+                                }
                             }
+                        } else {
+                            clipImages.add(data.data.toString())
                         }
-                    } else {
-                        clipImages.add(data.data.toString())
+
+                        // clear all images from view
+                        moreImages.removeAllViews()
+
+                        // add new image(s) into view
+                        renderImages(clipImages)
+                        hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
+
                     }
-
-                    // clear all images from view
-                    moreImages.removeAllViews()
-
-                    // add new image(s) into view
-                    renderImages(clipImages)
-                    hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
-
                 }
+
+                builder.setNegativeButton("No"){dialog,which ->
+                    // do nothing
+                }
+
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
             }
             LOCATION_REQUEST -> {
                 if (data != null) {
