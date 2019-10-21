@@ -177,7 +177,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                                 while (counter < mClipData!!.itemCount) {
                                     info("URI--> " + mClipData.getItemAt(counter).uri)
                                     clipImages.add(mClipData.getItemAt(counter).uri.toString())
-                                    counter++
+                                    counter ++
                                 }
                             }
                         } else {
@@ -279,7 +279,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             val newImageView = ImageView(this)
             moreImages.addView(newImageView)
             newImageView.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
-            newImageView.layoutParams.width = (160 * scale).toInt()
+            newImageView.layoutParams.width = (moreImages.width / images.size)
+            newImageView.setPadding(15,0,15,0)
             newImageView.setImageBitmap(readImageFromPath(this, images[index]))
 
             // listener to switch small imageview it main imageview
