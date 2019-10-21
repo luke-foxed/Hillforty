@@ -140,17 +140,19 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             }
 
             R.id.item_delete -> {
-                val builder = AlertDialog.Builder(this@HillfortActivity)
-                builder.setMessage("Are you sure you want to delete this Hillfort?")
-                builder.setPositiveButton("Yes") { dialog, which ->
-                    app.users.deleteHillfort(hillfort, app.activeUser)
-                    finish()
+                if (edit) {
+                    val builder = AlertDialog.Builder(this@HillfortActivity)
+                    builder.setMessage("Are you sure you want to delete this Hillfort?")
+                    builder.setPositiveButton("Yes") { dialog, which ->
+                        app.users.deleteHillfort(hillfort, app.activeUser)
+                        finish()
+                    }
+                    builder.setNegativeButton("No") { dialog, which ->
+                        // do nothing
+                    }
+                    val dialog: AlertDialog = builder.create()
+                    dialog.show()
                 }
-                builder.setNegativeButton("No") { dialog, which ->
-                    // do nothing
-                }
-                val dialog: AlertDialog = builder.create()
-                dialog.show()
             }
         }
         return super.onOptionsItemSelected(item!!)
