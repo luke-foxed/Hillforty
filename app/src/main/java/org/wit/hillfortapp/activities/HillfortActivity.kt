@@ -100,11 +100,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 hillfort.dateVisited = dateVisited.text.toString()
                 hillfort.location = location
 
-                // TODO: Find way to access Hillfort MemStore functions
                 if (edit) {
-                    app.activeUser.hillforts[hillfort.id] = hillfort
+                    app.users.updateHillfort(
+                        hillfort, app.activeUser
+                    )
                 } else {
-                    app.activeUser.hillforts.add(hillfort.copy())
+                    app.users.createHillfort(hillfort, app.activeUser)
                 }
                 setResult(RESULT_OK)
                 finish()

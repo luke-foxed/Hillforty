@@ -26,8 +26,9 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
 
         // TODO: Find way to access Hillfort MemStore functions
         recyclerView.adapter = HillfortAdapter(app.activeUser.hillforts, this)
+        loadHillforts()
 
-        println(app.hillforts.findAll())
+        println("ACTIVE USER --> " + app.activeUser.hillforts)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -47,8 +48,17 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        recyclerView.adapter?.notifyDataSetChanged()
+        loadHillforts()
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun loadHillforts() {
+        showHillforts(app.activeUser.hillforts)
+    }
+
+    fun showHillforts (hillforts: List<HillfortModel>) {
+        recyclerView.adapter = HillfortAdapter(hillforts, this)
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 
 }

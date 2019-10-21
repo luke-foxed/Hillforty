@@ -34,7 +34,17 @@ class HillfortAdapter constructor(private var hillforts: List<HillfortModel>,
             itemView.hillfortCardName.text = hillfort.name
             itemView.hillfortCardLocation.text = location
             itemView.hillfortCardVisited.text = "Visited: ${hillfort.visited}"
-            itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, hillfort.images[0]))
+            if(hillfort.images.size !=0) {
+                itemView.imageIcon.setImageBitmap(
+                    readImageFromPath(
+                        itemView.context,
+                        hillfort.images[0]
+                    )
+                )
+            }
+            else {
+                itemView.imageIcon.setImageResource(R.drawable.placeholder)
+            }
             itemView.setOnClickListener { listener.onHillfortClick(hillfort) }
         }
     }
