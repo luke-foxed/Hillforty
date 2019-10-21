@@ -6,6 +6,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
@@ -18,6 +19,7 @@ import org.wit.hillfortapp.models.HillfortModel
 class HillfortListActivity : AppCompatActivity(), HillfortListener {
 
     lateinit var app: MainApp
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
