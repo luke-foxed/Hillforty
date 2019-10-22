@@ -31,24 +31,35 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+
         <activity
             android:name="org.wit.placemark.activities.MapActivity"
             android:label="@string/title_activity_maps"></activity>
         <activity
-            android:name=".activities.HillfortActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity
-            android:name=".activities.HillfortListActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".activities.SplashActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.HillfortActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".activities.HillfortListActivity"></activity>
+        <!--        <activity-->
+        <!--            android:name=".activities.SplashActivity"-->
+        <!--            android:theme="@style/Theme.AppCompat.Light.NoActionBar">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
+
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>

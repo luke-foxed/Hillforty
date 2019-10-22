@@ -242,7 +242,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             newImageView.layoutParams.width = (160 * scale).toInt()
             newImageView.setImageBitmap(readImageFromPath(this, images[index]))
 
-            // listener to switch small imageview it main imageview
+            // listener to switch small imageview it menu_hillfort_list imageview
             newImageView.setOnClickListener {
                 val thisImageDrawable = newImageView.drawable
                 val mainImageDrawable = hillfortImage.drawable
