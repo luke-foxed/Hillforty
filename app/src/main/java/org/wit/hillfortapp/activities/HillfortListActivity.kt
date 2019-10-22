@@ -27,8 +27,10 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
 
-        // recyclerView.adapter = HillfortAdapter(app.activeUser.hillforts, this)
-        recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
+        // TODO: Find way to access Hillfort MemStore functions
+        recyclerView.adapter = HillfortAdapter(app.activeUser.hillforts, this)
+
+        loadHillforts()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -51,8 +53,17 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        recyclerView.adapter?.notifyDataSetChanged()
+        loadHillforts()
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun loadHillforts() {
+        showHillforts(app.activeUser.hillforts)
+    }
+
+    fun showHillforts(hillforts: List<HillfortModel>) {
+        recyclerView.adapter = HillfortAdapter(hillforts, this)
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 
 }

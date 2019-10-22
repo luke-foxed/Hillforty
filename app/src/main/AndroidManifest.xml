@@ -39,31 +39,29 @@
             android:name=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.HillfortActivity"
             android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".activities.HillfortListActivity"></activity>
-        <!--        <activity-->
-        <!--            android:name=".activities.SplashActivity"-->
-        <!--            android:theme="@style/Theme.AppCompat.Light.NoActionBar">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="android.intent.action.MAIN" />-->
+                <activity
+                    android:name=".activities.SplashActivity"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+                    <intent-filter>
+                        <action android:name="android.intent.action.MAIN" />
 
-        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
-        <!--            </intent-filter>-->
-        <!--        </activity>-->
+                        <category android:name="android.intent.category.LAUNCHER" />
+                    </intent-filter>
+                </activity>
 
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        <activity android:name=".activities.SignUpActivity" />
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

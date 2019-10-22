@@ -9,17 +9,12 @@
     android:orientation="vertical"
     tools:context=".activities.SplashActivity">
 
-    <TextView
-        android:layout_marginBottom="100dp"
-        android:id="@+id/welcomeText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-
-        android:text="Welcome!"
-        android:textAllCaps="true"
-        android:textColor="@android:color/white"
-        android:textSize="35sp" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="50dp"
+        android:src="@drawable/splash_white" />
 
     <EditText
         android:id="@+id/emailInput"

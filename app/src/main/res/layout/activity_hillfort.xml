@@ -34,7 +34,9 @@
                 android:id="@+id/moreImages"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center">
             </LinearLayout>
 
             <View

@@ -1,6 +1,7 @@
 package org.wit.hillfortapp.activities
 
 import android.annotation.TargetApi
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
@@ -62,8 +63,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
 
-            hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
-            renderImages(hillfort.images)
+            if (hillfort.images.size != 0) {
+                hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
+                renderImages(hillfort.images)
+            } else {
+                hillfortImage.setImageResource(drawable.placeholder)
+            }
 
             location = hillfort.location
             val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
@@ -99,11 +104,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 hillfort.dateVisited = dateVisited.text.toString()
                 hillfort.location = location
 
-                // TODO: Find way to access Hillfort MemStore functions
                 if (edit) {
-                    app.activeUser.hillforts[hillfort.id] = hillfort
+                    app.users.updateHillfort(
+                        hillfort, app.activeUser
+                    )
                 } else {
-                    app.activeUser.hillforts.add(hillfort.copy())
+                    app.users.createHillfort(hillfort, app.activeUser)
                 }
                 setResult(RESULT_OK)
                 finish()
@@ -132,6 +138,22 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             R.id.item_cancel -> {
                 finish()
             }
+
+            R.id.item_delete -> {
+                if (edit) {
+                    val builder = AlertDialog.Builder(this@HillfortActivity)
+                    builder.setMessage("Are you sure you want to delete this Hillfort?")
+                    builder.setPositiveButton("Yes") { dialog, which ->
+                        app.users.deleteHillfort(hillfort, app.activeUser)
+                        finish()
+                    }
+                    builder.setNegativeButton("No") { dialog, which ->
+                        // do nothing
+                    }
+                    val dialog: AlertDialog = builder.create()
+                    dialog.show()
+                }
+            }
         }
         return super.onOptionsItemSelected(item!!)
     }
@@ -140,34 +162,52 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             IMAGE_REQUEST -> {
-                if (data != null) {
-                    val clipImages = ArrayList<String>()
-                    // if multiple images selected
-                    if (data.clipData != null) {
-                        if (data.clipData!!.itemCount > 4) {
-                            toast("Exceeded maximum of 4 images")
-                            return
-                        } else {
-                            val mClipData = data.clipData
-                            var counter = 0
-                            while (counter < mClipData!!.itemCount) {
-                                info("URI--> " + mClipData.getItemAt(counter).uri)
-                                clipImages.add(mClipData.getItemAt(counter).uri.toString())
-                                counter++
+                val builder = AlertDialog.Builder(this@HillfortActivity)
+                builder.setMessage("This will reset the existing images, continue?")
+                builder.setPositiveButton("YES") { dialog, which ->
+                    if (data != null) {
+                        val clipImages = ArrayList<String>()
+                        // if multiple images selected
+                        if (data.clipData != null) {
+                            if (data.clipData!!.itemCount > 4) {
+                                toast("Exceeded maximum of 4 images")
+                            } else {
+                                val mClipData = data.clipData
+                                var counter = 0
+                                while (counter < mClipData!!.itemCount) {
+                                    info("URI--> " + mClipData.getItemAt(counter).uri)
+                                    clipImages.add(mClipData.getItemAt(counter).uri.toString())
+                                    counter ++
+                                }
                             }
+                        } else {
+                            clipImages.add(data.data.toString())
                         }
-                    } else {
-                        clipImages.add(data.data.toString())
+
+                        // clear all images from view
+                        moreImages.removeAllViews()
+
+                        // add new image(s) into view
+                        renderImages(clipImages)
+                        hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
+
                     }
-
-                    renderImages(clipImages)
-                    hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
-
                 }
+
+                builder.setNegativeButton("No"){dialog,which ->
+                    // do nothing
+                }
+
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
             }
             LOCATION_REQUEST -> {
                 if (data != null) {
                     location = data.extras?.getParcelable("location")!!
+                    val latLng = LatLng(location.lat, location.lng)
+                    mapView.getMapAsync {
+                        setMapLocation(it, latLng)
+                    }
                 }
             }
         }
@@ -228,18 +268,16 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun renderImages(images: ArrayList<String>) {
-        // clear images to add new ones
+        // reassign array to images from gallery
         hillfort.images = images
-
-        // get density for imageview size
-        val scale = resources.displayMetrics.density
 
         // create new imageview for each image, ignore first image
         for ((index) in (images.withIndex().drop(1))) {
             val newImageView = ImageView(this)
             moreImages.addView(newImageView)
             newImageView.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
-            newImageView.layoutParams.width = (160 * scale).toInt()
+            newImageView.layoutParams.width = (moreImages.width / images.size)
+            newImageView.setPadding(15,0,15,0)
             newImageView.setImageBitmap(readImageFromPath(this, images[index]))
 
             // listener to switch small imageview it menu_hillfort_list imageview

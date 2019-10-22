@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/splashColor"
-    tools:context=".activities.LoginActivity"
-    android:backgroundTint="@color/colorPrimary">
+    android:background="@drawable/splash_gradient"
+    tools:context=".activities.LoginActivity">
 
     <ImageView
+        android:layout_marginBottom="100dp"
         android:layout_width="329dp"
         android:layout_height="316dp"
         android:src="@drawable/splash"
