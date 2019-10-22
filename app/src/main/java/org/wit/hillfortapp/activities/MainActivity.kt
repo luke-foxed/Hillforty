@@ -11,9 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import org.wit.hillfortapp.R
 
-class MainActivity : AppCompatActivity() {
+open class MainActivity : AppCompatActivity() {
 
-    private lateinit var mDrawerLayout: DrawerLayout
+    lateinit var mDrawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,8 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this@MainActivity, HillfortListActivity::class.java))
                 }
                 R.id.nav_wallet -> {
-                    Toast.makeText(this, "Wallet", Toast.LENGTH_LONG).show()
+//                   Toast.makeText(this, "Wallet", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@MainActivity, TestActivity::class.java))
                 }
                 R.id.nav_offer -> {
                     Toast.makeText(this, "Offer", Toast.LENGTH_LONG).show()

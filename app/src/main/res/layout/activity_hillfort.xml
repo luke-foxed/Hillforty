@@ -7,9 +7,10 @@
     android:background="@android:color/white"
     android:fillViewport="true"
     android:scaleType="fitStart"
-    tools:context=".activities.HillfortActivity">
+    tools:context=".activities.`[BACKUP]HillfortActivity`">
 
         <LinearLayout
+            android:id="@+id/hillfortLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

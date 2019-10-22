@@ -11,18 +11,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.R.drawable
-import org.wit.hillfortapp.R.layout
 import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
@@ -30,12 +28,11 @@ import org.wit.hillfortapp.models.Location
 import org.wit.placemark.activities.MapActivity
 
 
-class HillfortActivity : AppCompatActivity(), AnkoLogger {
-
-    private var hillfort = HillfortModel()
-    private var edit = false
+class TestActivity : MainActivity(), AnkoLogger {
 
     lateinit var app: MainApp
+    private var hillfort = HillfortModel()
+    private var edit = false
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
@@ -43,9 +40,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(layout.activity_hillfort)
+        layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
 
-        // set blank map
         with(mapView) {
             onCreate(null)
             getMapAsync {
@@ -67,7 +63,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
                 renderImages(hillfort.images)
             } else {
-                hillfortImage.setImageResource(drawable.placeholder)
+                hillfortImage.setImageResource(R.drawable.placeholder)
             }
 
             location = hillfort.location
@@ -76,7 +72,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 setMapLocation(it, latLng)
             }
 
-            btnAdd.setBackgroundResource(drawable.ic_check_circle)
+            btnAdd.setBackgroundResource(R.drawable.ic_check_circle)
         }
 
         dateVisited.setOnFocusChangeListener { view, hasFocus ->
@@ -133,7 +129,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.item_cancel -> {
                 finish()
@@ -142,7 +138,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
             R.id.item_delete -> {
                 if (edit) {
-                    val builder = AlertDialog.Builder(this@HillfortActivity)
+                    val builder = AlertDialog.Builder(this@TestActivity)
                     builder.setMessage("Are you sure you want to delete this Hillfort?")
                     builder.setPositiveButton("Yes") { dialog, which ->
                         app.users.deleteHillfort(hillfort, app.activeUser)
@@ -163,7 +159,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             IMAGE_REQUEST -> {
-                val builder = AlertDialog.Builder(this@HillfortActivity)
+                val builder = AlertDialog.Builder(this@TestActivity)
                 builder.setMessage("This will reset the existing images, continue?")
                 builder.setPositiveButton("YES") { dialog, which ->
                     if (data != null) {
@@ -258,14 +254,14 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     // source: https://stackoverflow.com/questions/16536414/how-to-use-mapview-in-android-using-google-map-v2
     private fun setMapLocation(map: GoogleMap, location: LatLng) {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
-            with(map) {
-                addMarker(
-                    MarkerOptions().position(
-                        location
-                    )
+        with(map) {
+            addMarker(
+                MarkerOptions().position(
+                    location
                 )
-                mapType = GoogleMap.MAP_TYPE_NORMAL
-            }
+            )
+            mapType = GoogleMap.MAP_TYPE_NORMAL
+        }
     }
 
     private fun renderImages(images: ArrayList<String>) {
