@@ -7,20 +7,22 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
 
-class HillfortListActivity : AppCompatActivity(), HillfortListener {
+class HillfortListActivity : MainActivity(), HillfortListener {
+
 
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hillfort_list)
+        layoutInflater.inflate(R.layout.activity_hillfort_list, content_frame)
+
         app = application as MainApp
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
@@ -36,7 +38,7 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.item_add -> {
                 println("IVE BEEN CLICKED")
@@ -63,5 +65,5 @@ class HillfortListActivity : AppCompatActivity(), HillfortListener {
         recyclerView.adapter = HillfortAdapter(hillforts, this)
         recyclerView.adapter?.notifyDataSetChanged()
     }
-
 }
+

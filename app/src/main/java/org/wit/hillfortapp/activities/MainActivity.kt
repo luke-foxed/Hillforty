@@ -30,30 +30,23 @@ open class MainActivity : AppCompatActivity() {
         mDrawerLayout = findViewById(R.id.drawer_layout)
 
         val navigationView: NavigationView = findViewById(R.id.nav_view)
+        // remove icon default color
+        navigationView.itemIconTintList = null
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            // set item as selected to persist highlight
             menuItem.isChecked = true
-            // close drawer when item is tapped
             mDrawerLayout.closeDrawers()
 
-            // Handle navigation view item clicks here.
             when (menuItem.itemId) {
 
-                R.id.nav_profile -> {
+                R.id.nav_hillforts -> {
                     // Toast.makeText(this, "Profile", Toast.LENGTH_LONG).show()
                     startActivity(Intent(this@MainActivity, HillfortListActivity::class.java))
                 }
-                R.id.nav_wallet -> {
+                R.id.nav_add -> {
 //                   Toast.makeText(this, "Wallet", Toast.LENGTH_LONG).show()
-                    startActivity(Intent(this@MainActivity, TestActivity::class.java))
+                    startActivity(Intent(this@MainActivity, HillfortActivity::class.java))
                 }
-                R.id.nav_offer -> {
-                    // Toast.makeText(this, "Offer", Toast.LENGTH_LONG).show()
-                    startActivity(Intent(this@MainActivity, TestActivityList::class.java))
-                }
-                R.id.nav_setting -> {
-                    Toast.makeText(this, "Setting", Toast.LENGTH_LONG).show()
-                }
+
             }
             // Add code here to update the UI based on the item selected
             // For example, swap UI fragments here

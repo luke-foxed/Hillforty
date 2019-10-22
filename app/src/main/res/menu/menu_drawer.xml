@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_profile"
-            android:icon="@mipmap/ic_launcher_round"
-            android:title="Profile" />
+            android:id="@+id/nav_hillforts"
+            android:icon="@drawable/ic_menu_castle"
+            android:title="My Hillforts" />
         <item
-            android:id="@+id/nav_wallet"
-            android:icon="@mipmap/ic_launcher_round"
-            android:title="Wallet" />
-        <item
-            android:id="@+id/nav_offer"
-            android:icon="@mipmap/ic_launcher_round"
-            android:title="Offers" />
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@mipmap/ic_launcher_round"
-            android:title="Setting" />
+            android:id="@+id/nav_add"
+            android:icon="@drawable/ic_menu_plus"
+            android:title="Add a Hillfort" />
     </group>
 </menu>
