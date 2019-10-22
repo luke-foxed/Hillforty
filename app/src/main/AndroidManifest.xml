@@ -70,6 +70,10 @@
             android:name=".activities.TestActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
+        <activity
+            android:name=".activities.TestActivityList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
     </application>
 
 </manifest>

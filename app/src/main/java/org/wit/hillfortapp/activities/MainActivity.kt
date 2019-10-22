@@ -48,7 +48,8 @@ open class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this@MainActivity, TestActivity::class.java))
                 }
                 R.id.nav_offer -> {
-                    Toast.makeText(this, "Offer", Toast.LENGTH_LONG).show()
+                    // Toast.makeText(this, "Offer", Toast.LENGTH_LONG).show()
+                    startActivity(Intent(this@MainActivity, TestActivityList::class.java))
                 }
                 R.id.nav_setting -> {
                     Toast.makeText(this, "Setting", Toast.LENGTH_LONG).show()
