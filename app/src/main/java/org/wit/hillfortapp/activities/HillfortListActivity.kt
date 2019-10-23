@@ -26,15 +26,16 @@ class HillfortListActivity : MainActivity(), HillfortListener {
         app = application as MainApp
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-
-        // TODO: Find way to access Hillfort MemStore functions
         recyclerView.adapter = HillfortAdapter(app.activeUser.hillforts, this)
-
         loadHillforts()
+
+        floatingAdd.setOnClickListener{
+            startActivity(Intent(this@HillfortListActivity, HillfortActivity::class.java))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_hillfort_list, menu)
+        menuInflater.inflate(R.menu.menu_blank, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

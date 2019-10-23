@@ -38,12 +38,14 @@ open class MainActivity : AppCompatActivity() {
 
             when (menuItem.itemId) {
 
+                R.id.nav_home -> {
+                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
+                }
+
                 R.id.nav_hillforts -> {
-                    // Toast.makeText(this, "Profile", Toast.LENGTH_LONG).show()
                     startActivity(Intent(this@MainActivity, HillfortListActivity::class.java))
                 }
                 R.id.nav_add -> {
-//                   Toast.makeText(this, "Wallet", Toast.LENGTH_LONG).show()
                     startActivity(Intent(this@MainActivity, HillfortActivity::class.java))
                 }
 
