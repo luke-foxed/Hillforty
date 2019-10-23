@@ -33,7 +33,7 @@
 
         <activity
             android:name="org.wit.placemark.activities.MapActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
         <activity
             android:name=".activities.MainActivity"

@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
 
         <item
             android:id="@+id/nav_home"
@@ -19,5 +21,23 @@
             android:id="@+id/nav_add"
             android:icon="@drawable/ic_menu_plus"
             android:title="Add a Hillfort" />
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_menu_account"
+            android:title="My Account" />
+    </group>
+ 
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_stats"
+            android:icon="@drawable/ic_menu_stats"
+            android:title="Stats" />
+
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_menu_about"
+            android:title="About" />
     </group>
 </menu>
