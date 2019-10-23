@@ -2,7 +2,6 @@ package org.wit.hillfortapp.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -13,7 +12,7 @@ import org.wit.hillfortapp.R
 
 open class MainActivity : AppCompatActivity() {
 
-    lateinit var mDrawerLayout: DrawerLayout
+    private lateinit var mDrawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +27,13 @@ open class MainActivity : AppCompatActivity() {
         }
 
         mDrawerLayout = findViewById(R.id.drawer_layout)
-
         val navigationView: NavigationView = findViewById(R.id.nav_view)
+
         // remove icon default color
         navigationView.itemIconTintList = null
+
+
+        // credit: https://tutorial.eyehunts.com/android/android-navigation-drawer-example-kotlin/
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             mDrawerLayout.closeDrawers()
@@ -50,14 +52,11 @@ open class MainActivity : AppCompatActivity() {
                 }
 
             }
-            // Add code here to update the UI based on the item selected
-            // For example, swap UI fragments here
 
             true
         }
     }
 
-    //appbar - toolbar button click
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
