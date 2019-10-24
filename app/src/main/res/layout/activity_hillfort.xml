@@ -87,7 +87,6 @@
                 android:layout_margin="8dp"
                 android:autofillHints=""
                 android:hint="Date Visited"
-
                 android:padding="8dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />

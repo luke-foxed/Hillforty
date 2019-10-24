@@ -1,6 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="50sp"
+        android:fontFamily="sans-serif-thin"
+        android:text="Global Statistics" />
+
+    <TableLayout
+        android:layout_marginBottom="140dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TableRow
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_menu_account">
+            </ImageView>
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:gravity="center_vertical"
+                android:text="Number of Users: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/stats_users_number"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_marginStart="20dp"
+                android:gravity="center_vertical"
+                android:text="10"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_menu_castle">
+            </ImageView>
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:gravity="center_vertical"
+                android:text="Number of Hillforts: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/stats_hillfort_number"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_marginStart="20dp"
+                android:gravity="center_vertical"
+                android:text="10"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_image">
+
+            </ImageView>
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:gravity="center_vertical"
+                android:text="Number of Images: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/stats_images_number"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_marginStart="20dp"
+                android:gravity="center_vertical"
+                android:text="10"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_visited">
+            </ImageView>
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:gravity="center_vertical"
+                android:text="Number of Visits: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/stats_visited_number"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_marginStart="20dp"
+                android:gravity="center_vertical"
+                android:text="10"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_top_user">
+            </ImageView>
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:gravity="center_vertical"
+                android:text="Most Active User: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/stats_top_user"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_marginStart="20dp"
+                android:gravity="center_vertical"
+                android:text="10"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+    </TableLayout>
 
 </LinearLayout>

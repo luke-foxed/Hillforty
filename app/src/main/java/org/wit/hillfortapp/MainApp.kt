@@ -16,6 +16,5 @@ class MainApp : Application(), AnkoLogger {
         super.onCreate()
         info("App started")
         users = UserJSONStore(applicationContext)
-
     }
 }

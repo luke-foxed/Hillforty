@@ -42,7 +42,6 @@ class HillfortListActivity : MainActivity(), HillfortListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.item_add -> {
-                println("IVE BEEN CLICKED")
                 startActivityForResult<HillfortActivity>(0)
             }
         }
@@ -62,7 +61,7 @@ class HillfortListActivity : MainActivity(), HillfortListener {
         showHillforts(app.activeUser.hillforts)
     }
 
-    fun showHillforts(hillforts: List<HillfortModel>) {
+    private fun showHillforts(hillforts: List<HillfortModel>) {
         recyclerView.adapter = HillfortAdapter(hillforts, this)
         recyclerView.adapter?.notifyDataSetChanged()
     }
