@@ -110,6 +110,9 @@ class HillfortActivity : MainActivity(), AnkoLogger {
                 }
                 setResult(RESULT_OK)
                 finish()
+
+                // restart activity so that adapter updates
+                startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
             }
         }
 
@@ -125,10 +128,10 @@ class HillfortActivity : MainActivity(), AnkoLogger {
         }
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_hillfort, menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_hillfort, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {

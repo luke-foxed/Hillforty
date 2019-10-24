@@ -22,7 +22,7 @@ class StatsActivity : MainActivity(), AnkoLogger {
         stats_hillfort_number.text = getHillforts().toString()
         stats_images_number.text = getImages().toString()
         stats_visited_number.text = getVisits().toString()
-
+        stats_top_user.text = getMostActiveUser()
     }
 
     private fun getUsers(): Int? {
@@ -55,5 +55,19 @@ class StatsActivity : MainActivity(), AnkoLogger {
             }
         }
         return totalVisits
+    }
+
+    private fun getMostActiveUser(): String {
+        val users = app.users.findAll()
+        var hillfortsCount = 0
+        var topUser = ""
+
+        for (user in users) {
+            if (user.hillforts.size > hillfortsCount) {
+                hillfortsCount = user.hillforts.size
+                topUser = user.email
+            }
+        }
+        return topUser
     }
 }
