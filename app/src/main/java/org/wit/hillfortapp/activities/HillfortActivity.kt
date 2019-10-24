@@ -137,7 +137,6 @@ class HillfortActivity : MainActivity(), AnkoLogger {
         when (item?.itemId) {
             R.id.item_cancel -> {
                 finish()
-                // startActivity(Intent(this@HillfortActivity, MainActivity::class.java))
             }
 
             R.id.item_delete -> {

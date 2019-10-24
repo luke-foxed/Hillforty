@@ -9,7 +9,6 @@ import org.wit.hillfortapp.helpers.exists
 import org.wit.hillfortapp.helpers.read
 import org.wit.hillfortapp.helpers.write
 import java.util.*
-import kotlin.collections.ArrayList
 
 val JSON_FILE = "users.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
@@ -57,6 +56,11 @@ class UserJSONStore : UserStore, AnkoLogger {
         }
     }
 
+    override fun deleteUser(user: UserModel) {
+        users.remove(user)
+        serialize()
+    }
+
     // Hillfort Functionality
 
     override fun findAllHillforts(): ArrayList<HillfortModel> {
@@ -96,6 +100,11 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun deleteHillfort(hillfort: HillfortModel, activeUser: UserModel) {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         activeUser.hillforts.remove(foundHillfort)
+        serialize()
+    }
+
+    override fun deleteAllHillforts(activeUser: UserModel) {
+        activeUser.hillforts.clear()
         serialize()
     }
 

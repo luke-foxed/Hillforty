@@ -5,6 +5,7 @@ interface UserStore {
     fun findOne(email: String, password: String): UserModel
     fun create(user: UserModel)
     fun update(user: UserModel)
+    fun deleteUser(user: UserModel)
 
     // Hillfort functionality
     fun findAllHillforts(): ArrayList<HillfortModel>?
@@ -13,4 +14,6 @@ interface UserStore {
     fun createHillfort(hillfort: HillfortModel, activeUser: UserModel)
     fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel)
     fun deleteHillfort(hillfort: HillfortModel, activeUser: UserModel)
+    fun deleteAllHillforts(activeUser: UserModel)
+
 }

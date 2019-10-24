@@ -68,6 +68,9 @@
         <activity android:name=".activities.StatsActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
+        <activity android:name=".activities.AccountActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
 <!-- DELETE THIS -->
 
         <activity

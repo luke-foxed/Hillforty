@@ -50,10 +50,13 @@ open class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this@MainActivity, HillfortActivity::class.java))
                 }
 
+                R.id.nav_account -> {
+                    startActivity(Intent(this@MainActivity, AccountActivity::class.java))
+                }
+
                 R.id.nav_stats -> {
                     startActivity(Intent(this@MainActivity, StatsActivity::class.java))
                 }
-
             }
 
             true

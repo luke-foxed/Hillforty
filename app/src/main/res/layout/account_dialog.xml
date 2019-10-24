@@ -1,0 +1,51 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/dialogEmail"
+        android:hint="New Email"
+        android:inputType="textEmailAddress"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/dialogPassword"
+        android:hint="New Password"
+        android:inputType="textPassword"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
+        <Button
+            android:id="@+id/dialogUpdate"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_button"
+            android:text="Update Account"
+            style="?android:attr/buttonBarStyle"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+        <Button
+            android:id="@+id/dialogCancel"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_button"
+            android:text="Cancel"
+            style="?android:attr/buttonBarStyle"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</LinearLayout>
