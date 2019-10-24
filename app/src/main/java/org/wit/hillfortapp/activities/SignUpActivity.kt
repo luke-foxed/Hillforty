@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import org.wit.hillfortapp.R
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.models.UserModel
@@ -50,13 +51,17 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
         if (password1Text != password2Text) {
             toast("Passwords do not match")
         } else {
-            user.email = emailText
-            user.password = password1Text
-            app.users.create(user.copy())
-            //  app.users.export(this.applicationContext)
-            toast("Account created!")
-            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
 
+            if(app.users.findOne(emailText, password1Text) == null) {
+                user.email = emailText
+                user.password = password1Text
+                app.users.create(user.copy())
+                toast("Account created!")
+                startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+            }
+            else{
+                toast("This account already exists")
+            }
         }
     }
 }

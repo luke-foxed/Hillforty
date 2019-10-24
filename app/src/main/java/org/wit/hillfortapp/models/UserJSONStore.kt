@@ -50,8 +50,8 @@ class UserJSONStore : UserStore, AnkoLogger {
         serialize()
     }
 
-    override fun findOne(email: String, password: String): UserModel {
-        return users.single { user ->
+    override fun findOne(email: String, password: String): UserModel? {
+        return users.singleOrNull { user ->
             user.email == email && user.password == password
         }
     }
