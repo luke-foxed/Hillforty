@@ -43,10 +43,10 @@
 
         <activity
             android:name=".activities.HillfortActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".activities.HillfortListActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
             android:name=".activities.SplashActivity"
