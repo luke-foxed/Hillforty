@@ -18,10 +18,15 @@ class StatsActivity : MainActivity(), AnkoLogger {
         app = application as MainApp
 
         // set stats
+        stats_users_number.text = getUsers().toString()
         stats_hillfort_number.text = getHillforts().toString()
         stats_images_number.text = getImages().toString()
         stats_visited_number.text = getVisits().toString()
 
+    }
+
+    private fun getUsers(): Int? {
+        return app.users.findAll().size
     }
 
     private fun getHillforts(): Int? {
