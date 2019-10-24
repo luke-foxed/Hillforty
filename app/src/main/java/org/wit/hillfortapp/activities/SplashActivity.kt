@@ -24,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
         //4second splash time
         Handler().postDelayed({
 
-            //start main activity
+            //start menu_hillfort_list activity
             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
 
             //finish this activity

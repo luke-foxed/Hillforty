@@ -33,26 +33,48 @@
 
         <activity
             android:name="org.wit.placemark.activities.MapActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
+        <activity
+            android:name=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
         <activity
             android:name=".activities.HillfortActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".activities.HillfortListActivity" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity android:name=".activities.HillfortListActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity
             android:name=".activities.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
         <activity
             android:name=".activities.SignUpActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
+<!-- DELETE THIS -->
+
+        <activity
+            android:name=".activities.TestActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
+        <activity
+            android:name=".activities.TestActivityList"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
     </application>
 
 </manifest>

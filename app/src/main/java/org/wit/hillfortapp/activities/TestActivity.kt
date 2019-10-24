@@ -11,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
@@ -29,7 +28,7 @@ import org.wit.hillfortapp.models.Location
 import org.wit.placemark.activities.MapActivity
 
 
-class HillfortActivity : MainActivity(), AnkoLogger {
+class TestActivity : MainActivity(), AnkoLogger {
 
     lateinit var app: MainApp
     private var hillfort = HillfortModel()
@@ -125,10 +124,10 @@ class HillfortActivity : MainActivity(), AnkoLogger {
         }
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        menuInflater.inflate(R.menu.menu_hillfort, menu)
-//        return super.onCreateOptionsMenu(menu)
-//    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_hillfort, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
@@ -139,7 +138,7 @@ class HillfortActivity : MainActivity(), AnkoLogger {
 
             R.id.item_delete -> {
                 if (edit) {
-                    val builder = AlertDialog.Builder(this@HillfortActivity)
+                    val builder = AlertDialog.Builder(this@TestActivity)
                     builder.setMessage("Are you sure you want to delete this Hillfort?")
                     builder.setPositiveButton("Yes") { dialog, which ->
                         app.users.deleteHillfort(hillfort, app.activeUser)
@@ -160,7 +159,7 @@ class HillfortActivity : MainActivity(), AnkoLogger {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             IMAGE_REQUEST -> {
-                val builder = AlertDialog.Builder(this@HillfortActivity)
+                val builder = AlertDialog.Builder(this@TestActivity)
                 builder.setMessage("This will reset the existing images, continue?")
                 builder.setPositiveButton("YES") { dialog, which ->
                     if (data != null) {
