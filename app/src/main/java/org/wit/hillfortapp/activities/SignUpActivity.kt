@@ -5,16 +5,15 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import org.wit.hillfortapp.R
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
+import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
 
 class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
-    var user = UserModel()
+    private var user = UserModel()
     lateinit var app: MainApp
 
     private var email: EditText? = null
@@ -35,9 +34,31 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun signUp() {
-        val emailText = email!!.text.toString()
-        val password1Text = password!!.text.toString()
-        val password2Text = password2!!.text.toString()
+        val emailText = email?.text.toString()
+        val password1Text = password?.text.toString()
+        val password2Text = password2?.text.toString()
+
+        if (!validationCheck(emailText, password1Text, password2Text)) {
+                user.email = emailText
+                user.password = password1Text
+                app.users.create(user.copy())
+                toast("Account created!")
+                startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+        }
+    }
+
+    private fun validationCheck(
+        emailText: String,
+        password1Text: String,
+        password2Text: String
+    ): Boolean {
+
+        var hasErrors = false
+
+        if (app.users.findOne(emailText, password1Text) != null) {
+            toast("This account already exists")
+            hasErrors = true
+        }
 
         if (listOf(
                 emailText,
@@ -46,22 +67,23 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
             ).contains("")
         ) {
             toast("Please fill out all fields")
+            hasErrors = true
         }
 
         if (password1Text != password2Text) {
             toast("Passwords do not match")
-        } else {
-
-            if(app.users.findOne(emailText, password1Text) == null) {
-                user.email = emailText
-                user.password = password1Text
-                app.users.create(user.copy())
-                toast("Account created!")
-                startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
-            }
-            else{
-                toast("This account already exists")
-            }
+            hasErrors = true
         }
+
+        if (!isEmailValid(emailText)) {
+            toast("Please enter a valid email")
+            hasErrors = true
+        }
+
+        return hasErrors
+    }
+
+    private fun isEmailValid(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
