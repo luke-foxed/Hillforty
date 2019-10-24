@@ -43,12 +43,15 @@ open class MainActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 }
-
                 R.id.nav_hillforts -> {
                     startActivity(Intent(this@MainActivity, HillfortListActivity::class.java))
                 }
                 R.id.nav_add -> {
                     startActivity(Intent(this@MainActivity, HillfortActivity::class.java))
+                }
+
+                R.id.nav_stats -> {
+                    startActivity(Intent(this@MainActivity, StatsActivity::class.java))
                 }
 
             }

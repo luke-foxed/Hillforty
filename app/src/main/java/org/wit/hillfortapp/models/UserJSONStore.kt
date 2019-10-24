@@ -59,11 +59,23 @@ class UserJSONStore : UserStore, AnkoLogger {
 
     // Hillfort Functionality
 
-    override fun findAllHillforts(activeUser: UserModel): ArrayList<HillfortModel> {
+    override fun findAllHillforts(): ArrayList<HillfortModel> {
+        val totalHillforts: ArrayList<HillfortModel> = arrayListOf() // returning 1?
+        for (user in users){
+            if(user.hillforts.size !=0) {
+                for (hillfort in user.hillforts) {
+                    totalHillforts.add(hillfort)
+                }
+            }
+        }
+        return totalHillforts
+    }
+
+    override fun findAllUserHillforts(activeUser: UserModel): ArrayList<HillfortModel> {
         return activeUser.hillforts
     }
 
-    override fun findOneHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel {
+    override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel {
         return activeUser.hillforts.single { hillfort ->
             hillfort.id == hillfortID
         }
@@ -76,13 +88,13 @@ class UserJSONStore : UserStore, AnkoLogger {
     }
 
     override fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel) {
-        val foundHillfort = findOneHillfort(hillfort.id, activeUser)
+        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         activeUser.hillforts[foundHillfort.id - 1] = hillfort
         serialize()
     }
 
     override fun deleteHillfort(hillfort: HillfortModel, activeUser: UserModel) {
-        val foundHillfort = findOneHillfort(hillfort.id, activeUser)
+        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         activeUser.hillforts.remove(foundHillfort)
         serialize()
     }
