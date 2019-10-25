@@ -10,7 +10,8 @@ interface UserStore {
     // Hillfort functionality
     fun findAllHillforts(): ArrayList<HillfortModel>?
     fun findAllUserHillforts(activeUser: UserModel): ArrayList<HillfortModel>
-    fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel
+    fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<Note>?
+    fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel?
     fun createHillfort(hillfort: HillfortModel, activeUser: UserModel)
     fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel)
     fun deleteHillfort(hillfort: HillfortModel, activeUser: UserModel)

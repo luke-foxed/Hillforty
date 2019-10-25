@@ -91,6 +91,12 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerNotes"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:scrollbars="vertical" />
+
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
                 android:layout_width="300dp"

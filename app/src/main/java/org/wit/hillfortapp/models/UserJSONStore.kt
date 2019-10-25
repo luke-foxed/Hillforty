@@ -5,10 +5,12 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.wit.hillfortapp.helpers.exists
 import org.wit.hillfortapp.helpers.read
 import org.wit.hillfortapp.helpers.write
 import java.util.*
+import kotlin.collections.ArrayList
 
 val JSON_FILE = "users.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
@@ -75,12 +77,20 @@ class UserJSONStore : UserStore, AnkoLogger {
         return totalHillforts
     }
 
+    override fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<Note>? {
+        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
+
+        return foundHillfort?.notes
+    }
+
     override fun findAllUserHillforts(activeUser: UserModel): ArrayList<HillfortModel> {
         return activeUser.hillforts
     }
 
-    override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel {
-        return activeUser.hillforts.single { hillfort ->
+    override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel? {
+
+        return activeUser.hillforts.singleOrNull { hillfort ->
+            info("Comparing: ${hillfort.id} against $hillfortID" )
             hillfort.id == hillfortID
         }
     }
@@ -93,7 +103,9 @@ class UserJSONStore : UserStore, AnkoLogger {
 
     override fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel) {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
-        activeUser.hillforts[foundHillfort.id - 1] = hillfort
+        if (foundHillfort != null) {
+            activeUser.hillforts[foundHillfort.id - 1] = hillfort
+        }
         serialize()
     }
 

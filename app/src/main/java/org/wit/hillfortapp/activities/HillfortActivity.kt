@@ -11,7 +11,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
@@ -26,10 +26,11 @@ import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
+import org.wit.hillfortapp.models.Note
 import org.wit.placemark.activities.MapActivity
 
 
-class HillfortActivity : MainActivity(), AnkoLogger {
+class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     lateinit var app: MainApp
     private var hillfort = HillfortModel()
@@ -43,14 +44,22 @@ class HillfortActivity : MainActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
 
+        app = application as MainApp
+
+        val layoutManager = LinearLayoutManager(this)
+        recyclerNotes.layoutManager = layoutManager
+        recyclerNotes.adapter = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)?.let {
+            NotesAdapter(
+                it, this
+            )
+        }
+
         with(mapView) {
             onCreate(null)
             getMapAsync {
                 MapsInitializer.initialize(applicationContext)
             }
         }
-
-        app = application as MainApp
 
         if (intent.hasExtra("hillfort_edit")) {
             edit = true
@@ -59,6 +68,8 @@ class HillfortActivity : MainActivity(), AnkoLogger {
             description.setText(hillfort.description)
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
+
+            loadNotes()
 
             if (hillfort.images.size != 0) {
                 hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
@@ -155,7 +166,7 @@ class HillfortActivity : MainActivity(), AnkoLogger {
                 }
             }
         }
-        return super.onOptionsItemSelected(item!!)
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -211,6 +222,10 @@ class HillfortActivity : MainActivity(), AnkoLogger {
                 }
             }
         }
+    }
+
+    override fun onNoteClick(note: Note) {
+        startActivityForResult(intentFor<NotesActivity>().putExtra("note_edit", note), 0)
     }
 
     // mapView methods
@@ -289,5 +304,21 @@ class HillfortActivity : MainActivity(), AnkoLogger {
                 newImageView.setImageDrawable(mainImageDrawable)
             }
         }
+    }
+
+    private fun loadNotes() {
+        app.users.findOneUserHillfortNotes(app.activeUser, hillfort)?.let { showNotes(it) }
+        info("ACTIVE USER--> " + app.activeUser)
+        info(
+            "NOTES --> " + app.users.findOneUserHillfortNotes(
+                app.activeUser,
+                hillfort
+            )?.let { showNotes(it) }
+        )
+    }
+
+    private fun showNotes(notes: List<Note>) {
+        recyclerNotes.adapter = NotesAdapter(notes, this)
+        recyclerNotes.adapter?.notifyDataSetChanged()
     }
 }
