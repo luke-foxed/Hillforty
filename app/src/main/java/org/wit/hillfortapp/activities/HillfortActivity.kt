@@ -37,7 +37,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     lateinit var app: MainApp
     private var hillfort = HillfortModel()
-    private var notes = ArrayList<Note>()
     private var edit = false
 
     private val IMAGE_REQUEST = 1
@@ -159,9 +158,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                     val newNote = Note()
                     newNote.title = noteTitle.text.toString()
                     newNote.content = noteContent.text.toString()
-
                     app.users.createNote(app.activeUser, hillfort, newNote)
-                    info("CREATED NOTE--> " + app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
 
                     dialog.dismiss()
                     loadNotes()
@@ -269,8 +266,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             }
             NOTE_REQUEST -> {
                 if (data != null) {
-                    note = data.extras?.getParcelable("new_note")!!
-                    app.users.updateNote(app.activeUser, hillfort, note)
                     loadNotes()
                 }
             }

@@ -21,5 +21,6 @@ interface UserStore {
     fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<Note>?
     fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note)
     fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: Note)
+    fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, note: Note)
 
 }

@@ -53,9 +53,26 @@ class NotesActivity : MainActivity(), AnkoLogger {
                 builder.setPositiveButton("Yes") { dialog, which ->
                     note.title = noteActivityTitle.text.toString()
                     note.content = noteActivityContent.text.toString()
+                    app.users.updateNote(app.activeUser, currentHillfort, note)
+
                     val resultIntent = Intent()
-                    resultIntent.putExtra("new_note", note)
                     setResult(Activity.RESULT_OK, resultIntent)
+                    finish()
+                }
+
+                builder.setNegativeButton("No") { dialog, which ->
+                    dialog.dismiss()
+                }
+
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
+
+            R.id.noteMenuDelete -> {
+                val builder = AlertDialog.Builder(this@NotesActivity)
+                builder.setMessage("Do you want to delete this note?")
+                builder.setPositiveButton("Yes") { dialog, which ->
+                    app.users.deleteNote(app.activeUser, currentHillfort, note)
                     finish()
                 }
 

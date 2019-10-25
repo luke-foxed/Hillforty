@@ -10,7 +10,6 @@ import org.wit.hillfortapp.helpers.exists
 import org.wit.hillfortapp.helpers.read
 import org.wit.hillfortapp.helpers.write
 import java.util.*
-import kotlin.collections.ArrayList
 
 val JSON_FILE = "users.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
@@ -128,17 +127,28 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
         val foundHillfortNotes = findOneUserHillfortNotes(activeUser, hillfort)
         val foundNote = foundHillfortNotes?.singleOrNull { matchingNote ->
-
             matchingNote.id == note.id}
 
         val index = activeUser.hillforts[hillfort.id-1].notes.indexOf(foundNote)
         if (foundNote != null) {
             activeUser.hillforts[hillfort.id-1].notes[index] = note
             serialize()
-            info("SERIALIZING")
         }
     }
 
+    override fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+        val foundHillfortNotes = findOneUserHillfortNotes(activeUser, hillfort)
+        val foundNote = foundHillfortNotes?.singleOrNull { matchingNote ->
+            matchingNote.id == note.id
+        }
+
+        val index = activeUser.hillforts[hillfort.id - 1].notes.indexOf(foundNote)
+        if (foundNote != null) {
+            activeUser.hillforts[hillfort.id - 1].notes.removeAt(index)
+            serialize()
+            info("SERIALIZING")
+        }
+    }
 
     // write methods
     private fun serialize() {
