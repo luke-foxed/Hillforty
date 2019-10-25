@@ -93,9 +93,21 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerNotes"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="280dp"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                />
+
+            <Button
+                android:id="@+id/addNoteButton"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                style="?android:attr/buttonBarStyle"
+                android:background="@drawable/rounded_button"
+                android:text="Add Note"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"

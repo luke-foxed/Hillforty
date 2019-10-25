@@ -7,8 +7,11 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -125,6 +128,43 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 // restart activity so that adapter updates
                 startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
             }
+        }
+
+        addNoteButton.setOnClickListener {
+
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_note, null)
+            val builder = AlertDialog.Builder(this@HillfortActivity)
+            builder.setMessage("Enter note details: ")
+            builder.setView(mDialogView)
+
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+
+            val addBtn = dialog.findViewById(R.id.dialogAddNote) as Button
+            val cancelBtn = dialog.findViewById(R.id.dialogCancelNote) as Button
+            val noteTitle = dialog.findViewById(R.id.dialogNoteTitle) as? EditText
+            val noteContent = dialog.findViewById(R.id.dialogNoteContent) as? EditText
+
+            addBtn.setOnClickListener {
+                if (listOf(noteTitle!!.text.toString(), noteContent!!.text.toString())
+                        .contains("")
+                ) {
+                    toast("No changes made!")
+                } else {
+                    val newNote = Note(
+                        noteTitle.text.toString(),
+                        noteContent.text.toString()
+                    )
+                    app.users.createNote(app.activeUser, hillfort, newNote)
+                    dialog.dismiss()
+                }
+
+                cancelBtn.setOnClickListener {
+                    dialog.dismiss()
+                }
+            }
+
+            loadNotes()
         }
 
         chooseImage.setOnClickListener {

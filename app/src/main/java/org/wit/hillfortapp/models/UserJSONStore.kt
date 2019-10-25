@@ -77,12 +77,6 @@ class UserJSONStore : UserStore, AnkoLogger {
         return totalHillforts
     }
 
-    override fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<Note>? {
-        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
-
-        return foundHillfort?.notes
-    }
-
     override fun findAllUserHillforts(activeUser: UserModel): ArrayList<HillfortModel> {
         return activeUser.hillforts
     }
@@ -118,6 +112,18 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun deleteAllHillforts(activeUser: UserModel) {
         activeUser.hillforts.clear()
         serialize()
+    }
+
+    // Note Functionality
+
+    override fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<Note>? {
+        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
+        return foundHillfort?.notes
+    }
+
+    override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
+        foundHillfort?.notes?.add(note)
     }
 
     // write methods
