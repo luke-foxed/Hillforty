@@ -24,6 +24,7 @@
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"
         android:lines="6"
+        android:maxLength="140"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:scrollHorizontally="false" />
 
