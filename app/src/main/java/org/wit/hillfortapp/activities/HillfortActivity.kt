@@ -91,7 +91,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             btnAdd.setBackgroundResource(R.drawable.ic_check_circle)
         }
 
-        dateVisited.setOnFocusChangeListener { view, hasFocus ->
+        dateVisited.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 try {
                     showDateDialog()
@@ -194,7 +194,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.item_cancel -> {
                 finish()
             }

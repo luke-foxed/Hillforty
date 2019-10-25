@@ -25,7 +25,7 @@ class AccountActivity : MainActivity(), AnkoLogger {
 
         setUserDetails()
 
-        acccount_delete.setOnClickListener {
+        accountDeleteBtn.setOnClickListener {
 
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Are you sure you want to delete your account?")
@@ -34,26 +34,26 @@ class AccountActivity : MainActivity(), AnkoLogger {
                 startActivity(Intent(this@AccountActivity, LoginActivity::class.java))
             }
             builder.setNegativeButton("No") { dialog, which ->
-                // do nothing
+                dialog.dismiss()
             }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
 
-        account_delete_hillforts.setOnClickListener {
+        accountDeleteHillfortsBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Are you sure you want to delete all your hillforts?")
             builder.setPositiveButton("Yes") { dialog, which ->
                 app.users.deleteAllHillforts(app.activeUser)
             }
             builder.setNegativeButton("No") { dialog, which ->
-                // do nothing
+                dialog.dismiss()
             }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
 
-        account_edit_account.setOnClickListener {
+        accountEditBtn.setOnClickListener {
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_account, null)
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Enter new account details: ")
@@ -92,8 +92,8 @@ class AccountActivity : MainActivity(), AnkoLogger {
     }
 
     private fun setUserDetails() {
-        account_email.text = app.activeUser.email
-        account_password.text = app.activeUser.password
+        accountEmail.text = app.activeUser.email
+        accountPassword.text = app.activeUser.password
     }
 
     private fun isEmailValid(email: String): Boolean {

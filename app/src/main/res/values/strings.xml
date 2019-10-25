@@ -1,4 +1,15 @@
 <resources>
+
+    <!--ACCOUNT ACTIVITY-->
+    <string name="accountHeader">My Account</string>
+    <string name="accountEmailLabel">Email: </string>
+    <string name="accountPasswordLabel">Password: </string>
+    <string name="accountDeleteButton">Delete Account</string>
+    <string name="accountDeleteHillfortsButton">Delete Hillforts</string>
+    <string name="accountEditButton">Edit Account</string>
+
+
     <string name="app_name">Hillfort App</string>
     <string name="title_activity_maps">Map</string>
 </resources>
+
