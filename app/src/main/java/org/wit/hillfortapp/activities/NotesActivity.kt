@@ -54,7 +54,6 @@ class NotesActivity : MainActivity(), AnkoLogger {
                     note.title = noteActivityTitle.text.toString()
                     note.content = noteActivityContent.text.toString()
                     // app.users.updateNote(app.activeUser, currentHillfort, note)
-                   //  app.users.updateHillfort(currentHillfort, app.activeUser)
                     val resultIntent = Intent()
                     resultIntent.putExtra("new_note", note)
                     setResult(Activity.RESULT_OK, resultIntent)

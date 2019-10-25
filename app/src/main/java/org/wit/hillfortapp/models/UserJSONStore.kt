@@ -16,8 +16,8 @@ val JSON_FILE = "users.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
 val listType = object : TypeToken<ArrayList<UserModel>>() {}.type
 
-fun generateRandomId(): Int {
-    return Random().nextInt()
+fun generateRandomId(): Long {
+    return Random().nextLong()
 }
 
 class UserJSONStore : UserStore, AnkoLogger {
@@ -37,7 +37,7 @@ class UserJSONStore : UserStore, AnkoLogger {
     }
 
     override fun create(user: UserModel) {
-        user.id = generateRandomId()
+        user.id = generateRandomId().toInt()
         users.add(user)
         serialize()
     }
@@ -82,7 +82,6 @@ class UserJSONStore : UserStore, AnkoLogger {
     }
 
     override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel? {
-
         return activeUser.hillforts.singleOrNull { hillfort ->
             hillfort.id == hillfortID
         }
@@ -121,8 +120,8 @@ class UserJSONStore : UserStore, AnkoLogger {
     }
 
     override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
-        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
-        foundHillfort?.notes?.add(note)
+        note.id = generateRandomId().toInt()
+        activeUser.hillforts[hillfort.id - 1].notes.add(note)
         serialize()
     }
 

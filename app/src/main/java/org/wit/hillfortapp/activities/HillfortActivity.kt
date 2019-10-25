@@ -117,14 +117,14 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 hillfort.visited = visited.isChecked
                 hillfort.dateVisited = dateVisited.text.toString()
                 hillfort.location = location
+                hillfort.notes = app.activeUser.hillforts[hillfort.id-1].notes
 
                 if (edit) {
-                    hillfort.notes.addAll(notes)
                     app.users.updateHillfort(
                         hillfort, app.activeUser
                     )
                 } else {
-                    hillfort.notes = notes
+
                     app.users.createHillfort(hillfort, app.activeUser)
                 }
                 setResult(RESULT_OK)
@@ -156,14 +156,13 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 ) {
                     toast("No changes made!")
                 } else {
-                    val newNote = Note(
-                        hillfort.id + (hillfort.notes.size + 1),
-                        noteTitle.text.toString(),
-                        noteContent.text.toString()
-                    )
+                    val newNote = Note()
+                    newNote.title = noteTitle.text.toString()
+                    newNote.content = noteContent.text.toString()
 
-                    // add to array which will later be assigned to hillfort notes
-                    notes.add(newNote)
+                    app.users.createNote(app.activeUser, hillfort, newNote)
+                    info("CREATED NOTE--> " + app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
+
                     dialog.dismiss()
                     loadNotes()
                 }
@@ -372,15 +371,18 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     private fun loadNotes() {
         val userNotes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)
-
-        // if there are existing notes, add them to the newly added notes
         if (userNotes != null) {
-            showNotes((userNotes + notes) as ArrayList<Note>)
+            showNotes(userNotes)
         }
-        // else just show the newly added notes
-        else {
-            showNotes(notes)
-        }
+
+//        // if there are existing notes, add them to the newly added notes
+//        if (userNotes != null) {
+//            showNotes((userNotes + notes) as ArrayList<Note>)
+//        }
+//        // else just show the newly added notes
+//        else {
+//            showNotes(notes)
+//        }
     }
 
     private fun showNotes(notes: ArrayList<Note>) {
