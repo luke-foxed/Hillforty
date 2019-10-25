@@ -16,8 +16,8 @@ val JSON_FILE = "users.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
 val listType = object : TypeToken<ArrayList<UserModel>>() {}.type
 
-fun generateRandomId(): Long {
-    return Random().nextLong()
+fun generateRandomId(): Int {
+    return Random().nextInt()
 }
 
 class UserJSONStore : UserStore, AnkoLogger {
@@ -37,7 +37,7 @@ class UserJSONStore : UserStore, AnkoLogger {
     }
 
     override fun create(user: UserModel) {
-        user.id = generateRandomId().toInt()
+        user.id = generateRandomId()
         users.add(user)
         serialize()
     }
@@ -84,7 +84,6 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel? {
 
         return activeUser.hillforts.singleOrNull { hillfort ->
-            info("Comparing: ${hillfort.id} against $hillfortID" )
             hillfort.id == hillfortID
         }
     }
@@ -125,6 +124,19 @@ class UserJSONStore : UserStore, AnkoLogger {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         foundHillfort?.notes?.add(note)
         serialize()
+    }
+
+    override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+        val foundHillfortNotes = findOneUserHillfortNotes(activeUser, hillfort)
+        val foundNote = foundHillfortNotes?.singleOrNull { matchingNote ->
+            matchingNote.id == note.id}
+
+        if (foundNote != null) {
+            val index = foundHillfortNotes.indexOf(foundNote)
+            activeUser.hillforts[hillfort.id - 1].notes[foundNote.id - 1] = note
+            info("SERIALIZING")
+            serialize()
+        }
     }
 
 

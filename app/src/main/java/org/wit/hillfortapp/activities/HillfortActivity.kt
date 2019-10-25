@@ -42,7 +42,10 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
+    private val NOTE_REQUEST = 3
+
     private var location = Location()
+    private var note = Note()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,6 +157,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                     toast("No changes made!")
                 } else {
                     val newNote = Note(
+                        hillfort.id + (hillfort.notes.size + 1),
                         noteTitle.text.toString(),
                         noteContent.text.toString()
                     )
@@ -232,13 +236,12 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                                 while (counter < mClipData!!.itemCount) {
                                     info("URI--> " + mClipData.getItemAt(counter).uri)
                                     clipImages.add(mClipData.getItemAt(counter).uri.toString())
-                                    counter ++
+                                    counter++
                                 }
                             }
                         } else {
                             clipImages.add(data.data.toString())
                         }
-
                         // clear all images from view
                         moreImages.removeAllViews()
 
@@ -249,7 +252,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                     }
                 }
 
-                builder.setNegativeButton("No"){dialog,which ->
+                builder.setNegativeButton("No") { dialog, which ->
                     dialog.dismiss()
                 }
 
@@ -265,11 +268,28 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                     }
                 }
             }
+
+            NOTE_REQUEST -> {
+                if (data != null) {
+                    note = data.extras?.getParcelable("new_note")!!
+
+                    // not working because the save method is overwriting the updated note
+                    app.users.updateNote(app.activeUser, hillfort, note)
+                    finish()
+                    loadNotes()
+                }
+            }
         }
     }
 
     override fun onNoteClick(note: Note) {
-        startActivityForResult(intentFor<NotesActivity>().putExtra("note_edit", note), 0)
+        var intent = Intent(this, NotesActivity::class.java)
+        intent.putExtra("note_edit", note)
+
+        // pass current hillfort for update/delete functionality
+        intent.putExtra("current_hillfort", hillfort)
+        startActivityForResult(intent, NOTE_REQUEST)
+        loadNotes()
     }
 
     // mapView methods
@@ -352,6 +372,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     private fun loadNotes() {
         val userNotes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)
+
         // if there are existing notes, add them to the newly added notes
         if (userNotes != null) {
             showNotes((userNotes + notes) as ArrayList<Note>)

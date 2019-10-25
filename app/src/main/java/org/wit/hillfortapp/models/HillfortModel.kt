@@ -23,6 +23,7 @@ data class Location(var lat: Double = 0.0,
 
 @Parcelize
 data class Note(
+    var id: Int = 0,
     var title: String = "",
     var content: String = ""
 ) : Parcelable
