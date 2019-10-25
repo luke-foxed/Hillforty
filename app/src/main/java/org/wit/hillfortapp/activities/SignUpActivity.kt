@@ -55,29 +55,24 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
         var hasErrors = false
 
-        if (app.users.findOne(emailText, password1Text) != null) {
-            toast("This account already exists")
-            hasErrors = true
-        }
+        when {
+            app.users.findOne(emailText, password1Text) != null -> {
+                toast("This account already exists")
+                hasErrors = true
+            }
+            listOf(emailText, password1Text, password2Text).contains("") -> {
+                toast("Please fill out all fields")
+                hasErrors = true
+            }
+            password1Text != password2Text -> {
+                toast("Passwords do not match")
+                hasErrors = true
+            }
 
-        if (listOf(
-                emailText,
-                password1Text,
-                password2Text
-            ).contains("")
-        ) {
-            toast("Please fill out all fields")
-            hasErrors = true
-        }
-
-        if (password1Text != password2Text) {
-            toast("Passwords do not match")
-            hasErrors = true
-        }
-
-        if (!isEmailValid(emailText)) {
-            toast("Please enter a valid email")
-            hasErrors = true
+            !isEmailValid(emailText) -> {
+                toast("Please enter a valid email")
+                hasErrors = true
+            }
         }
 
         return hasErrors
