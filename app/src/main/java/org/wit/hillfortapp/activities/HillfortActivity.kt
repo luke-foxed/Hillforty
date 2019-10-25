@@ -44,7 +44,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     private val NOTE_REQUEST = 3
 
     private var location = Location()
-    private var note = Note()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +92,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
 
         dateVisited.setOnFocusChangeListener { view, hasFocus ->
-            if(hasFocus) {
+            if (hasFocus) {
                 try {
                     showDateDialog()
                 } catch (e: Exception) {
@@ -116,14 +115,13 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 hillfort.visited = visited.isChecked
                 hillfort.dateVisited = dateVisited.text.toString()
                 hillfort.location = location
-                hillfort.notes = app.activeUser.hillforts[hillfort.id-1].notes
 
                 if (edit) {
+                    hillfort.notes = app.activeUser.hillforts[hillfort.id - 1].notes
                     app.users.updateHillfort(
                         hillfort, app.activeUser
                     )
                 } else {
-
                     app.users.createHillfort(hillfort, app.activeUser)
                 }
                 setResult(RESULT_OK)
@@ -136,30 +134,37 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
         addNoteButton.setOnClickListener {
 
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_note, null)
-            val builder = AlertDialog.Builder(this@HillfortActivity)
-            builder.setMessage("Enter note details: ")
-            builder.setView(mDialogView)
+            if (!edit) {
+                toast("Please create a hillfort before adding notes to it!")
+            } else {
 
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+                val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_note, null)
+                val builder = AlertDialog.Builder(this@HillfortActivity)
+                builder.setMessage("Enter note details: ")
+                builder.setView(mDialogView)
 
-            val addBtn = dialog.findViewById(R.id.dialogAddNote) as Button
-            val cancelBtn = dialog.findViewById(R.id.dialogCancelNote) as Button
-            val noteTitle = dialog.findViewById(R.id.dialogNoteTitle) as? EditText
-            val noteContent = dialog.findViewById(R.id.dialogNoteContent) as? EditText
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
 
-            addBtn.setOnClickListener {
-                if (listOf(noteTitle!!.text.toString(), noteContent!!.text.toString())
-                        .contains("")
-                ) {
-                    toast("No changes made!")
-                } else {
-                    val newNote = Note()
-                    newNote.title = noteTitle.text.toString()
-                    newNote.content = noteContent.text.toString()
-                    app.users.createNote(app.activeUser, hillfort, newNote)
+                val addBtn = dialog.findViewById(R.id.dialogAddNote) as Button
+                val cancelBtn = dialog.findViewById(R.id.dialogCancelNote) as Button
+                val noteTitle = dialog.findViewById(R.id.dialogNoteTitle) as? EditText
+                val noteContent = dialog.findViewById(R.id.dialogNoteContent) as? EditText
 
+                addBtn.setOnClickListener {
+
+                    if (listOf(noteTitle!!.text.toString(), noteContent!!.text.toString())
+                            .contains("")
+                    ) {
+                        toast("No changes made!")
+                    } else {
+                        val newNote = Note()
+                        newNote.title = noteTitle.text.toString()
+                        newNote.content = noteContent.text.toString()
+
+                        app.users.createNote(app.activeUser, hillfort, newNote)
+
+                    }
                     dialog.dismiss()
                     loadNotes()
                 }
@@ -169,6 +174,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 }
             }
         }
+
 
         chooseImage.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
