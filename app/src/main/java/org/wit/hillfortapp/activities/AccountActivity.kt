@@ -54,7 +54,7 @@ class AccountActivity : MainActivity(), AnkoLogger {
         }
 
         account_edit_account.setOnClickListener {
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.account_dialog, null)
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_account, null)
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Enter new account details: ")
             builder.setView(mDialogView)
