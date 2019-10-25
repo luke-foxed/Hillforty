@@ -10,6 +10,7 @@ import org.wit.hillfortapp.helpers.exists
 import org.wit.hillfortapp.helpers.read
 import org.wit.hillfortapp.helpers.write
 import java.util.*
+import kotlin.collections.ArrayList
 
 val JSON_FILE = "users.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
@@ -116,6 +117,15 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<Note>? {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         return foundHillfort?.notes
+    }
+
+    override fun findAllHillfortNotes(): ArrayList<Note> {
+        var totalNotes = ArrayList<Note>()
+        val totalHillforts = findAllHillforts()
+        for(hillfort in totalHillforts) {
+            totalNotes.addAll(hillfort.notes)
+        }
+        return totalNotes
     }
 
     override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {

@@ -16,7 +16,7 @@
         android:text="Global Statistics" />
 
     <TableLayout
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="80dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
@@ -40,12 +40,11 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/stats_users_number"
+                android:id="@+id/statsUsersNumber"
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:layout_marginStart="20dp"
                 android:gravity="center_vertical"
-                android:text="10"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -71,12 +70,11 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/stats_hillfort_number"
+                android:id="@+id/statsHillfortsNumber"
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:layout_marginStart="20dp"
                 android:gravity="center_vertical"
-                android:text="10"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -102,12 +100,11 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/stats_images_number"
+                android:id="@+id/statsImagesNumber"
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:layout_marginStart="20dp"
                 android:gravity="center_vertical"
-                android:text="10"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -132,12 +129,40 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/stats_visited_number"
+                android:id="@+id/statsVisitedNumber"
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:layout_marginStart="20dp"
                 android:gravity="center_vertical"
-                android:text="10"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_note">
+            </ImageView>
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:gravity="center_vertical"
+                android:text="Number of Notes: "
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/statsNotesNumber"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:layout_marginStart="20dp"
+                android:gravity="center_vertical"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
@@ -160,13 +185,12 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/stats_top_user"
+                android:id="@+id/statsTopUser"
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:layout_marginStart="20dp"
                 android:gravity="center_vertical"
-                android:text="10"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
         </TableRow>
