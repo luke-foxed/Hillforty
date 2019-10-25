@@ -124,6 +124,7 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         foundHillfort?.notes?.add(note)
+        serialize()
     }
 
     // write methods

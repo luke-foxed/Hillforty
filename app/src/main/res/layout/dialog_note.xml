@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/rounded_button"
-            android:text="Update Account"
+            android:text="Add Note"
             style="?android:attr/buttonBarStyle"
             android:textColor="@android:color/white"
             android:textSize="16sp" />

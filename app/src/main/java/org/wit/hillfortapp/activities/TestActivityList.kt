@@ -49,7 +49,7 @@ class TestActivityList : MainActivity(), HillfortListener, AnkoLogger {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_hillfort_list, menu)
+        menuInflater.inflate(R.menu.menu_blank, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

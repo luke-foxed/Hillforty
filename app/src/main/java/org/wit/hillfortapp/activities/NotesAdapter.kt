@@ -15,7 +15,7 @@ interface NoteListener {
     fun onNoteClick(note: Note)
 }
 
-class NotesAdapter constructor(private var notes: List<Note>,
+class NotesAdapter constructor(private var notes: ArrayList<Note>,
                                    private val listener: NoteListener) : RecyclerView.Adapter<NotesAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {

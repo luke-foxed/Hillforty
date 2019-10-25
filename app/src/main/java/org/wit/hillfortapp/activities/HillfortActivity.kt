@@ -37,6 +37,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     lateinit var app: MainApp
     private var hillfort = HillfortModel()
+    private var notes = ArrayList<Note>()
     private var edit = false
 
     private val IMAGE_REQUEST = 1
@@ -71,7 +72,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             description.setText(hillfort.description)
             visited.isChecked = hillfort.visited
             dateVisited.setText(hillfort.dateVisited)
-
             loadNotes()
 
             if (hillfort.images.size != 0) {
@@ -116,10 +116,12 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 hillfort.location = location
 
                 if (edit) {
+                    hillfort.notes.addAll(notes)
                     app.users.updateHillfort(
                         hillfort, app.activeUser
                     )
                 } else {
+                    hillfort.notes = notes
                     app.users.createHillfort(hillfort, app.activeUser)
                 }
                 setResult(RESULT_OK)
@@ -155,16 +157,17 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                         noteTitle.text.toString(),
                         noteContent.text.toString()
                     )
-                    app.users.createNote(app.activeUser, hillfort, newNote)
+
+                    // add to array which will later be assigned to hillfort notes
+                    notes.add(newNote)
                     dialog.dismiss()
+                    loadNotes()
                 }
 
                 cancelBtn.setOnClickListener {
                     dialog.dismiss()
                 }
             }
-
-            loadNotes()
         }
 
         chooseImage.setOnClickListener {
@@ -199,7 +202,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                         finish()
                     }
                     builder.setNegativeButton("No") { dialog, which ->
-                        // do nothing
+                        dialog.dismiss()
                     }
                     val dialog: AlertDialog = builder.create()
                     dialog.show()
@@ -211,6 +214,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        loadNotes()
         when (requestCode) {
             IMAGE_REQUEST -> {
                 val builder = AlertDialog.Builder(this@HillfortActivity)
@@ -246,7 +250,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 }
 
                 builder.setNegativeButton("No"){dialog,which ->
-                    // do nothing
+                    dialog.dismiss()
                 }
 
                 val dialog: AlertDialog = builder.create()
@@ -335,7 +339,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             newImageView.setPadding(15,0,15,0)
             newImageView.setImageBitmap(readImageFromPath(this, images[index]))
 
-            // listener to switch small imageview it menu_hillfort_list imageview
+            // listener to switch small imageview it main imageview
             newImageView.setOnClickListener {
                 val thisImageDrawable = newImageView.drawable
                 val mainImageDrawable = hillfortImage.drawable
@@ -347,17 +351,18 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     }
 
     private fun loadNotes() {
-        app.users.findOneUserHillfortNotes(app.activeUser, hillfort)?.let { showNotes(it) }
-        info("ACTIVE USER--> " + app.activeUser)
-        info(
-            "NOTES --> " + app.users.findOneUserHillfortNotes(
-                app.activeUser,
-                hillfort
-            )?.let { showNotes(it) }
-        )
+        val userNotes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)
+        // if there are existing notes, add them to the newly added notes
+        if (userNotes != null) {
+            showNotes((userNotes + notes) as ArrayList<Note>)
+        }
+        // else just show the newly added notes
+        else {
+            showNotes(notes)
+        }
     }
 
-    private fun showNotes(notes: List<Note>) {
+    private fun showNotes(notes: ArrayList<Note>) {
         recyclerNotes.adapter = NotesAdapter(notes, this)
         recyclerNotes.adapter?.notifyDataSetChanged()
     }
