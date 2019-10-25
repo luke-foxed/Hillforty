@@ -53,7 +53,6 @@ class NotesActivity : MainActivity(), AnkoLogger {
                 builder.setPositiveButton("Yes") { dialog, which ->
                     note.title = noteActivityTitle.text.toString()
                     note.content = noteActivityContent.text.toString()
-                    // app.users.updateNote(app.activeUser, currentHillfort, note)
                     val resultIntent = Intent()
                     resultIntent.putExtra("new_note", note)
                     setResult(Activity.RESULT_OK, resultIntent)

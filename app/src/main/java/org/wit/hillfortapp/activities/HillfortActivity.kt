@@ -267,14 +267,10 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                     }
                 }
             }
-
             NOTE_REQUEST -> {
                 if (data != null) {
                     note = data.extras?.getParcelable("new_note")!!
-
-                    // not working because the save method is overwriting the updated note
                     app.users.updateNote(app.activeUser, hillfort, note)
-                    finish()
                     loadNotes()
                 }
             }
@@ -282,13 +278,12 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     }
 
     override fun onNoteClick(note: Note) {
-        var intent = Intent(this, NotesActivity::class.java)
+        val intent = Intent(this, NotesActivity::class.java)
         intent.putExtra("note_edit", note)
 
         // pass current hillfort for update/delete functionality
         intent.putExtra("current_hillfort", hillfort)
         startActivityForResult(intent, NOTE_REQUEST)
-        loadNotes()
     }
 
     // mapView methods

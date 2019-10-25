@@ -128,13 +128,14 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
         val foundHillfortNotes = findOneUserHillfortNotes(activeUser, hillfort)
         val foundNote = foundHillfortNotes?.singleOrNull { matchingNote ->
+
             matchingNote.id == note.id}
 
+        val index = activeUser.hillforts[hillfort.id-1].notes.indexOf(foundNote)
         if (foundNote != null) {
-            val index = foundHillfortNotes.indexOf(foundNote)
-            activeUser.hillforts[hillfort.id - 1].notes[foundNote.id - 1] = note
-            info("SERIALIZING")
+            activeUser.hillforts[hillfort.id-1].notes[index] = note
             serialize()
+            info("SERIALIZING")
         }
     }
 
