@@ -75,7 +75,8 @@ class AccountActivity : MainActivity(), AnkoLogger {
                 val newUser = UserModel(
                     app.activeUser.id,
                     emailField?.text.toString(),
-                    passwordField?.text.toString()
+                    passwordField?.text.toString(),
+                    app.activeUser.hillforts
                 )
                 app.users.update(newUser)
                 setUserDetails()
