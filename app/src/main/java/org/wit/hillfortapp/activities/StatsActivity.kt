@@ -18,11 +18,12 @@ class StatsActivity : MainActivity(), AnkoLogger {
         app = application as MainApp
 
         // set stats
-        stats_users_number.text = getUsers().toString()
-        stats_hillfort_number.text = getHillforts().toString()
-        stats_images_number.text = getImages().toString()
-        stats_visited_number.text = getVisits().toString()
-        stats_top_user.text = getMostActiveUser()
+        statsUsersNumber.text = getUsers().toString()
+        statsHillfortsNumber.text = getHillforts().toString()
+        statsImagesNumber.text = getImages().toString()
+        statsVisitedNumber.text = getVisits().toString()
+        statsNotesNumber.text = getNotes().toString()
+        statsTopUser.text = getMostActiveUser()
     }
 
     private fun getUsers(): Int? {
@@ -55,6 +56,10 @@ class StatsActivity : MainActivity(), AnkoLogger {
             }
         }
         return totalVisits
+    }
+
+    private fun getNotes(): Int {
+        return app.users.findAllHillfortNotes().size
     }
 
     private fun getMostActiveUser(): String {

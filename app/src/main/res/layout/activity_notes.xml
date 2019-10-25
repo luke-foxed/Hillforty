@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:text="NOTE"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="50sp" />
+
+    <EditText
+        android:layout_height="80dp"
+        android:layout_marginTop="120dp"
+        android:id="@+id/noteActivityTitle"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:text="Note Title"
+        android:background="@android:color/transparent"
+        android:textSize="20sp"
+        android:inputType="text" />
+
+    <LinearLayout
+        android:layout_width="348dp"
+        android:layout_height="355dp"
+        android:background="@drawable/rounded_layout"
+        android:gravity="center"
+        android:backgroundTint="@color/colorPrimary"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/noteActivityContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:text="Note Content"
+            android:inputType="text">
+
+        </EditText>
+
+    </LinearLayout>
+
+</LinearLayout>

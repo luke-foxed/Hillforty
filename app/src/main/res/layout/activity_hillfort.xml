@@ -91,9 +91,30 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/recyclerNotes"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:scrollbars="vertical"
+                android:background="@drawable/map_border"
+                />
+
+            <Button
+                android:id="@+id/addNoteButton"
+                android:layout_marginBottom="20dp"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonBarStyle"
+                android:background="@drawable/rounded_button"
+                android:text="Add Note"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapView"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/map_border"

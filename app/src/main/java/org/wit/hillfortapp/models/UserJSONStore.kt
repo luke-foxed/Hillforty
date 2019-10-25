@@ -5,10 +5,12 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.wit.hillfortapp.helpers.exists
 import org.wit.hillfortapp.helpers.read
 import org.wit.hillfortapp.helpers.write
 import java.util.*
+import kotlin.collections.ArrayList
 
 val JSON_FILE = "users.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
@@ -79,8 +81,8 @@ class UserJSONStore : UserStore, AnkoLogger {
         return activeUser.hillforts
     }
 
-    override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel {
-        return activeUser.hillforts.single { hillfort ->
+    override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel? {
+        return activeUser.hillforts.singleOrNull { hillfort ->
             hillfort.id == hillfortID
         }
     }
@@ -93,7 +95,9 @@ class UserJSONStore : UserStore, AnkoLogger {
 
     override fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel) {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
-        activeUser.hillforts[foundHillfort.id - 1] = hillfort
+        if (foundHillfort != null) {
+            activeUser.hillforts[foundHillfort.id - 1] = hillfort
+        }
         serialize()
     }
 
@@ -106,6 +110,54 @@ class UserJSONStore : UserStore, AnkoLogger {
     override fun deleteAllHillforts(activeUser: UserModel) {
         activeUser.hillforts.clear()
         serialize()
+    }
+
+    // Note Functionality
+
+    override fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<Note>? {
+        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
+        return foundHillfort?.notes
+    }
+
+    override fun findAllHillfortNotes(): ArrayList<Note> {
+        var totalNotes = ArrayList<Note>()
+        val totalHillforts = findAllHillforts()
+        for(hillfort in totalHillforts) {
+            totalNotes.addAll(hillfort.notes)
+        }
+        return totalNotes
+    }
+
+    override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+        note.id = generateRandomId().toInt()
+        activeUser.hillforts[hillfort.id - 1].notes.add(note)
+        serialize()
+    }
+
+    override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+        val foundHillfortNotes = findOneUserHillfortNotes(activeUser, hillfort)
+        val foundNote = foundHillfortNotes?.singleOrNull { matchingNote ->
+            matchingNote.id == note.id}
+
+        val index = activeUser.hillforts[hillfort.id-1].notes.indexOf(foundNote)
+        if (foundNote != null) {
+            activeUser.hillforts[hillfort.id-1].notes[index] = note
+            serialize()
+        }
+    }
+
+    override fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+        val foundHillfortNotes = findOneUserHillfortNotes(activeUser, hillfort)
+        val foundNote = foundHillfortNotes?.singleOrNull { matchingNote ->
+            matchingNote.id == note.id
+        }
+
+        val index = activeUser.hillforts[hillfort.id - 1].notes.indexOf(foundNote)
+        if (foundNote != null) {
+            activeUser.hillforts[hillfort.id - 1].notes.removeAt(index)
+            serialize()
+            info("SERIALIZING")
+        }
     }
 
     // write methods

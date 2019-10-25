@@ -71,6 +71,9 @@
         <activity android:name=".activities.AccountActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
 
+        <activity android:name=".activities.NotesActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
 <!-- DELETE THIS -->
 
         <activity
@@ -80,6 +83,7 @@
         <activity
             android:name=".activities.TestActivityList"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+
 
     </application>
 
