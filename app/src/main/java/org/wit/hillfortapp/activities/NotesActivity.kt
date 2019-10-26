@@ -9,6 +9,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_notes.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
@@ -47,6 +48,13 @@ class NotesActivity : MainActivity(), AnkoLogger {
                 finish()
             }
             R.id.noteMenuEdit -> {
+                if (listOf(
+                        noteActivityTitle.text.toString(),
+                        noteActivityContent.text.toString()
+                    ).contains("")
+                ) {
+                    toast("Please fill out all fields")
+                }
                 val builder = AlertDialog.Builder(this@NotesActivity)
                 builder.setMessage("Save changes to note?")
                 builder.setPositiveButton("Yes") { dialog, _ ->
