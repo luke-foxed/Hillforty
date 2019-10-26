@@ -21,7 +21,7 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R

@@ -2,6 +2,7 @@
 
     <!--MAIN APP-->
     <string name="app_name">Hillforty</string>
+    <string name="mainAppWelcomeLabel">Welcome to Hillforty,</string>
 
     <!--ACCOUNT ACTIVITY-->
     <string name="accountHeader">My Account</string>

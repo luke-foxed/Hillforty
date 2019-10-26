@@ -1,7 +1,7 @@
 package org.wit.hillfortapp.activities
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.drawer_main.*
 import kotlinx.android.synthetic.main.activity_stats.*
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.MainApp

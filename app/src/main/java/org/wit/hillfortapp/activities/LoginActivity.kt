@@ -54,7 +54,6 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
         } else {
             try {
                 val user: UserModel = app.users.findOne(usernameText, passwordText)!!
-                toast("Welcome back, ${user.username}")
                 app.activeUser = user
                 username!!.text.clear()
                 password!!.text.clear()

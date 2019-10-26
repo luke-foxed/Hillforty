@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.intentFor
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
