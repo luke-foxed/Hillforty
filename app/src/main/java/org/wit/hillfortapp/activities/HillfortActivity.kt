@@ -116,7 +116,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 hillfort.location = location
 
                 if (edit) {
-                    hillfort.notes = app.activeUser.hillforts[hillfort.id - 1].notes
+                    hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
                     app.users.updateHillfort(
                         hillfort, app.activeUser
                     )
