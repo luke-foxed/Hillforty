@@ -66,7 +66,6 @@ class UserJSONStore(val context: Context) : UserStore, AnkoLogger {
             exists = true
         }
         return exists
-
     }
 
     override fun deleteUser(user: UserModel) {
