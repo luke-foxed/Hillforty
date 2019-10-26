@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.card_placement.view.*
+import kotlinx.android.synthetic.main.recycle_item_hillfort.view.*
 import kotlinx.android.synthetic.main.note_placement.view.*
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.helpers.readImageFromPath

@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.wit.hillfortapp">
 
-    <!--
-         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
-         Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality.
-    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -17,7 +13,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -27,13 +24,14 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="org.wit.placemark.activities.MapActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:name="org.wit.hillfortapp.activities.MapActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
             android:name=".activities.MainActivity"
@@ -43,10 +41,11 @@
 
         <activity
             android:name=".activities.HillfortActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activities.HillfortListActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.HillfortListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.SplashActivity"
@@ -59,31 +58,23 @@
 
         <activity
             android:name=".activities.LoginActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
             android:name=".activities.SignUpActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-
-        <activity android:name=".activities.StatsActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity android:name=".activities.AccountActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-        <activity android:name=".activities.NotesActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
-<!-- DELETE THIS -->
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".activities.TestActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:name=".activities.StatsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.TestActivityList"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:name=".activities.AccountActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activities.NotesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

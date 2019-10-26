@@ -17,7 +17,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/hillfortImage"
+                android:id="@+id/hillfortMainImage"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginTop="10dp"
@@ -26,13 +26,13 @@
                 app:srcCompat="@drawable/placeholder"/>
 
             <View
-                android:id="@+id/dividerTop"
+                android:id="@+id/hillfortImageDividerTop"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@drawable/divider" />
 
             <LinearLayout
-                android:id="@+id/moreImages"
+                android:id="@+id/hillfortMoreImagesView"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="horizontal"
@@ -41,18 +41,17 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/dividerBottom"
+                android:id="@+id/hillfortImageDividerBottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@drawable/divider" />
 
             <EditText
-                android:id="@+id/name"
+                android:id="@+id/hillfortName"
                 android:layout_width="200dp"
                 android:layout_height="45dp"
                 android:layout_margin="8dp"
-                android:autofillHints=""
-                android:hint="Name"
+                android:hint="@string/hillfortNameField"
                 android:inputType="text"
                 android:maxLength="25"
                 android:maxLines="1"
@@ -61,12 +60,11 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/description"
+                android:id="@+id/hillfortDescription"
                 android:layout_width="200dp"
                 android:layout_height="45dp"
                 android:layout_margin="8dp"
-                android:autofillHints=""
-                android:hint="Description"
+                android:hint="@string/hillfortDescriptionField"
                 android:inputType="textMultiLine"
                 android:padding="8dp"
                 android:textColor="@color/colorPrimaryDark"
@@ -74,19 +72,18 @@
 
             <CheckBox
                 android:layout_margin="8dp"
-                android:id="@+id/visited"
+                android:id="@+id/hillfortVisited"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:text="Visited" />
+                android:text="@string/hillfortVisitedCheckbox" />
 
             <EditText
-                android:id="@+id/dateVisited"
+                android:id="@+id/hillfortDateVisited"
                 android:inputType="date"
                 android:layout_width="200dp"
                 android:layout_height="45dp"
                 android:layout_margin="8dp"
-                android:autofillHints=""
-                android:hint="Date Visited"
+                android:hint="@string/hillfortDateVisitedField"
                 android:padding="8dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14sp" />
@@ -102,18 +99,18 @@
                 />
 
             <Button
-                android:id="@+id/addNoteButton"
+                android:id="@+id/hillfortAddNoteBtn"
                 android:layout_marginBottom="20dp"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 style="?android:attr/buttonBarStyle"
                 android:background="@drawable/rounded_button"
-                android:text="Add Note"
+                android:text="@string/hillfortAddNoteButton"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
             <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
+                android:id="@+id/hillfortMapView"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:adjustViewBounds="true"
@@ -128,30 +125,30 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/hillfortLocation"
+                    android:id="@+id/hillfortLocationBtn"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_button"
-                    android:text="Edit Location"
+                    android:text="@string/hillfortEditLocationButton"
                     style="?android:attr/buttonBarStyle"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/chooseImage"
+                    android:id="@+id/hillfortChooseImageBtn"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     style="?android:attr/buttonBarStyle"
                     android:background="@drawable/rounded_button"
-                    android:text="Edit Image"
+                    android:text="@string/hillfortEditImageButton"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnAdd"
+                android:id="@+id/hillfortAddBtn"
                 android:layout_width="74dp"
                 android:layout_height="69dp"
                 android:layout_margin="16dp"
@@ -159,7 +156,6 @@
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:stateListAnimator="@null"
-                android:text=""
                 android:backgroundTint="@color/colorPrimary"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />

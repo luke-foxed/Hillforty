@@ -62,10 +62,10 @@ class AccountActivity : MainActivity(), AnkoLogger {
             val dialog: AlertDialog = builder.create()
             dialog.show()
 
-            val updateBtn = dialog.findViewById(R.id.dialogUpdate) as Button
-            val cancelBtn = dialog.findViewById(R.id.dialogCancel) as Button
-            val emailField = dialog.findViewById(R.id.dialogEmail) as? EditText
-            val passwordField = dialog.findViewById(R.id.dialogPassword) as? EditText
+            val updateBtn = dialog.findViewById(R.id.accountDialogUpdate) as Button
+            val cancelBtn = dialog.findViewById(R.id.accountDialogCancel) as Button
+            val emailField = dialog.findViewById(R.id.accountDialogEmail) as? EditText
+            val passwordField = dialog.findViewById(R.id.accountDialogPassword) as? EditText
 
             updateBtn.setOnClickListener {
                 when {

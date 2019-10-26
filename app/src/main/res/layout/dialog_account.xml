@@ -7,15 +7,15 @@
     android:padding="10dp">
 
     <EditText
-        android:id="@+id/dialogEmail"
-        android:hint="New Email"
+        android:id="@+id/accountDialogEmail"
+        android:hint="@string/accountDialogEmailField"
         android:inputType="textEmailAddress"
         android:layout_width="250dp"
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/dialogPassword"
-        android:hint="New Password"
+        android:id="@+id/accountDialogPassword"
+        android:hint="@string/accountDialogPasswordField"
         android:inputType="textPassword"
         android:layout_width="250dp"
         android:layout_height="wrap_content" />
@@ -27,22 +27,22 @@
         android:layout_marginTop="20dp"
         android:gravity="center">
         <Button
-            android:id="@+id/dialogUpdate"
+            android:id="@+id/accountDialogUpdate"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/rounded_button"
-            android:text="Update Account"
+            android:text="@string/accountDialogUpdateButton"
             style="?android:attr/buttonBarStyle"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
         <Button
-            android:id="@+id/dialogCancel"
+            android:id="@+id/accountDialogCancel"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/rounded_button"
-            android:text="Cancel"
+            android:text="@string/accountDialogCancelButton"
             style="?android:attr/buttonBarStyle"
             android:textColor="@android:color/white"
             android:textSize="16sp" />

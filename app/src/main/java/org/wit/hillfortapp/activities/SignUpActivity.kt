@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_signup.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
@@ -26,11 +27,11 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
         app = application as MainApp
 
-        email = findViewById(R.id.emailInput)
-        password = findViewById(R.id.passwordInput)
-        password2 = findViewById(R.id.passwordInput2)
+        email = findViewById(R.id.signUpEmailInput)
+        password = findViewById(R.id.signUpPasswordInput)
+        password2 = findViewById(R.id.signUpPasswordInput2)
 
-        signupButton!!.setOnClickListener { signUp() }
+        signUpButton.setOnClickListener { signUp() }
     }
 
     private fun signUp() {
@@ -74,7 +75,6 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
                 hasErrors = true
             }
         }
-
         return hasErrors
     }
 

@@ -69,7 +69,6 @@ open class MainActivity : AppCompatActivity() {
                 mDrawerLayout.openDrawer(GravityCompat.START)
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }

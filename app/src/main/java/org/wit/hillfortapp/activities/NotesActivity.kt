@@ -19,7 +19,7 @@ class NotesActivity : MainActivity(), AnkoLogger {
 
     lateinit var app: MainApp
     var note = Note()
-    var currentHillfort = HillfortModel()
+    private var currentHillfort = HillfortModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -25,11 +25,11 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
 
         app = application as MainApp
 
-        email = findViewById(R.id.emailInput)
-        password = findViewById(R.id.passwordInput)
+        email = findViewById(R.id.loginEmailInput)
+        password = findViewById(R.id.loginPasswordInput)
 
-        val signupButton = findViewById<Button>(R.id.signupButton)
-        signupButton.setOnClickListener {
+        val signUpButton = findViewById<Button>(R.id.loginSignUpButton)
+        signUpButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }

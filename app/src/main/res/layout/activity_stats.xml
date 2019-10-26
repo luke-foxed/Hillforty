@@ -13,7 +13,7 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="50sp"
         android:fontFamily="sans-serif-thin"
-        android:text="Global Statistics" />
+        android:text="@string/statsHeader" />
 
     <TableLayout
         android:layout_marginBottom="80dp"
@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Users: "
+                android:text="@string/statsTotalUsersField"
                 android:textSize="18sp" />
 
             <TextView
@@ -66,7 +66,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Hillforts: "
+                android:text="@string/statsTotalHillfortsField"
                 android:textSize="18sp" />
 
             <TextView
@@ -96,7 +96,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Images: "
+                android:text="@string/statsTotalImagesField"
                 android:textSize="18sp" />
 
             <TextView
@@ -125,7 +125,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Visits: "
+                android:text="@string/statsTotalVisitsField"
                 android:textSize="18sp" />
 
             <TextView
@@ -154,7 +154,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Notes: "
+                android:text="@string/statsTotalNotesField"
                 android:textSize="18sp" />
 
             <TextView
@@ -181,7 +181,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Most Active User: "
+                android:text="@string/statsTopUserField"
                 android:textSize="18sp" />
 
             <TextView

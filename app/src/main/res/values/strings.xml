@@ -1,5 +1,8 @@
 <resources>
 
+    <!--MAIN APP-->
+    <string name="app_name">Hillforty</string>
+
     <!--ACCOUNT ACTIVITY-->
     <string name="accountHeader">My Account</string>
     <string name="accountEmailLabel">Email: </string>
@@ -8,8 +11,51 @@
     <string name="accountDeleteHillfortsButton">Delete Hillforts</string>
     <string name="accountEditButton">Edit Account</string>
 
+    <!--HILLFORT ACTIVITY-->
+    <string name="hillfortNameField">Name</string>
+    <string name="hillfortDescriptionField">Description</string>
+    <string name="hillfortVisitedCheckbox">Visited</string>
+    <string name="hillfortDateVisitedField">Date Visited</string>
+    <string name="hillfortEditLocationButton">Edit Location</string>
+    <string name="hillfortAddNoteButton">Add Note</string>
+    <string name="hillfortEditImageButton">Edit Images</string>
 
-    <string name="app_name">Hillfort App</string>
-    <string name="title_activity_maps">Map</string>
+    <!--LOGIN ACTIVITY-->
+    <string name="loginEmailField">Email…</string>
+    <string name="loginPasswordField">Password…</string>
+    <string name="loginDividerLabel">or…</string>
+    <string name="loginButton">LOG IN</string>
+    <string name="loginSignUpButton">SIGN UP</string>
+
+    <!--NOTE ACTIVITY-->
+    <string name="noteHeader">Note</string>
+
+    <!--SIGN UP ACTIVITY-->
+    <string name="signUpEmailField">Enter an Email…</string>
+    <string name="signUpPasswordField">Enter a Password…</string>
+    <string name="signUpPassword2Field">Re-enter Password…</string>
+    <string name="signUpButton">Sign Up</string>
+
+    <!--STATS ACTIVITY-->
+    <string name="statsHeader">Global Statistics</string>
+    <string name="statsTotalUsersField">Number Of Users: </string>
+    <string name="statsTotalHillfortsField">Number Of Hillforts: </string>
+    <string name="statsTotalImagesField">Number Of Images: </string>
+    <string name="statsTotalVisitsField">Number Of Visits: </string>
+    <string name="statsTotalNotesField">Number Of Notes: </string>
+    <string name="statsTopUserField">Most Active User: </string>
+
+    <!--ACCOUNT DIALOG-->
+    <string name="accountDialogEmailField">New Email…</string>
+    <string name="accountDialogPasswordField">New Password…</string>
+    <string name="accountDialogUpdateButton">Update</string>
+    <string name="accountDialogCancelButton">Cancel</string>
+
+    <!--NOTE DIALOG-->
+    <string name="noteDialogTitleField">Note Title</string>
+    <string name="noteDialogContentField">Note Content</string>
+    <string name="noteDialogAddButton">Add Note</string>
+    <string name="noteDialogCancelButton">Cancel</string>
+
 </resources>
 

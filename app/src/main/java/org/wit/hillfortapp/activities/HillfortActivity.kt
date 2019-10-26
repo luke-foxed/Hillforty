@@ -30,7 +30,6 @@ import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.Note
-import org.wit.placemark.activities.MapActivity
 
 
 class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
@@ -59,7 +58,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             )
         }
 
-        with(mapView) {
+        with(hillfortMapView) {
             onCreate(null)
             getMapAsync {
                 MapsInitializer.initialize(applicationContext)
@@ -69,29 +68,29 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         if (intent.hasExtra("hillfort_edit")) {
             edit = true
             hillfort = intent.extras?.getParcelable("hillfort_edit")!!
-            name.setText(hillfort.name)
-            description.setText(hillfort.description)
-            visited.isChecked = hillfort.visited
-            dateVisited.setText(hillfort.dateVisited)
+            hillfortName.setText(hillfort.name)
+            hillfortDescription.setText(hillfort.description)
+            hillfortVisited.isChecked = hillfort.visited
+            hillfortDateVisited.setText(hillfort.dateVisited)
             loadNotes()
 
             if (hillfort.images.size != 0) {
-                hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
+                hillfortMainImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
                 renderImages(hillfort.images)
             } else {
-                hillfortImage.setImageResource(R.drawable.placeholder)
+                hillfortMainImage.setImageResource(R.drawable.placeholder)
             }
 
             location = hillfort.location
             val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
-            mapView.getMapAsync {
+            hillfortMapView.getMapAsync {
                 setMapLocation(it, latLng)
             }
 
-            btnAdd.setBackgroundResource(R.drawable.ic_check_circle)
+            hillfortAddBtn.setBackgroundResource(R.drawable.ic_check_circle)
         }
 
-        dateVisited.setOnFocusChangeListener { _, hasFocus ->
+        hillfortDateVisited.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 try {
                     showDateDialog()
@@ -101,19 +100,19 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             }
         }
 
-        btnAdd.setOnClickListener {
+        hillfortAddBtn.setOnClickListener {
             if (listOf(
-                    name.text.toString(),
-                    description.text.toString(),
-                    dateVisited.text.toString()
+                    hillfortName.text.toString(),
+                    hillfortDescription.text.toString(),
+                    hillfortDateVisited.text.toString()
                 ).contains("")
             ) {
                 toast("Please fill out all fields")
             } else {
-                hillfort.name = name.text.toString()
-                hillfort.description = description.text.toString()
-                hillfort.visited = visited.isChecked
-                hillfort.dateVisited = dateVisited.text.toString()
+                hillfort.name = hillfortName.text.toString()
+                hillfort.description = hillfortDescription.text.toString()
+                hillfort.visited = hillfortVisited.isChecked
+                hillfort.dateVisited = hillfortDateVisited.text.toString()
                 hillfort.location = location
 
                 if (edit) {
@@ -132,7 +131,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             }
         }
 
-        addNoteButton.setOnClickListener {
+        hillfortAddNoteBtn.setOnClickListener {
 
             if (!edit) {
                 toast("Please create a hillfort before adding notes to it!")
@@ -146,10 +145,10 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 val dialog: AlertDialog = builder.create()
                 dialog.show()
 
-                val addBtn = dialog.findViewById(R.id.dialogAddNote) as Button
-                val cancelBtn = dialog.findViewById(R.id.dialogCancelNote) as Button
-                val noteTitle = dialog.findViewById(R.id.dialogNoteTitle) as? EditText
-                val noteContent = dialog.findViewById(R.id.dialogNoteContent) as? EditText
+                val addBtn = dialog.findViewById(R.id.noteDialogAddBtn) as Button
+                val cancelBtn = dialog.findViewById(R.id.noteDialogCancelBtn) as Button
+                val noteTitle = dialog.findViewById(R.id.noteDialogTitle) as? EditText
+                val noteContent = dialog.findViewById(R.id.noteDialogContent) as? EditText
 
                 addBtn.setOnClickListener {
 
@@ -176,11 +175,11 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
 
 
-        chooseImage.setOnClickListener {
+        hillfortChooseImageBtn.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
         }
 
-        hillfortLocation.setOnClickListener {
+        hillfortLocationBtn.setOnClickListener {
             startActivityForResult(
                 intentFor<MapActivity>().putExtra("location", location),
                 LOCATION_REQUEST
@@ -245,11 +244,11 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                             clipImages.add(data.data.toString())
                         }
                         // clear all images from view
-                        moreImages.removeAllViews()
+                        hillfortMoreImagesView.removeAllViews()
 
                         // add new image(s) into view
                         renderImages(clipImages)
-                        hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
+                        hillfortMainImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
 
                     }
                 }
@@ -265,7 +264,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 if (data != null) {
                     location = data.extras?.getParcelable("location")!!
                     val latLng = LatLng(location.lat, location.lng)
-                    mapView.getMapAsync {
+                    hillfortMapView.getMapAsync {
                         setMapLocation(it, latLng)
                     }
                 }
@@ -287,25 +286,25 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         startActivityForResult(intent, NOTE_REQUEST)
     }
 
-    // mapView methods
+    // hillfortMapView methods
     public override fun onResume() {
-        mapView.onResume()
+        hillfortMapView.onResume()
         super.onResume()
     }
 
     public override fun onPause() {
         super.onPause()
-        mapView.onPause()
+        hillfortMapView.onPause()
     }
 
     public override fun onDestroy() {
         super.onDestroy()
-        mapView.onDestroy()
+        hillfortMapView.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mapView.onLowMemory()
+        hillfortMapView.onLowMemory()
     }
 
     // helper methods
@@ -321,7 +320,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         val dpd = DatePickerDialog(
             this,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                dateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
+                hillfortDateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
             },
             year, month, day
         )
@@ -348,18 +347,18 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         // create new imageview for each image, ignore first image
         for ((index) in (images.withIndex().drop(1))) {
             val newImageView = ImageView(this)
-            moreImages.addView(newImageView)
+            hillfortMoreImagesView.addView(newImageView)
             newImageView.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
-            newImageView.layoutParams.width = (moreImages.width / images.size)
+            newImageView.layoutParams.width = (hillfortMoreImagesView.width / images.size)
             newImageView.setPadding(15,0,15,0)
             newImageView.setImageBitmap(readImageFromPath(this, images[index]))
 
             // listener to switch small imageview it main imageview
             newImageView.setOnClickListener {
                 val thisImageDrawable = newImageView.drawable
-                val mainImageDrawable = hillfortImage.drawable
+                val mainImageDrawable = hillfortMainImage.drawable
 
-                hillfortImage.setImageDrawable(thisImageDrawable)
+                hillfortMainImage.setImageDrawable(thisImageDrawable)
                 newImageView.setImageDrawable(mainImageDrawable)
             }
         }
