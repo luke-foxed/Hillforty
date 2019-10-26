@@ -10,6 +10,7 @@ import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
+import java.util.*
 
 class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
@@ -36,15 +37,15 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun signUp() {
-        val usernameText = username?.text.toString()
-        val emailText = email?.text.toString()
-        val password1Text = password?.text.toString()
-        val password2Text = password2?.text.toString()
+        val usernameText = username?.text.toString().trim()
+        val emailText = email?.text.toString().trim()
+        val password1Text = password?.text.toString().trim()
+        val password2Text = password2?.text.toString().trim()
 
         if (!validationCheck(usernameText, emailText, password1Text, password2Text)) {
-            user.username = usernameText.trim()
-                user.email = emailText.trim()
-                user.password = password1Text.trim()
+                user.username = usernameText
+                user.email = emailText
+                user.password = password1Text
                 app.users.create(user.copy())
                 toast("Account created!")
                 startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
@@ -69,8 +70,9 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
                 toast("Passwords do not match")
                 hasErrors = true
             }
-            app.users.findOne(usernameText, password1Text) != null -> {
-                toast("This account already exists")
+
+            app.users.findUsername(usernameText) -> {
+                toast("This username already exists")
                 hasErrors = true
             }
 

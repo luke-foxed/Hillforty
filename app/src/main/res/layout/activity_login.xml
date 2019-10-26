@@ -12,10 +12,11 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_marginBottom="50dp"
-        android:src="@drawable/splash_white" />
+        android:tint="@android:color/white"
+        android:src="@drawable/splash" />
 
     <EditText
-        android:id="@+id/loginEmailInput"
+        android:id="@+id/loginUsernameInput"
         android:layout_width="238dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/white"

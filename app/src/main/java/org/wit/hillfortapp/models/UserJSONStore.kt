@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.wit.hillfortapp.helpers.exists
 import org.wit.hillfortapp.helpers.read
 import org.wit.hillfortapp.helpers.write
@@ -53,8 +52,21 @@ class UserJSONStore(val context: Context) : UserStore, AnkoLogger {
 
     override fun findOne(username: String, password: String): UserModel? {
         return users.singleOrNull { user ->
-            user.username == username && user.password == password
+            user.username.trim().toLowerCase(Locale.ROOT) == username.trim().toLowerCase(Locale.ROOT)
+                    && user.password == password
         }
+    }
+
+    override fun findUsername(username: String): Boolean {
+        var exists = false
+        val foundUser = users.singleOrNull { user ->
+            user.username.trim().toLowerCase(Locale.ROOT) == username.trim().toLowerCase(Locale.ROOT)
+        }
+        if (foundUser != null) {
+            exists = true
+        }
+        return exists
+
     }
 
     override fun deleteUser(user: UserModel) {

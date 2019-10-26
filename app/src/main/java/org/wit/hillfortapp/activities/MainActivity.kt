@@ -8,15 +8,20 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.models.UserModel
 
 open class MainActivity : AppCompatActivity() {
 
     private lateinit var mDrawerLayout: DrawerLayout
+    private lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        app = application as MainApp
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -56,6 +61,11 @@ open class MainActivity : AppCompatActivity() {
 
                 R.id.nav_stats -> {
                     startActivity(Intent(this@MainActivity, StatsActivity::class.java))
+                }
+
+                R.id.nav_logout -> {
+                    app.activeUser = UserModel()
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 }
             }
 

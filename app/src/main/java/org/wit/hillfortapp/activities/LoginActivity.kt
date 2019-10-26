@@ -16,7 +16,7 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
 
     lateinit var app: MainApp
 
-    private var email: EditText? = null
+    private var username: EditText? = null
     private var password: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,13 +25,15 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
 
         app = application as MainApp
 
-        email = findViewById(R.id.loginEmailInput)
+        username = findViewById(R.id.loginUsernameInput)
         password = findViewById(R.id.loginPasswordInput)
 
         val signUpButton = findViewById<Button>(R.id.loginSignUpButton)
         signUpButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
+            username!!.text.clear()
+            password!!.text.clear()
         }
 
         val loginButton = findViewById<Button>(R.id.loginButton)
@@ -40,21 +42,23 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
 
     private fun login() {
 
-        val emailText = email!!.text.toString()
+        val usernameText = username!!.text.toString()
         val passwordText = password!!.text.toString()
 
         if (listOf(
-                emailText,
+                usernameText,
                 passwordText
             ).contains("")
         ) {
             toast("Please fill out all fields")
         } else {
             try {
-                 val user: UserModel = app.users.findOne(emailText, passwordText)!!
-                 toast("Welcome back, ${user.username}")
-                 app.activeUser = user
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                val user: UserModel = app.users.findOne(usernameText, passwordText)!!
+                toast("Welcome back, ${user.username}")
+                app.activeUser = user
+                username!!.text.clear()
+                password!!.text.clear()
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             } catch (e: Exception) {
                 info(e.message)
                 toast("No user found!")
