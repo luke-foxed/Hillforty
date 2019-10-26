@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.wit.hillfortapp.helpers.exists
 import org.wit.hillfortapp.helpers.read
 import org.wit.hillfortapp.helpers.write

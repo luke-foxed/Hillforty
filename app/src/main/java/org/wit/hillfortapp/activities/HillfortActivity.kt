@@ -25,6 +25,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.adapters.NoteListener
+import org.wit.hillfortapp.adapters.NotesAdapter
 import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
@@ -202,11 +204,12 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 if (edit) {
                     val builder = AlertDialog.Builder(this@HillfortActivity)
                     builder.setMessage("Are you sure you want to delete this Hillfort?")
-                    builder.setPositiveButton("Yes") { dialog, which ->
+                    builder.setPositiveButton("Yes") { dialog, _ ->
                         app.users.deleteHillfort(hillfort, app.activeUser)
+                        dialog.dismiss()
                         finish()
                     }
-                    builder.setNegativeButton("No") { dialog, which ->
+                    builder.setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()
                     }
                     val dialog: AlertDialog = builder.create()
@@ -224,7 +227,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             IMAGE_REQUEST -> {
                 val builder = AlertDialog.Builder(this@HillfortActivity)
                 builder.setMessage("This will reset the existing images, continue?")
-                builder.setPositiveButton("YES") { dialog, which ->
+                builder.setPositiveButton("YES") { dialog, _ ->
                     if (data != null) {
                         val clipImages = ArrayList<String>()
                         // if multiple images selected
@@ -243,17 +246,18 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                         } else {
                             clipImages.add(data.data.toString())
                         }
+                        dialog.dismiss()
+
                         // clear all images from view
                         hillfortMoreImagesView.removeAllViews()
 
                         // add new image(s) into view
                         renderImages(clipImages)
                         hillfortMainImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
-
                     }
                 }
 
-                builder.setNegativeButton("No") { dialog, which ->
+                builder.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }
 
@@ -344,7 +348,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         // reassign array to images from gallery
         hillfort.images = images
 
-        // create new imageview for each image, ignore first image
+        // create new image view for each image, ignore first image
         for ((index) in (images.withIndex().drop(1))) {
             val newImageView = ImageView(this)
             hillfortMoreImagesView.addView(newImageView)
@@ -353,7 +357,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             newImageView.setPadding(15,0,15,0)
             newImageView.setImageBitmap(readImageFromPath(this, images[index]))
 
-            // listener to switch small imageview it main imageview
+            // listener to switch small image view it main image view
             newImageView.setOnClickListener {
                 val thisImageDrawable = newImageView.drawable
                 val mainImageDrawable = hillfortMainImage.drawable

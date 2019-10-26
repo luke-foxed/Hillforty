@@ -9,7 +9,6 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_notes.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
@@ -18,7 +17,7 @@ import org.wit.hillfortapp.models.Note
 class NotesActivity : MainActivity(), AnkoLogger {
 
     lateinit var app: MainApp
-    var note = Note()
+    private var note = Note()
     private var currentHillfort = HillfortModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,17 +49,18 @@ class NotesActivity : MainActivity(), AnkoLogger {
             R.id.noteMenuEdit -> {
                 val builder = AlertDialog.Builder(this@NotesActivity)
                 builder.setMessage("Save changes to note?")
-                builder.setPositiveButton("Yes") { dialog, which ->
+                builder.setPositiveButton("Yes") { dialog, _ ->
                     note.title = noteActivityTitle.text.toString()
                     note.content = noteActivityContent.text.toString()
                     app.users.updateNote(app.activeUser, currentHillfort, note)
+                    dialog.dismiss()
 
                     val resultIntent = Intent()
                     setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }
 
-                builder.setNegativeButton("No") { dialog, which ->
+                builder.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }
 
@@ -71,12 +71,13 @@ class NotesActivity : MainActivity(), AnkoLogger {
             R.id.noteMenuDelete -> {
                 val builder = AlertDialog.Builder(this@NotesActivity)
                 builder.setMessage("Do you want to delete this note?")
-                builder.setPositiveButton("Yes") { dialog, which ->
+                builder.setPositiveButton("Yes") { dialog, _ ->
                     app.users.deleteNote(app.activeUser, currentHillfort, note)
+                    dialog.dismiss()
                     finish()
                 }
 
-                builder.setNegativeButton("No") { dialog, which ->
+                builder.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }
 

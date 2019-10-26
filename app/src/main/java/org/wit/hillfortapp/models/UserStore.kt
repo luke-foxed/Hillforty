@@ -1,6 +1,8 @@
 package org.wit.hillfortapp.models
 
 interface UserStore {
+
+    // User functionality
     fun findAll(): ArrayList<UserModel>
     fun findOne(email: String, password: String): UserModel?
     fun create(user: UserModel)

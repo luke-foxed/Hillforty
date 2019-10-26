@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.intentFor
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.adapters.HillfortAdapter
+import org.wit.hillfortapp.adapters.HillfortListener
 import org.wit.hillfortapp.models.HillfortModel
 
 class HillfortListActivity : MainActivity(), HillfortListener {
@@ -23,7 +25,8 @@ class HillfortListActivity : MainActivity(), HillfortListener {
         app = application as MainApp
         val layoutManager = LinearLayoutManager(this)
         hillfortRecyclerView.layoutManager = layoutManager
-        hillfortRecyclerView.adapter = HillfortAdapter(app.activeUser.hillforts, this)
+        hillfortRecyclerView.adapter =
+            HillfortAdapter(app.activeUser.hillforts, this)
         loadHillforts()
 
         hillfortListFloatingBtn.setOnClickListener {

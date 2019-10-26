@@ -29,11 +29,12 @@ class AccountActivity : MainActivity(), AnkoLogger {
 
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Are you sure you want to delete your account?")
-            builder.setPositiveButton("Yes") { dialog, which ->
+            builder.setPositiveButton("Yes") { dialog, _ ->
                 app.users.deleteUser(app.activeUser)
+                dialog.dismiss()
                 startActivity(Intent(this@AccountActivity, LoginActivity::class.java))
             }
-            builder.setNegativeButton("No") { dialog, which ->
+            builder.setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
             }
             val dialog: AlertDialog = builder.create()
@@ -43,10 +44,11 @@ class AccountActivity : MainActivity(), AnkoLogger {
         accountDeleteHillfortsBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Are you sure you want to delete all your hillforts?")
-            builder.setPositiveButton("Yes") { dialog, which ->
+            builder.setPositiveButton("Yes") { dialog, _ ->
                 app.users.deleteAllHillforts(app.activeUser)
+                dialog.dismiss()
             }
-            builder.setNegativeButton("No") { dialog, which ->
+            builder.setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
             }
             val dialog: AlertDialog = builder.create()

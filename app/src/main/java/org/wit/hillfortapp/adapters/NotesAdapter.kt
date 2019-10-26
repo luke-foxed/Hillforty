@@ -1,14 +1,11 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.recycle_item_hillfort.view.*
 import kotlinx.android.synthetic.main.note_placement.view.*
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.helpers.readImageFromPath
-import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Note
 
 interface NoteListener {
@@ -16,10 +13,17 @@ interface NoteListener {
 }
 
 class NotesAdapter constructor(private var notes: ArrayList<Note>,
-                                   private val listener: NoteListener) : RecyclerView.Adapter<NotesAdapter.MainHolder>() {
+                                   private val listener: NoteListener
+) : RecyclerView.Adapter<NotesAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        return MainHolder(LayoutInflater.from(parent?.context).inflate(R.layout.note_placement, parent, false))
+        return MainHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.note_placement,
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {

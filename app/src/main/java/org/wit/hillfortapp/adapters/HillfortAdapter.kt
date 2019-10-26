@@ -1,4 +1,4 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +14,17 @@ interface HillfortListener {
 }
 
 class HillfortAdapter constructor(private var hillforts: List<HillfortModel>,
-                                   private val listener: HillfortListener) : RecyclerView.Adapter<HillfortAdapter.MainHolder>() {
+                                   private val listener: HillfortListener
+) : RecyclerView.Adapter<HillfortAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        return MainHolder(LayoutInflater.from(parent?.context).inflate(R.layout.recycle_item_hillfort, parent, false))
+        return MainHolder(
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.recycle_item_hillfort,
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
