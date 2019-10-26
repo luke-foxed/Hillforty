@@ -67,6 +67,10 @@ open class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this@MainActivity, StatsActivity::class.java))
                 }
 
+                R.id.nav_about -> {
+                    startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+                }
+
                 R.id.nav_logout -> {
                     app.activeUser = UserModel()
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))

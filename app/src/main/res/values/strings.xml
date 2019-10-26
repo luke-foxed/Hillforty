@@ -61,5 +61,14 @@
     <string name="noteDialogAddButton">Add Note</string>
     <string name="noteDialogCancelButton">Cancel</string>
 
+    <!--ABOUT DIALOG-->
+    <string name="aboutHeader">About</string>
+    <string name="aboutInformation">"
+        Hillforty, created by Luke Fox.
+        \n\nThis app was made as part of my assignment for Mobile App Development 1.
+        \n\nThe repo for this project can be found here:"
+    </string>
+    <string name="aboutGitHubURL">https://github.com/Foxyf76/Hillfort-App/</string>
+
 </resources>
 

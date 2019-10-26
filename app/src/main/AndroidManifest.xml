@@ -76,6 +76,10 @@
             android:name=".activities.NotesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activities.AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

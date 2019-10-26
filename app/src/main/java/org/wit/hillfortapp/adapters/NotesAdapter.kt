@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.note_placement.view.*
+import kotlinx.android.synthetic.main.recycle_item_note.view.*
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.Note
 
@@ -19,7 +19,7 @@ class NotesAdapter constructor(private var notes: ArrayList<Note>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         return MainHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.note_placement,
+                R.layout.recycle_item_note,
                 parent,
                 false
             )
