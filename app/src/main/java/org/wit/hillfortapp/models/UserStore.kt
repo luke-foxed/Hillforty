@@ -4,7 +4,7 @@ interface UserStore {
 
     // User functionality
     fun findAll(): ArrayList<UserModel>
-    fun findOne(email: String, password: String): UserModel?
+    fun findOne(username: String, password: String): UserModel?
     fun create(user: UserModel)
     fun update(user: UserModel)
     fun deleteUser(user: UserModel)

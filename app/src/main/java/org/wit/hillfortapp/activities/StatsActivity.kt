@@ -70,7 +70,7 @@ class StatsActivity : MainActivity(), AnkoLogger {
         for (user in users) {
             if (user.hillforts.size > hillfortsCount) {
                 hillfortsCount = user.hillforts.size
-                topUser = user.email
+                topUser = user.username
             }
         }
         return topUser

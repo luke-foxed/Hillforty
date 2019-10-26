@@ -66,17 +66,19 @@ class AccountActivity : MainActivity(), AnkoLogger {
 
             val updateBtn = dialog.findViewById(R.id.accountDialogUpdate) as Button
             val cancelBtn = dialog.findViewById(R.id.accountDialogCancel) as Button
+            val usernameField = dialog.findViewById(R.id.accountDialogUsername) as? EditText
             val emailField = dialog.findViewById(R.id.accountDialogEmail) as? EditText
             val passwordField = dialog.findViewById(R.id.accountDialogPassword) as? EditText
 
             updateBtn.setOnClickListener {
                 when {
                     listOf(emailField?.text.toString(), passwordField?.text.toString())
-                        .contains("") -> toast("No changes made!")
+                        .contains("") -> toast("Please fill out all fields")
                     !isEmailValid(emailField?.text.toString()) -> toast("Please enter a valid email")
                     else -> {
                         val newUser = UserModel(
                             app.activeUser.id,
+                            usernameField?.text.toString(),
                             emailField?.text.toString(),
                             passwordField?.text.toString(),
                             app.activeUser.hillforts
@@ -94,6 +96,7 @@ class AccountActivity : MainActivity(), AnkoLogger {
     }
 
     private fun setUserDetails() {
+        accountUsername.text = app.activeUser.username
         accountEmail.text = app.activeUser.email
         accountPassword.text = app.activeUser.password
     }

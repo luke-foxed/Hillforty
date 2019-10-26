@@ -20,6 +20,8 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="40sp" />
 
+
+
     <LinearLayout
         android:layout_width="340dp"
         android:layout_height="140dp"
@@ -29,6 +31,29 @@
         android:backgroundTint="@color/colorPrimary"
         android:gravity="center"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
+                android:text="@string/accountUsernameLabel" />
+
+            <TextView
+                android:id="@+id/accountUsername"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAlignment="textEnd"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="200dp"

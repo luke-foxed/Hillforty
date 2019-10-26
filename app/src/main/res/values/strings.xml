@@ -5,6 +5,7 @@
 
     <!--ACCOUNT ACTIVITY-->
     <string name="accountHeader">My Account</string>
+    <string name="accountUsernameLabel">Username: </string>
     <string name="accountEmailLabel">Email: </string>
     <string name="accountPasswordLabel">Password: </string>
     <string name="accountDeleteButton">Delete Account</string>
@@ -21,7 +22,7 @@
     <string name="hillfortEditImageButton">Edit Images</string>
 
     <!--LOGIN ACTIVITY-->
-    <string name="loginEmailField">Email…</string>
+    <string name="loginUsernameField">Username…</string>
     <string name="loginPasswordField">Password…</string>
     <string name="loginDividerLabel">or…</string>
     <string name="loginButton">LOG IN</string>
@@ -31,6 +32,7 @@
     <string name="noteHeader">Note</string>
 
     <!--SIGN UP ACTIVITY-->
+    <string name="signUpUsernameField">Enter a Username…</string>
     <string name="signUpEmailField">Enter an Email…</string>
     <string name="signUpPasswordField">Enter a Password…</string>
     <string name="signUpPassword2Field">Re-enter Password…</string>
@@ -46,6 +48,7 @@
     <string name="statsTopUserField">Most Active User: </string>
 
     <!--ACCOUNT DIALOG-->
+    <string name="accountDialogUsernameField">New Username…</string>
     <string name="accountDialogEmailField">New Email…</string>
     <string name="accountDialogPasswordField">New Password…</string>
     <string name="accountDialogUpdateButton">Update</string>

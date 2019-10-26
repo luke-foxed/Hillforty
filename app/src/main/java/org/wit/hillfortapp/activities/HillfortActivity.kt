@@ -111,10 +111,10 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             ) {
                 toast("Please fill out all fields")
             } else {
-                hillfort.name = hillfortName.text.toString()
-                hillfort.description = hillfortDescription.text.toString()
+                hillfort.name = hillfortName.text.toString().trim()
+                hillfort.description = hillfortDescription.text.toString().trim()
                 hillfort.visited = hillfortVisited.isChecked
-                hillfort.dateVisited = hillfortDateVisited.text.toString()
+                hillfort.dateVisited = hillfortDateVisited.text.toString().trim()
                 hillfort.location = location
 
                 if (edit) {

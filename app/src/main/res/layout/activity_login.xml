@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@android:color/white"
         android:ems="10"
-        android:hint="@string/loginEmailField"
+        android:hint="@string/loginUsernameField"
         android:inputType="textEmailAddress"
         android:textColor="@android:color/white"
         android:textColorHint="@color/fontHint" />

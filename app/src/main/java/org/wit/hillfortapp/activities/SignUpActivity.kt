@@ -16,6 +16,7 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
     private var user = UserModel()
     lateinit var app: MainApp
 
+    private var username: EditText? = null
     private var email: EditText? = null
     private var password: EditText? = null
     private var password2: EditText? = null
@@ -26,6 +27,7 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
 
         app = application as MainApp
 
+        username = findViewById(R.id.signUpUsernameInput)
         email = findViewById(R.id.signUpEmailInput)
         password = findViewById(R.id.signUpPasswordInput)
         password2 = findViewById(R.id.signUpPasswordInput2)
@@ -34,13 +36,15 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun signUp() {
+        val usernameText = username?.text.toString()
         val emailText = email?.text.toString()
         val password1Text = password?.text.toString()
         val password2Text = password2?.text.toString()
 
-        if (!validationCheck(emailText, password1Text, password2Text)) {
-                user.email = emailText
-                user.password = password1Text
+        if (!validationCheck(usernameText, emailText, password1Text, password2Text)) {
+            user.username = usernameText.trim()
+                user.email = emailText.trim()
+                user.password = password1Text.trim()
                 app.users.create(user.copy())
                 toast("Account created!")
                 startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
@@ -48,6 +52,7 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
     }
 
     private fun validationCheck(
+        usernameText: String,
         emailText: String,
         password1Text: String,
         password2Text: String
@@ -56,16 +61,16 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
         var hasErrors = false
 
         when {
-            app.users.findOne(emailText, password1Text) != null -> {
-                toast("This account already exists")
-                hasErrors = true
-            }
-            listOf(emailText, password1Text, password2Text).contains("") -> {
+            listOf(emailText, password1Text, password2Text, usernameText).contains("") -> {
                 toast("Please fill out all fields")
                 hasErrors = true
             }
             password1Text != password2Text -> {
                 toast("Passwords do not match")
+                hasErrors = true
+            }
+            app.users.findOne(usernameText, password1Text) != null -> {
+                toast("This account already exists")
                 hasErrors = true
             }
 

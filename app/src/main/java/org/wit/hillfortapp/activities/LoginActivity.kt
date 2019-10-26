@@ -52,7 +52,7 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
         } else {
             try {
                  val user: UserModel = app.users.findOne(emailText, passwordText)!!
-                 toast("Welcome back, ${user.email}")
+                 toast("Welcome back, ${user.username}")
                  app.activeUser = user
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             } catch (e: Exception) {
