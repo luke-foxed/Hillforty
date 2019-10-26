@@ -48,6 +48,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
 
         app = application as MainApp

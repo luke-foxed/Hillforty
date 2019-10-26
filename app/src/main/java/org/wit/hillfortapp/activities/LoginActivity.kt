@@ -55,9 +55,9 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
             try {
                 val user: UserModel = app.users.findOne(usernameText, passwordText)!!
                 app.activeUser = user
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 username!!.text.clear()
                 password!!.text.clear()
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             } catch (e: Exception) {
                 info(e.message)
                 toast("No user found!")

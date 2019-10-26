@@ -23,6 +23,7 @@ class NotesActivity : MainActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_notes, content_frame)
         app = application as MainApp
 

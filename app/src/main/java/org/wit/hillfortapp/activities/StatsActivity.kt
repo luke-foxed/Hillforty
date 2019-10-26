@@ -14,6 +14,7 @@ class StatsActivity : MainActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_stats, content_frame)
         app = application as MainApp
 

@@ -20,6 +20,7 @@ class HillfortListActivity : MainActivity(), HillfortListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort_list, content_frame)
 
         app = application as MainApp

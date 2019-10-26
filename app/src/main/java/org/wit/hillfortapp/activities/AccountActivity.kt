@@ -20,6 +20,7 @@ class AccountActivity : MainActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_account, content_frame)
         app = application as MainApp
 
