@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:backgroundTint="@color/colorAccent"
         android:clickable="true"
         android:focusable="true"
         app:borderWidth="0dp"

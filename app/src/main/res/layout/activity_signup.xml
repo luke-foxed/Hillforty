@@ -21,8 +21,7 @@
         android:layout_height="355dp"
         android:background="@drawable/rounded_layout"
         android:gravity="center"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/signUpUsernameInput"

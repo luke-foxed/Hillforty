@@ -15,6 +15,9 @@
 
     <!--HILLFORT ACTIVITY-->
     <string name="hillfortNameField">Name</string>
+    <string name="hillfortNotesHeader">Notes</string>
+    <string name="hillfortKeyInfoHeader">Key Info</string>
+    <string name="hillfortLocationHeader">Location</string>
     <string name="hillfortDescriptionField">Description</string>
     <string name="hillfortVisitedCheckbox">Visited</string>
     <string name="hillfortDateVisitedField">Date Visited</string>

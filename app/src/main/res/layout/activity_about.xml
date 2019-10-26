@@ -39,6 +39,6 @@
         android:text="@string/aboutGitHubURL"
         android:textColor="@color/colorPrimary"
         android:autoLink="web"
-        android:textSize="20sp" />
+        android:textSize="22sp" />
 
 </LinearLayout>
