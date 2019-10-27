@@ -18,9 +18,12 @@
     <string name="hillfortNotesHeader">Notes</string>
     <string name="hillfortKeyInfoHeader">Key Info</string>
     <string name="hillfortLocationHeader">Location</string>
-    <string name="hillfortDescriptionField">Description</string>
-    <string name="hillfortVisitedCheckbox">Visited</string>
-    <string name="hillfortDateVisitedField">Date Visited</string>
+    <string name="hillfortDescriptionLabel">Description: </string>
+    <string name="hillfortVisitedLabel">Visited: </string>
+    <string name="hillfortDateVisitedLabel">Date Visited: </string>
+    <string name="hillfortDescriptionField">Enter Description…</string>
+    <string name="hillfortVisitedCheckbox">Is Visited</string>
+    <string name="hillfortDateVisitedField">Enter Date Visited…</string>
     <string name="hillfortEditLocationButton">Edit Location</string>
     <string name="hillfortAddNoteButton">Add Note</string>
     <string name="hillfortEditImageButton">Edit Images</string>

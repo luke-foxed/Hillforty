@@ -12,8 +12,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -39,6 +39,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     lateinit var app: MainApp
     private var hillfort = HillfortModel()
     private var edit = false
+    private var moreImageView: LinearLayout? = null
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
@@ -47,9 +48,12 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     private var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
+
+        moreImageView = findViewById(R.id.hillfortMoreImagesView)
 
         app = application as MainApp
 
@@ -75,10 +79,14 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             hillfortDescription.setText(hillfort.description)
             hillfortVisited.isChecked = hillfort.visited
             hillfortDateVisited.setText(hillfort.dateVisited)
+
+            hillfortMoreImagesView.removeAllViews()
+
             loadNotes()
 
             if (hillfort.images.size != 0) {
                 hillfortMainImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
+                info("HILLFORT IMAGES --> " + hillfort.images)
                 renderImages(hillfort.images)
             } else {
                 hillfortMainImage.setImageResource(R.drawable.placeholder)
@@ -177,7 +185,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             }
         }
 
-
         hillfortChooseImageBtn.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
         }
@@ -246,6 +253,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                             }
                         } else {
                             clipImages.add(data.data.toString())
+
                         }
                         dialog.dismiss()
 
@@ -254,6 +262,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
                         // add new image(s) into view
                         renderImages(clipImages)
+                        info("CLIP IMAGES --> " + clipImages)
                         hillfortMainImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
                     }
                 }
@@ -346,17 +355,21 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     }
 
     private fun renderImages(images: ArrayList<String>) {
+
         // reassign array to images from gallery
         hillfort.images = images
 
         // create new image view for each image, ignore first image
         for ((index) in (images.withIndex().drop(1))) {
             val newImageView = ImageView(this)
-            hillfortMoreImagesView.addView(newImageView)
-            newImageView.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
-            newImageView.layoutParams.width = (hillfortMoreImagesView.width / images.size)
+
+            moreImageView?.addView(newImageView)
             newImageView.setPadding(15,0,15,0)
             newImageView.setImageBitmap(readImageFromPath(this, images[index]))
+            newImageView.layoutParams.height = 300
+            newImageView.layoutParams.width = 300
+            newImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            newImageView.cropToPadding = true
 
             // listener to switch small image view it main image view
             newImageView.setOnClickListener {
@@ -374,15 +387,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         if (userNotes != null) {
             showNotes(userNotes)
         }
-
-//        // if there are existing notes, add them to the newly added notes
-//        if (userNotes != null) {
-//            showNotes((userNotes + notes) as ArrayList<Note>)
-//        }
-//        // else just show the newly added notes
-//        else {
-//            showNotes(notes)
-//        }
     }
 
     private fun showNotes(notes: ArrayList<Note>) {

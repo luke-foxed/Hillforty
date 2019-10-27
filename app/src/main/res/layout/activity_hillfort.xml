@@ -52,6 +52,7 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_gravity="center">
+
             </LinearLayout>
 
 
@@ -84,6 +85,8 @@
                 android:textSize="30sp" />
 
 
+            <!--            -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -93,42 +96,124 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/hillfortDescription"
-                    android:layout_width="300dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="8dp"
-                    android:maxLength="50"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/hillfortDescriptionField"
-                    android:inputType="textMultiLine"
-                    android:textColorHint="@android:color/white"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
 
-                <CheckBox
-                    android:id="@+id/hillfortVisited"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:textSize="20sp"
-                    android:buttonTint="@android:color/white"
-                    android:backgroundTint="@android:color/white"
-                    android:text="@string/hillfortVisitedCheckbox"
-                    android:textColor="@android:color/white" />
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
-                <EditText
-                    android:id="@+id/hillfortDateVisited"
-                    android:layout_width="300dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="8dp"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/hillfortDateVisitedField"
-                    android:inputType="date"
-                    android:textColorHint="@android:color/white"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp" />
+                <TableRow
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginEnd="10dp"
+                        android:tint="@android:color/white"
+                        android:src="@drawable/ic_note">
+                    </ImageView>
+
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_column="2"
+                        android:gravity="center_vertical"
+                        android:textColor="@android:color/white"
+                        android:text="@string/hillfortDescriptionLabel"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/hillfortDescription"
+                        android:layout_width="300dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_height="match_parent"
+                        android:maxLength="40"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/hillfortDescriptionField"
+                        android:inputType="textMultiLine"
+                        android:textColorHint="@android:color/white"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+
+                </TableRow>
+
+
+                <TableRow
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="100dp"
+                        android:tint="@android:color/white"
+                        android:src="@drawable/ic_visited">
+                    </ImageView>
+
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_column="2"
+                        android:gravity="center_vertical"
+                        android:text="@string/hillfortVisitedLabel"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
+                    <CheckBox
+                        android:id="@+id/hillfortVisited"
+                        android:layout_width="300dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@android:color/white"
+                        android:buttonTint="@android:color/white"
+                        android:text="@string/hillfortVisitedCheckbox"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:tint="@android:color/white"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/ic_calendar">
+
+                    </ImageView>
+
+                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_column="2"
+                        android:gravity="center_vertical"
+                        android:text="@string/hillfortDateVisitedLabel"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/hillfortDateVisited"
+                        android:layout_width="300dp"
+                        android:layout_marginStart="40dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/hillfortDateVisitedField"
+                        android:inputType="date"
+                        android:textColorHint="@android:color/white"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+
+                </TableRow>
+                </TableLayout>
+
+
             </LinearLayout>
+
+<!--            -->
 
             <TextView
                 android:layout_height="60dp"
