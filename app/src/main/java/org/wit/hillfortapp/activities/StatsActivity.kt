@@ -24,7 +24,7 @@ class StatsActivity : MainActivity(), AnkoLogger {
         statsImagesNumber.text = getImages().toString()
         statsVisitedNumber.text = getVisits().toString()
         statsNotesNumber.text = getNotes().toString()
-        statsTopUser.text = getMostActiveUser()
+        statsTopUser.text = getMostActiveUser().toUpperCase()
     }
 
     private fun getUsers(): Int? {

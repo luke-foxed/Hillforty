@@ -102,13 +102,11 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             hillfortAddBtn.setBackgroundResource(R.drawable.ic_check_circle)
         }
 
-        hillfortDateVisited.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                try {
-                    showDateDialog()
-                } catch (e: Exception) {
-                    warn(e.message)
-                }
+        hillfortDateVisited.setOnClickListener {
+            try {
+                showDateDialog()
+            } catch (e: Exception) {
+                warn(e.message)
             }
         }
 

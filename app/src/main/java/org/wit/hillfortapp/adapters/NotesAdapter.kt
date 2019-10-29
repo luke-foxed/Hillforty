@@ -37,9 +37,14 @@ class NotesAdapter constructor(private var notes: ArrayList<Note>,
 
         fun bind(note: Note, listener: NoteListener) {
 
-            itemView.noteTitle.text = note.title
-            itemView.noteContent.text = note.content
+            if (note.content.length > 30) {
+                // only show part of string to prevent recycleview from resizing
+                itemView.noteContent.text = note.content.substring(0, 30) + "..."
+            } else {
+                itemView.noteContent.text = note.content
+            }
 
+            itemView.noteTitle.text = note.title
             itemView.setOnClickListener { listener.onNoteClick(note) }
         }
     }
