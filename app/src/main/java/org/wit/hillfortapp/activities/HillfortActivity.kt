@@ -22,7 +22,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.drawer_main.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.warn
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.adapters.NoteListener
@@ -201,11 +204,11 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.item_cancel -> {
+            R.id.popupCancel -> {
                 finish()
             }
 
-            R.id.item_delete -> {
+            R.id.popupDelete -> {
                 if (edit) {
                     val builder = AlertDialog.Builder(this@HillfortActivity)
                     builder.setMessage("Are you sure you want to delete this Hillfort?")
@@ -219,6 +222,34 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                     }
                     val dialog: AlertDialog = builder.create()
                     dialog.show()
+                }
+            }
+
+            R.id.popupNext -> {
+                val index = app.activeUser.hillforts.indexOf(hillfort)
+                try {
+                    startActivityForResult(
+                        intentFor<HillfortActivity>().putExtra(
+                            "hillfort_edit",
+                            app.activeUser.hillforts[index + 1]
+                        ), 0
+                    )
+                } catch (e: IndexOutOfBoundsException) {
+                    toast("Next Hillfort is Empty!")
+                }
+            }
+
+            R.id.popupPrevious -> {
+                val index = app.activeUser.hillforts.indexOf(hillfort)
+                try {
+                    startActivityForResult(
+                        intentFor<HillfortActivity>().putExtra(
+                            "hillfort_edit",
+                            app.activeUser.hillforts[index - 1]
+                        ), 0
+                    )
+                } catch (e: IndexOutOfBoundsException) {
+                    toast("Previous Hillfort is Empty!")
                 }
             }
         }

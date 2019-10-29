@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <item
-        android:id="@+id/item_cancel"
-        android:title="Cancel"
-        android:icon="@drawable/ic_back"
-        app:showAsAction="always"/>
+    <group android:id="@+id/popupMenu">
+        <item
+            android:id="@+id/popupCancel"
+            android:title="Cancel" />
 
-    <item
-        android:id="@+id/item_delete"
-        android:title="Delete"
-        android:icon="@drawable/ic_delete"
-        app:showAsAction="always"/>
+        <item
+            android:id="@+id/popupDelete"
+            android:title="Delete" />
+
+        <item
+            android:id="@+id/popupNext"
+            android:title="Next" />
+
+        <item
+            android:id="@+id/popupPrevious"
+            android:title="Previous" />
+    </group>
 </menu>
