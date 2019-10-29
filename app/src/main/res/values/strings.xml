@@ -19,7 +19,6 @@
     <string name="hillfortKeyInfoHeader">Key Info</string>
     <string name="hillfortLocationHeader">Location</string>
     <string name="hillfortDescriptionLabel">Description: </string>
-    <string name="hillfortVisitedLabel">Visited: </string>
     <string name="hillfortDateVisitedLabel">Date Visited: </string>
     <string name="hillfortDescriptionField">Enter Description…</string>
     <string name="hillfortVisitedCheckbox">Is Visited</string>

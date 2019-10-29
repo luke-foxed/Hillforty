@@ -110,7 +110,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginVertical="10dp"
                     android:fontFamily="sans-serif-thin"
-                    android:text="Description: "
+                    android:text="@string/hillfortDescriptionLabel"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 
@@ -147,7 +147,7 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginVertical="10dp"
                     android:fontFamily="sans-serif-thin"
-                    android:text="Date Visited: "
+                    android:text="@string/hillfortDateVisitedLabel"
                     android:textColor="@android:color/white"
                     android:textSize="20sp" />
 
@@ -165,7 +165,7 @@
 
                     <EditText
                         android:id="@+id/hillfortDateVisited"
-                        android:layout_width="100dp"
+                        android:layout_width="140dp"
                         android:layout_height="match_parent"
                         android:layout_gravity="start"
                         android:layout_marginHorizontal="20dp"

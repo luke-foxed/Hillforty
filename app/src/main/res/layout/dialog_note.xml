@@ -11,6 +11,7 @@
         android:hint="@string/noteDialogTitleField"
         android:inputType="textEmailAddress"
         android:layout_width="250dp"
+        android:maxLength="30"
         android:layout_height="wrap_content" />
 
     <EditText
@@ -24,7 +25,7 @@
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical"
         android:lines="6"
-        android:maxLength="140"
+        android:maxLength="180"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:scrollHorizontally="false" />
 

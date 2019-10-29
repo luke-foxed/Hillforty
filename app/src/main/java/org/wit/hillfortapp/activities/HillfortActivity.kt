@@ -165,17 +165,16 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                     if (listOf(noteTitle!!.text.toString(), noteContent!!.text.toString())
                             .contains("")
                     ) {
-                        toast("No changes made!")
+                        toast("Please fill out all fields!")
                     } else {
                         val newNote = Note()
                         newNote.title = noteTitle.text.toString()
                         newNote.content = noteContent.text.toString()
 
                         app.users.createNote(app.activeUser, hillfort, newNote)
-
+                        dialog.dismiss()
+                        loadNotes()
                     }
-                    dialog.dismiss()
-                    loadNotes()
                 }
 
                 cancelBtn.setOnClickListener {
