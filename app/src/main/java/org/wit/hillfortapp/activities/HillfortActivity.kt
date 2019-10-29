@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -55,8 +56,8 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         super.onCreate(savedInstanceState)
         content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
-
         moreImageView = findViewById(R.id.hillfortMoreImagesView)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         app = application as MainApp
 
@@ -206,6 +207,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         when (item.itemId) {
             R.id.popupCancel -> {
                 finish()
+                startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
             }
 
             R.id.popupDelete -> {
@@ -216,6 +218,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                         app.users.deleteHillfort(hillfort, app.activeUser)
                         dialog.dismiss()
                         finish()
+                        startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
                     }
                     builder.setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()
