@@ -80,14 +80,11 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             hillfortVisited.isChecked = hillfort.visited
             hillfortDateVisited.setText(hillfort.dateVisited)
 
-            hillfortMoreImagesView.removeAllViews()
-
             loadNotes()
 
             if (hillfort.images.size != 0) {
-                hillfortMainImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
-                info("HILLFORT IMAGES --> " + hillfort.images)
                 renderImages(hillfort.images)
+                hillfortMainImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
             } else {
                 hillfortMainImage.setImageResource(R.drawable.placeholder)
             }
@@ -246,7 +243,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                                 val mClipData = data.clipData
                                 var counter = 0
                                 while (counter < mClipData!!.itemCount) {
-                                    info("URI--> " + mClipData.getItemAt(counter).uri)
                                     clipImages.add(mClipData.getItemAt(counter).uri.toString())
                                     counter++
                                 }
@@ -262,7 +258,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
                         // add new image(s) into view
                         renderImages(clipImages)
-                        info("CLIP IMAGES --> " + clipImages)
                         hillfortMainImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
                     }
                 }
