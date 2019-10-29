@@ -10,7 +10,6 @@ import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
-import java.util.*
 
 class SignUpActivity : AppCompatActivity(), AnkoLogger {
 

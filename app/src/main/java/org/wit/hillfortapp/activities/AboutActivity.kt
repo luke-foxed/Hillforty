@@ -3,7 +3,6 @@ package org.wit.hillfortapp.activities
 import android.os.Bundle
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
-import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 
 class AboutActivity : MainActivity(), AnkoLogger {

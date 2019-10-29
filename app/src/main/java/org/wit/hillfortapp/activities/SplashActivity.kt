@@ -8,6 +8,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import org.wit.hillfortapp.R
 
+
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +23,7 @@ class SplashActivity : AppCompatActivity() {
         // 4second splash time
         Handler().postDelayed({
             startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
         }, 4000)
     }

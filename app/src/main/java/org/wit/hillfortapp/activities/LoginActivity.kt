@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
@@ -59,7 +58,6 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
                 username!!.text.clear()
                 password!!.text.clear()
             } catch (e: Exception) {
-                info(e.message)
                 toast("No user found!")
             }
         }
