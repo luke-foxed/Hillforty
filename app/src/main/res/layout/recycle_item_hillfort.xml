@@ -12,34 +12,34 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/imageIcon"
+            android:id="@+id/hillfortRecycleItemImageIcon"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp"/>
+            android:layout_marginEnd="16dp"/>
 
         <TextView
-            android:id="@+id/hillfortCardName"
+            android:id="@+id/hillfortRecycleItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/imageIcon"
+            android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon"
             android:textSize="30sp"/>
 
         <TextView
-            android:id="@+id/hillfortCardLocation"
+            android:id="@+id/hillfortRecycleItemLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hillfortCardName"
-            android:layout_toRightOf="@+id/imageIcon"/>
+            android:layout_below="@id/hillfortRecycleItemName"
+            android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon"/>
 
         <TextView
-            android:id="@+id/hillfortCardVisited"
+            android:id="@+id/hillfortRecycleItemVisited"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hillfortCardLocation"
-            android:layout_toRightOf="@+id/imageIcon"/>
+            android:layout_below="@id/hillfortRecycleItemLocation"
+            android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

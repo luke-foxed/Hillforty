@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
@@ -20,40 +20,43 @@ class AccountActivity : MainActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_account, content_frame)
         app = application as MainApp
 
         setUserDetails()
 
-        acccount_delete.setOnClickListener {
+        accountDeleteBtn.setOnClickListener {
 
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Are you sure you want to delete your account?")
-            builder.setPositiveButton("Yes") { dialog, which ->
+            builder.setPositiveButton("Yes") { dialog, _ ->
                 app.users.deleteUser(app.activeUser)
+                dialog.dismiss()
                 startActivity(Intent(this@AccountActivity, LoginActivity::class.java))
             }
-            builder.setNegativeButton("No") { dialog, which ->
-                // do nothing
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
             }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
 
-        account_delete_hillforts.setOnClickListener {
+        accountDeleteHillfortsBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Are you sure you want to delete all your hillforts?")
-            builder.setPositiveButton("Yes") { dialog, which ->
+            builder.setPositiveButton("Yes") { dialog, _ ->
                 app.users.deleteAllHillforts(app.activeUser)
+                dialog.dismiss()
             }
-            builder.setNegativeButton("No") { dialog, which ->
-                // do nothing
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
             }
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
 
-        account_edit_account.setOnClickListener {
+        accountEditBtn.setOnClickListener {
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_account, null)
             val builder = AlertDialog.Builder(this@AccountActivity)
             builder.setMessage("Enter new account details: ")
@@ -62,19 +65,21 @@ class AccountActivity : MainActivity(), AnkoLogger {
             val dialog: AlertDialog = builder.create()
             dialog.show()
 
-            val updateBtn = dialog.findViewById(R.id.dialogUpdate) as Button
-            val cancelBtn = dialog.findViewById(R.id.dialogCancel) as Button
-            val emailField = dialog.findViewById(R.id.dialogEmail) as? EditText
-            val passwordField = dialog.findViewById(R.id.dialogPassword) as? EditText
+            val updateBtn = dialog.findViewById(R.id.accountDialogUpdate) as Button
+            val cancelBtn = dialog.findViewById(R.id.accountDialogCancel) as Button
+            val usernameField = dialog.findViewById(R.id.accountDialogUsername) as? EditText
+            val emailField = dialog.findViewById(R.id.accountDialogEmail) as? EditText
+            val passwordField = dialog.findViewById(R.id.accountDialogPassword) as? EditText
 
             updateBtn.setOnClickListener {
                 when {
                     listOf(emailField?.text.toString(), passwordField?.text.toString())
-                        .contains("") -> toast("No changes made!")
+                        .contains("") -> toast("Please fill out all fields")
                     !isEmailValid(emailField?.text.toString()) -> toast("Please enter a valid email")
                     else -> {
                         val newUser = UserModel(
                             app.activeUser.id,
+                            usernameField?.text.toString(),
                             emailField?.text.toString(),
                             passwordField?.text.toString(),
                             app.activeUser.hillforts
@@ -92,8 +97,9 @@ class AccountActivity : MainActivity(), AnkoLogger {
     }
 
     private fun setUserDetails() {
-        account_email.text = app.activeUser.email
-        account_password.text = app.activeUser.password
+        accountUsername.text = app.activeUser.username
+        accountEmail.text = app.activeUser.email
+        accountPassword.text = app.activeUser.password
     }
 
     private fun isEmailValid(email: String): Boolean {

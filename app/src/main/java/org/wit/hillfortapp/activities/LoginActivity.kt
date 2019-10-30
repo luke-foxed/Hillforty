@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
@@ -16,7 +15,7 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
 
     lateinit var app: MainApp
 
-    private var email: EditText? = null
+    private var username: EditText? = null
     private var password: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,13 +24,15 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
 
         app = application as MainApp
 
-        email = findViewById(R.id.emailInput)
-        password = findViewById(R.id.passwordInput)
+        username = findViewById(R.id.loginUsernameInput)
+        password = findViewById(R.id.loginPasswordInput)
 
-        val signupButton = findViewById<Button>(R.id.signupButton)
-        signupButton.setOnClickListener {
+        val signUpButton = findViewById<Button>(R.id.loginSignUpButton)
+        signUpButton.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
+            username!!.text.clear()
+            password!!.text.clear()
         }
 
         val loginButton = findViewById<Button>(R.id.loginButton)
@@ -40,23 +41,23 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
 
     private fun login() {
 
-        val emailText = email!!.text.toString()
+        val usernameText = username!!.text.toString()
         val passwordText = password!!.text.toString()
 
         if (listOf(
-                emailText,
+                usernameText,
                 passwordText
             ).contains("")
         ) {
             toast("Please fill out all fields")
         } else {
             try {
-                 val user: UserModel = app.users.findOne(emailText, passwordText)!!
-                 toast("Welcome back, ${user.email}")
-                 app.activeUser = user
-            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                val user: UserModel = app.users.findOne(usernameText, passwordText)!!
+                app.activeUser = user
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                username!!.text.clear()
+                password!!.text.clear()
             } catch (e: Exception) {
-                info(e.message)
                 toast("No user found!")
             }
         }

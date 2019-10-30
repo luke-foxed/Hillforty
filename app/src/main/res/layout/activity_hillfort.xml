@@ -16,8 +16,22 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <EditText
+                android:layout_height="60dp"
+                android:id="@+id/hillfortName"
+                android:layout_width="200dp"
+                android:layout_marginTop="10dp"
+                android:hint="@string/hillfortNameField"
+                android:inputType="text"
+                android:maxLength="25"
+                android:gravity="center"
+                android:maxLines="1"
+                android:fontFamily="sans-serif-thin"
+                android:textColor="@android:color/black"
+                android:textSize="40sp" />
+
             <ImageView
-                android:id="@+id/hillfortImage"
+                android:id="@+id/hillfortMainImage"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginTop="10dp"
@@ -26,70 +40,168 @@
                 app:srcCompat="@drawable/placeholder"/>
 
             <View
-                android:id="@+id/dividerTop"
+                android:id="@+id/hillfortImageDividerTop"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@drawable/divider" />
 
             <LinearLayout
-                android:id="@+id/moreImages"
+                android:id="@+id/hillfortMoreImagesView"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_gravity="center">
+
             </LinearLayout>
 
             <View
-                android:id="@+id/dividerBottom"
+                android:id="@+id/hillfortImageDividerBottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@drawable/divider" />
 
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="200dp"
-                android:layout_height="45dp"
-                android:layout_margin="8dp"
-                android:autofillHints=""
-                android:hint="Name"
-                android:inputType="text"
-                android:maxLength="25"
-                android:maxLines="1"
-                android:padding="8dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/description"
-                android:layout_width="200dp"
-                android:layout_height="45dp"
-                android:layout_margin="8dp"
-                android:autofillHints=""
-                android:hint="Description"
-                android:inputType="textMultiLine"
-                android:padding="8dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="14sp" />
-
-            <CheckBox
-                android:layout_margin="8dp"
-                android:id="@+id/visited"
-                android:layout_width="200dp"
+            <Button
+                android:id="@+id/hillfortChooseImageBtn"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
-                android:text="Visited" />
+                android:layout_marginTop="20dp"
+                style="?android:attr/buttonBarStyle"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/hillfortEditImageButton"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/dateVisited"
-                android:inputType="date"
-                android:layout_width="200dp"
-                android:layout_height="45dp"
-                android:layout_margin="8dp"
-                android:autofillHints=""
-                android:hint="Date Visited"
-                android:padding="8dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_star"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="60dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:gravity="center"
+                    android:text="@string/hillfortKeyInfoHeader"
+                    android:textColor="@android:color/black"
+                    android:textSize="32sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/hillfortDescriptionLabel"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/hillfortDescription"
+                        android:layout_width="match_parent"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/hillfortDescriptionField"
+                        android:gravity="start"
+                        android:inputType="textMultiLine"
+                        android:lines="5"
+                        android:maxLength="280"
+                        android:maxLines="5"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:textColorHint="@android:color/white"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+
+                <View
+                    android:id="@+id/hillfortDescriptionDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/divider"
+                    android:backgroundTint="@android:color/white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/hillfortDateVisitedLabel"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                    <CheckBox
+                        android:id="@+id/hillfortVisited"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginBottom="5dp"
+                        android:backgroundTint="@android:color/white"
+                        android:buttonTint="@android:color/white"
+                        android:text="@string/hillfortVisitedCheckbox"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/hillfortDateVisited"
+                        android:layout_width="140dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="5dp"
+                        android:backgroundTint="@android:color/white"
+                        android:hint="@string/hillfortDateVisitedField"
+                        android:inputType="date"
+                        android:focusableInTouchMode="false"
+                        android:textColorHint="@android:color/white"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_note"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="60dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:gravity="center"
+                    android:text="@string/hillfortNotesHeader"
+                    android:textColor="@android:color/black"
+                    android:textSize="32sp" />
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_marginTop="20dp"
@@ -102,66 +214,69 @@
                 />
 
             <Button
-                android:id="@+id/addNoteButton"
-                android:layout_marginBottom="20dp"
+                android:id="@+id/hillfortAddNoteBtn"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 style="?android:attr/buttonBarStyle"
                 android:background="@drawable/rounded_button"
-                android:text="Add Note"
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/hillfortAddNoteButton"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_visited"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="60dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:gravity="center"
+                    android:text="@string/hillfortLocationHeader"
+                    android:textColor="@android:color/black"
+                    android:textSize="32sp" />
+            </LinearLayout>
+
             <com.google.android.gms.maps.MapView
-                android:id="@+id/mapView"
+                android:id="@+id/hillfortMapView"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/map_border"
                 android:clickable="false" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:gravity="center"
-                android:layout_margin="8dp"
-                android:layout_height="53dp"
-                android:orientation="horizontal">
-
                 <Button
-                    android:id="@+id/hillfortLocation"
+                    android:id="@+id/hillfortLocationBtn"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_button"
-                    android:text="Edit Location"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/hillfortEditLocationButton"
                     style="?android:attr/buttonBarStyle"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
-
-                <Button
-                    android:id="@+id/chooseImage"
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    style="?android:attr/buttonBarStyle"
-                    android:background="@drawable/rounded_button"
-                    android:text="Edit Image"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
 
             <Button
-                android:id="@+id/btnAdd"
-                android:layout_width="74dp"
-                android:layout_height="69dp"
-                android:layout_margin="16dp"
+                android:id="@+id/hillfortAddBtn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/ic_add_circle"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:stateListAnimator="@null"
-                android:text=""
                 android:backgroundTint="@color/colorPrimary"
-                android:textColor="@android:color/white"
+                android:stateListAnimator="@anim/nav_default_pop_exit_anim"
                 android:textSize="16sp" />
 
         </LinearLayout>

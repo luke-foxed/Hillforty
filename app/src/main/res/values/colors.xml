@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="splashColor">#9E9E9E</color>
+    <color name="splashColor2">#4B4B4B</color>
     <color name="colorPrimary">#673AB7</color>
     <color name="colorPrimaryDark">#4A148C</color>
-    <color name="colorAccent">#5C6BC0</color>
-    <color name="fontPrimary">#FFFFFF</color>
+    <color name="colorAccent">#FF855D</color>
     <color name="fontHint">#A0A0A0</color>
 </resources>

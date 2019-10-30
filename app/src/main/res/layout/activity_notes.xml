@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
-        android:text="NOTE"
+        android:text="@string/noteHeader"
         android:textColor="@android:color/darker_gray"
         android:textSize="50sp" />
 
@@ -19,9 +19,9 @@
         android:id="@+id/noteActivityTitle"
         android:layout_width="match_parent"
         android:gravity="center"
-        android:text="Note Title"
         android:background="@android:color/transparent"
         android:textSize="20sp"
+        android:maxLength="30"
         android:inputType="text" />
 
     <LinearLayout
@@ -40,8 +40,13 @@
             android:textColor="@android:color/white"
             android:gravity="center"
             android:background="@android:color/transparent"
-            android:text="Note Content"
-            android:inputType="text">
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:maxLength="180"
+            android:maxLines="6"
+            android:overScrollMode="always"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical">
 
         </EditText>
 

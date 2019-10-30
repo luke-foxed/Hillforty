@@ -10,10 +10,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -21,16 +22,20 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.*
+import kotlinx.android.synthetic.main.drawer_main.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.warn
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.adapters.NoteListener
+import org.wit.hillfortapp.adapters.NotesAdapter
 import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.Note
-import org.wit.placemark.activities.MapActivity
 
 
 class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
@@ -38,6 +43,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     lateinit var app: MainApp
     private var hillfort = HillfortModel()
     private var edit = false
+    private var moreImageView: LinearLayout? = null
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
@@ -46,8 +52,12 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     private var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
+        moreImageView = findViewById(R.id.hillfortMoreImagesView)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         app = application as MainApp
 
@@ -59,7 +69,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             )
         }
 
-        with(mapView) {
+        with(hillfortMapView) {
             onCreate(null)
             getMapAsync {
                 MapsInitializer.initialize(applicationContext)
@@ -69,55 +79,54 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         if (intent.hasExtra("hillfort_edit")) {
             edit = true
             hillfort = intent.extras?.getParcelable("hillfort_edit")!!
-            name.setText(hillfort.name)
-            description.setText(hillfort.description)
-            visited.isChecked = hillfort.visited
-            dateVisited.setText(hillfort.dateVisited)
+            hillfortName.setText(hillfort.name)
+            hillfortDescription.setText(hillfort.description)
+            hillfortVisited.isChecked = hillfort.visited
+            hillfortDateVisited.setText(hillfort.dateVisited)
+
             loadNotes()
 
             if (hillfort.images.size != 0) {
-                hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
                 renderImages(hillfort.images)
+                hillfortMainImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
             } else {
-                hillfortImage.setImageResource(R.drawable.placeholder)
+                hillfortMainImage.setImageResource(R.drawable.placeholder)
             }
 
             location = hillfort.location
             val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
-            mapView.getMapAsync {
+            hillfortMapView.getMapAsync {
                 setMapLocation(it, latLng)
             }
 
-            btnAdd.setBackgroundResource(R.drawable.ic_check_circle)
+            hillfortAddBtn.setBackgroundResource(R.drawable.ic_check_circle)
         }
 
-        dateVisited.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                try {
-                    showDateDialog()
-                } catch (e: Exception) {
-                    warn(e.message)
-                }
+        hillfortDateVisited.setOnClickListener {
+            try {
+                showDateDialog()
+            } catch (e: Exception) {
+                warn(e.message)
             }
         }
 
-        btnAdd.setOnClickListener {
+        hillfortAddBtn.setOnClickListener {
             if (listOf(
-                    name.text.toString(),
-                    description.text.toString(),
-                    dateVisited.text.toString()
+                    hillfortName.text.toString(),
+                    hillfortDescription.text.toString(),
+                    hillfortDateVisited.text.toString()
                 ).contains("")
             ) {
                 toast("Please fill out all fields")
             } else {
-                hillfort.name = name.text.toString()
-                hillfort.description = description.text.toString()
-                hillfort.visited = visited.isChecked
-                hillfort.dateVisited = dateVisited.text.toString()
+                hillfort.name = hillfortName.text.toString().trim()
+                hillfort.description = hillfortDescription.text.toString().trim()
+                hillfort.visited = hillfortVisited.isChecked
+                hillfort.dateVisited = hillfortDateVisited.text.toString().trim()
                 hillfort.location = location
 
                 if (edit) {
-                    hillfort.notes = app.activeUser.hillforts[hillfort.id - 1].notes
+                    hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
                     app.users.updateHillfort(
                         hillfort, app.activeUser
                     )
@@ -132,7 +141,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             }
         }
 
-        addNoteButton.setOnClickListener {
+        hillfortAddNoteBtn.setOnClickListener {
 
             if (!edit) {
                 toast("Please create a hillfort before adding notes to it!")
@@ -146,27 +155,26 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 val dialog: AlertDialog = builder.create()
                 dialog.show()
 
-                val addBtn = dialog.findViewById(R.id.dialogAddNote) as Button
-                val cancelBtn = dialog.findViewById(R.id.dialogCancelNote) as Button
-                val noteTitle = dialog.findViewById(R.id.dialogNoteTitle) as? EditText
-                val noteContent = dialog.findViewById(R.id.dialogNoteContent) as? EditText
+                val addBtn = dialog.findViewById(R.id.noteDialogAddBtn) as Button
+                val cancelBtn = dialog.findViewById(R.id.noteDialogCancelBtn) as Button
+                val noteTitle = dialog.findViewById(R.id.noteDialogTitle) as? EditText
+                val noteContent = dialog.findViewById(R.id.noteDialogContent) as? EditText
 
                 addBtn.setOnClickListener {
 
                     if (listOf(noteTitle!!.text.toString(), noteContent!!.text.toString())
                             .contains("")
                     ) {
-                        toast("No changes made!")
+                        toast("Please fill out all fields!")
                     } else {
                         val newNote = Note()
                         newNote.title = noteTitle.text.toString()
                         newNote.content = noteContent.text.toString()
 
                         app.users.createNote(app.activeUser, hillfort, newNote)
-
+                        dialog.dismiss()
+                        loadNotes()
                     }
-                    dialog.dismiss()
-                    loadNotes()
                 }
 
                 cancelBtn.setOnClickListener {
@@ -175,12 +183,11 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             }
         }
 
-
-        chooseImage.setOnClickListener {
+        hillfortChooseImageBtn.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
         }
 
-        hillfortLocation.setOnClickListener {
+        hillfortLocationBtn.setOnClickListener {
             startActivityForResult(
                 intentFor<MapActivity>().putExtra("location", location),
                 LOCATION_REQUEST
@@ -194,24 +201,55 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
-            R.id.item_cancel -> {
+        when (item.itemId) {
+            R.id.popupCancel -> {
                 finish()
+                startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
             }
 
-            R.id.item_delete -> {
+            R.id.popupDelete -> {
                 if (edit) {
                     val builder = AlertDialog.Builder(this@HillfortActivity)
                     builder.setMessage("Are you sure you want to delete this Hillfort?")
-                    builder.setPositiveButton("Yes") { dialog, which ->
+                    builder.setPositiveButton("Yes") { dialog, _ ->
                         app.users.deleteHillfort(hillfort, app.activeUser)
+                        dialog.dismiss()
                         finish()
+                        startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
                     }
-                    builder.setNegativeButton("No") { dialog, which ->
+                    builder.setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()
                     }
                     val dialog: AlertDialog = builder.create()
                     dialog.show()
+                }
+            }
+
+            R.id.popupNext -> {
+                val index = app.activeUser.hillforts.indexOf(hillfort)
+                try {
+                    startActivityForResult(
+                        intentFor<HillfortActivity>().putExtra(
+                            "hillfort_edit",
+                            app.activeUser.hillforts[index + 1]
+                        ), 0
+                    )
+                } catch (e: IndexOutOfBoundsException) {
+                    toast("Next Hillfort is Empty!")
+                }
+            }
+
+            R.id.popupPrevious -> {
+                val index = app.activeUser.hillforts.indexOf(hillfort)
+                try {
+                    startActivityForResult(
+                        intentFor<HillfortActivity>().putExtra(
+                            "hillfort_edit",
+                            app.activeUser.hillforts[index - 1]
+                        ), 0
+                    )
+                } catch (e: IndexOutOfBoundsException) {
+                    toast("Previous Hillfort is Empty!")
                 }
             }
         }
@@ -225,7 +263,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             IMAGE_REQUEST -> {
                 val builder = AlertDialog.Builder(this@HillfortActivity)
                 builder.setMessage("This will reset the existing images, continue?")
-                builder.setPositiveButton("YES") { dialog, which ->
+                builder.setPositiveButton("YES") { dialog, _ ->
                     if (data != null) {
                         val clipImages = ArrayList<String>()
                         // if multiple images selected
@@ -236,25 +274,26 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                                 val mClipData = data.clipData
                                 var counter = 0
                                 while (counter < mClipData!!.itemCount) {
-                                    info("URI--> " + mClipData.getItemAt(counter).uri)
                                     clipImages.add(mClipData.getItemAt(counter).uri.toString())
                                     counter++
                                 }
                             }
                         } else {
                             clipImages.add(data.data.toString())
+
                         }
+                        dialog.dismiss()
+
                         // clear all images from view
-                        moreImages.removeAllViews()
+                        hillfortMoreImagesView.removeAllViews()
 
                         // add new image(s) into view
                         renderImages(clipImages)
-                        hillfortImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
-
+                        hillfortMainImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
                     }
                 }
 
-                builder.setNegativeButton("No") { dialog, which ->
+                builder.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
                 }
 
@@ -265,7 +304,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 if (data != null) {
                     location = data.extras?.getParcelable("location")!!
                     val latLng = LatLng(location.lat, location.lng)
-                    mapView.getMapAsync {
+                    hillfortMapView.getMapAsync {
                         setMapLocation(it, latLng)
                     }
                 }
@@ -287,25 +326,25 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         startActivityForResult(intent, NOTE_REQUEST)
     }
 
-    // mapView methods
+    // hillfortMapView methods
     public override fun onResume() {
-        mapView.onResume()
+        hillfortMapView.onResume()
         super.onResume()
     }
 
     public override fun onPause() {
         super.onPause()
-        mapView.onPause()
+        hillfortMapView.onPause()
     }
 
     public override fun onDestroy() {
         super.onDestroy()
-        mapView.onDestroy()
+        hillfortMapView.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mapView.onLowMemory()
+        hillfortMapView.onLowMemory()
     }
 
     // helper methods
@@ -321,7 +360,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         val dpd = DatePickerDialog(
             this,
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                dateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
+                hillfortDateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
             },
             year, month, day
         )
@@ -342,24 +381,28 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     }
 
     private fun renderImages(images: ArrayList<String>) {
+
         // reassign array to images from gallery
         hillfort.images = images
 
-        // create new imageview for each image, ignore first image
+        // create new image view for each image, ignore first image
         for ((index) in (images.withIndex().drop(1))) {
             val newImageView = ImageView(this)
-            moreImages.addView(newImageView)
-            newImageView.layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
-            newImageView.layoutParams.width = (moreImages.width / images.size)
+
+            moreImageView?.addView(newImageView)
             newImageView.setPadding(15,0,15,0)
             newImageView.setImageBitmap(readImageFromPath(this, images[index]))
+            newImageView.layoutParams.height = 300
+            newImageView.layoutParams.width = 300
+            newImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            newImageView.cropToPadding = true
 
-            // listener to switch small imageview it main imageview
+            // listener to switch small image view it main image view
             newImageView.setOnClickListener {
                 val thisImageDrawable = newImageView.drawable
-                val mainImageDrawable = hillfortImage.drawable
+                val mainImageDrawable = hillfortMainImage.drawable
 
-                hillfortImage.setImageDrawable(thisImageDrawable)
+                hillfortMainImage.setImageDrawable(thisImageDrawable)
                 newImageView.setImageDrawable(mainImageDrawable)
             }
         }
@@ -370,15 +413,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         if (userNotes != null) {
             showNotes(userNotes)
         }
-
-//        // if there are existing notes, add them to the newly added notes
-//        if (userNotes != null) {
-//            showNotes((userNotes + notes) as ArrayList<Note>)
-//        }
-//        // else just show the newly added notes
-//        else {
-//            showNotes(notes)
-//        }
     }
 
     private fun showNotes(notes: ArrayList<Note>) {

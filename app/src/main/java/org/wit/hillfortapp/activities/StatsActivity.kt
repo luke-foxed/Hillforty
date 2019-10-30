@@ -1,7 +1,7 @@
 package org.wit.hillfortapp.activities
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.drawer_main.*
 import kotlinx.android.synthetic.main.activity_stats.*
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.MainApp
@@ -14,6 +14,7 @@ class StatsActivity : MainActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_stats, content_frame)
         app = application as MainApp
 
@@ -23,7 +24,7 @@ class StatsActivity : MainActivity(), AnkoLogger {
         statsImagesNumber.text = getImages().toString()
         statsVisitedNumber.text = getVisits().toString()
         statsNotesNumber.text = getNotes().toString()
-        statsTopUser.text = getMostActiveUser()
+        statsTopUser.text = getMostActiveUser().toUpperCase()
     }
 
     private fun getUsers(): Int? {
@@ -70,7 +71,7 @@ class StatsActivity : MainActivity(), AnkoLogger {
         for (user in users) {
             if (user.hillforts.size > hillfortsCount) {
                 hillfortsCount = user.hillforts.size
-                topUser = user.email
+                topUser = user.username
             }
         }
         return topUser

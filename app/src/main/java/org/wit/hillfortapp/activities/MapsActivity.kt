@@ -1,4 +1,4 @@
-package org.wit.placemark.activities
+package org.wit.hillfortapp.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -18,12 +18,12 @@ import org.wit.hillfortapp.models.Location
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
-    var location = Location()
+    private var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        location = intent.extras?.getParcelable<Location>("location")!!
+        location = intent.extras?.getParcelable("location")!!
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -34,7 +34,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
         val loc = LatLng(location.lat, location.lng)
         val options = MarkerOptions()
             .title("Hillfort")
-            .snippet("GPS : " + loc.toString())
+            .snippet("GPS : $loc")
             .draggable(true)
             .position(loc)
         map.addMarker(options)

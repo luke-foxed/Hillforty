@@ -10,7 +10,7 @@ fun write(context: Context, fileName: String, data: String) {
         outputStreamWriter.write(data)
         outputStreamWriter.close()
     } catch (e: Exception) {
-        Log.e("Error: ", "Cannot read file: " + e.toString());
+        Log.e("Error: ", "Cannot read file: $e")
     }
 }
 
@@ -24,17 +24,17 @@ fun read(context: Context, fileName: String): String {
             val partialStr = StringBuilder()
             var done = false
             while (!done) {
-                var line = bufferedReader.readLine()
-                done = (line == null);
-                if (line != null) partialStr.append(line);
+                val line = bufferedReader.readLine()
+                done = (line == null)
+                if (line != null) partialStr.append(line)
             }
             inputStream.close()
             str = partialStr.toString()
         }
     } catch (e: FileNotFoundException) {
-        Log.e("Error: ", "file not found: " + e.toString());
+        Log.e("Error: ", "file not found: $e")
     } catch (e: IOException) {
-        Log.e("Error: ", "cannot read file: " + e.toString());
+        Log.e("Error: ", "cannot read file: $e")
     }
     return str
 }

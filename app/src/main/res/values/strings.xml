@@ -1,4 +1,79 @@
 <resources>
-    <string name="app_name">Hillfort App</string>
-    <string name="title_activity_maps">Map</string>
+
+    <!--MAIN APP-->
+    <string name="app_name">Hillforty</string>
+    <string name="mainAppWelcomeLabel">Welcome to Hillforty,</string>
+
+    <!--ACCOUNT ACTIVITY-->
+    <string name="accountHeader">My Account</string>
+    <string name="accountUsernameLabel">Username: </string>
+    <string name="accountEmailLabel">Email: </string>
+    <string name="accountPasswordLabel">Password: </string>
+    <string name="accountDeleteButton">Delete Account</string>
+    <string name="accountDeleteHillfortsButton">Delete Hillforts</string>
+    <string name="accountEditButton">Edit Account</string>
+
+    <!--HILLFORT ACTIVITY-->
+    <string name="hillfortNameField">Name</string>
+    <string name="hillfortNotesHeader">Notes</string>
+    <string name="hillfortKeyInfoHeader">Key Info</string>
+    <string name="hillfortLocationHeader">Location</string>
+    <string name="hillfortDescriptionLabel">Description: </string>
+    <string name="hillfortDateVisitedLabel">Date Visited: </string>
+    <string name="hillfortDescriptionField">Enter Description…</string>
+    <string name="hillfortVisitedCheckbox">Is Visited</string>
+    <string name="hillfortDateVisitedField">Enter Date Visited…</string>
+    <string name="hillfortEditLocationButton">Edit Location</string>
+    <string name="hillfortAddNoteButton">Add Note</string>
+    <string name="hillfortEditImageButton">Edit Images</string>
+
+    <!--LOGIN ACTIVITY-->
+    <string name="loginUsernameField">Username…</string>
+    <string name="loginPasswordField">Password…</string>
+    <string name="loginDividerLabel">or…</string>
+    <string name="loginButton">LOG IN</string>
+    <string name="loginSignUpButton">SIGN UP</string>
+
+    <!--NOTE ACTIVITY-->
+    <string name="noteHeader">Note</string>
+
+    <!--SIGN UP ACTIVITY-->
+    <string name="signUpUsernameField">Enter a Username…</string>
+    <string name="signUpEmailField">Enter an Email…</string>
+    <string name="signUpPasswordField">Enter a Password…</string>
+    <string name="signUpPassword2Field">Re-enter Password…</string>
+    <string name="signUpButton">Sign Up</string>
+
+    <!--STATS ACTIVITY-->
+    <string name="statsHeader">Global Statistics</string>
+    <string name="statsTotalUsersField">Number Of Users: </string>
+    <string name="statsTotalHillfortsField">Number Of Hillforts: </string>
+    <string name="statsTotalImagesField">Number Of Images: </string>
+    <string name="statsTotalVisitsField">Number Of Visits: </string>
+    <string name="statsTotalNotesField">Number Of Notes: </string>
+    <string name="statsTopUserField">Most Active User: </string>
+
+    <!--ACCOUNT DIALOG-->
+    <string name="accountDialogUsernameField">New Username…</string>
+    <string name="accountDialogEmailField">New Email…</string>
+    <string name="accountDialogPasswordField">New Password…</string>
+    <string name="accountDialogUpdateButton">Update</string>
+    <string name="accountDialogCancelButton">Cancel</string>
+
+    <!--NOTE DIALOG-->
+    <string name="noteDialogTitleField">Note Title</string>
+    <string name="noteDialogContentField">Note Content</string>
+    <string name="noteDialogAddButton">Add Note</string>
+    <string name="noteDialogCancelButton">Cancel</string>
+
+    <!--ABOUT DIALOG-->
+    <string name="aboutHeader">About</string>
+    <string name="aboutInformation">"
+        Hillforty, created by Luke Fox.
+        \n\nThis app was made as part of my assignment for Mobile App Development 1.
+        \n\nThe repo for this project can be found here:"
+    </string>
+    <string name="aboutGitHubURL">https://github.com/Foxyf76/Hillfort-App/</string>
+
 </resources>
+

@@ -13,7 +13,7 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="50sp"
         android:fontFamily="sans-serif-thin"
-        android:text="Global Statistics" />
+        android:text="@string/statsHeader" />
 
     <TableLayout
         android:layout_marginBottom="80dp"
@@ -29,6 +29,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
+                android:tint="@color/colorAccent"
                 android:src="@drawable/ic_menu_account">
             </ImageView>
 
@@ -36,7 +37,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Users: "
+                android:text="@string/statsTotalUsersField"
                 android:textSize="18sp" />
 
             <TextView
@@ -58,6 +59,7 @@
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
+
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_menu_castle">
             </ImageView>
@@ -66,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Hillforts: "
+                android:text="@string/statsTotalHillfortsField"
                 android:textSize="18sp" />
 
             <TextView
@@ -87,6 +89,7 @@
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
+                android:tint="@color/colorAccent"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_image">
 
@@ -96,7 +99,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Images: "
+                android:text="@string/statsTotalImagesField"
                 android:textSize="18sp" />
 
             <TextView
@@ -125,7 +128,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Visits: "
+                android:text="@string/statsTotalVisitsField"
                 android:textSize="18sp" />
 
             <TextView
@@ -147,6 +150,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
+                android:tint="@color/colorAccent"
                 android:src="@drawable/ic_note">
             </ImageView>
 
@@ -154,7 +158,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Number of Notes: "
+                android:text="@string/statsTotalNotesField"
                 android:textSize="18sp" />
 
             <TextView
@@ -181,7 +185,7 @@
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="Most Active User: "
+                android:text="@string/statsTopUserField"
                 android:textSize="18sp" />
 
             <TextView
