@@ -55,6 +55,11 @@ open class MainActivity : AppCompatActivity() {
                 R.id.nav_hillforts -> {
                     startActivity(Intent(this@MainActivity, HillfortListActivity::class.java))
                 }
+
+                R.id.nav_hillfort_maps -> {
+                    startActivity(Intent(this@MainActivity, HillfortMapsActivity::class.java))
+                }
+
                 R.id.nav_add -> {
                     startActivity(Intent(this@MainActivity, HillfortActivity::class.java))
                 }

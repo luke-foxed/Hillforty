@@ -18,6 +18,10 @@
             android:icon="@drawable/ic_menu_castle"
             android:title="My Hillforts" />
         <item
+            android:id="@+id/nav_hillfort_maps"
+            android:icon="@drawable/ic_menu_map"
+            android:title="All Hillforts" />
+        <item
             android:id="@+id/nav_add"
             android:icon="@drawable/ic_menu_plus"
             android:title="Add a Hillfort" />
