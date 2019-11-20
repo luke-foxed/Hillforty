@@ -91,6 +91,11 @@ class UserJSONStore(val context: Context) : UserStore, AnkoLogger {
         return activeUser.hillforts
     }
 
+    override fun findOneHillfort(hillfortID: Int): HillfortModel? {
+        val allHillforts = findAllHillforts()
+        return allHillforts.find { it.id == hillfortID }
+    }
+
     override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel? {
         return activeUser.hillforts.singleOrNull { hillfort ->
             hillfort.id == hillfortID
