@@ -1,36 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
 
+
     <ImageView
+        android:id="@+id/imageView2"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/ic_menu_account" />
+        android:src="@drawable/ic_menu_account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.153" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/textView4"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-thin"
-        android:layout_marginBottom="80dp"
         android:gravity="center"
         android:text="@string/accountHeader"
         android:textColor="@android:color/darker_gray"
-        android:textSize="40sp" />
-
-
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.333" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="340dp"
         android:layout_height="140dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
         android:background="@drawable/rounded_layout"
         android:backgroundTint="@color/colorPrimary"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.505">
 
         <LinearLayout
             android:layout_width="200dp"
@@ -41,9 +59,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/accountUsernameLabel"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
-                android:text="@string/accountUsernameLabel" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/accountUsername"
@@ -64,9 +82,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/accountEmailLabel"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
-                android:text="@string/accountEmailLabel" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/accountEmail"
@@ -86,48 +104,55 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/accountPasswordLabel"
                 android:textColor="@android:color/white"
-                android:textSize="15sp"
-                android:text="@string/accountPasswordLabel" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/accountPassword"
-                android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:textSize="18sp"
+                android:textAlignment="textEnd"
                 android:textColor="@android:color/white"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
-        android:gravity="center"
-        android:layout_margin="8dp"
         android:layout_height="53dp"
-        android:orientation="horizontal">
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.500"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.695">
 
         <Button
             android:id="@+id/accountDeleteBtn"
+            style="?android:attr/buttonBarStyle"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/colorAccent"
             android:text="@string/accountDeleteButton"
-            style="?android:attr/buttonBarStyle"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
         <Button
             android:id="@+id/accountDeleteHillfortsBtn"
+            style="?android:attr/buttonBarStyle"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            style="?android:attr/buttonBarStyle"
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/colorAccent"
             android:text="@string/accountDeleteHillfortsButton"
@@ -137,13 +162,19 @@
 
     <Button
         android:id="@+id/accountEditBtn"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        style="?android:attr/buttonBarStyle"
         android:background="@drawable/rounded_button"
         android:text="@string/accountEditButton"
         android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.802" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
