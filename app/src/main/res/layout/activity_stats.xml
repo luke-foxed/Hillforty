@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,18 +9,29 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:fontFamily="sans-serif-thin"
         android:gravity="center"
+        android:text="@string/statsHeader"
         android:textColor="@android:color/darker_gray"
         android:textSize="50sp"
-        android:fontFamily="sans-serif-thin"
-        android:text="@string/statsHeader" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tableLayout"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.073" />
 
     <TableLayout
-        android:layout_marginBottom="80dp"
+        android:id="@+id/tableLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
+        android:layout_height="500dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.619">
 
         <TableRow
             android:layout_marginBottom="20dp"
@@ -29,9 +41,8 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
-                android:tint="@color/colorAccent"
-                android:src="@drawable/ic_menu_account">
-            </ImageView>
+                android:src="@drawable/ic_menu_account"
+                android:tint="@color/colorAccent"></ImageView>
 
             <TextView
                 android:layout_height="match_parent"
@@ -61,8 +72,7 @@
                 android:layout_height="56dp"
 
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_menu_castle">
-            </ImageView>
+                android:src="@drawable/ic_menu_castle"></ImageView>
 
             <TextView
                 android:layout_height="match_parent"
@@ -89,9 +99,9 @@
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                android:tint="@color/colorAccent"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_image">
+                android:src="@drawable/ic_image"
+                android:tint="@color/colorAccent">
 
             </ImageView>
 
@@ -114,15 +124,14 @@
         </TableRow>
 
         <TableRow
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal">
 
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_visited">
-            </ImageView>
+                android:src="@drawable/ic_visited"></ImageView>
 
             <TextView
                 android:layout_height="match_parent"
@@ -143,16 +152,15 @@
         </TableRow>
 
         <TableRow
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal">
 
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
-                android:tint="@color/colorAccent"
-                android:src="@drawable/ic_note">
-            </ImageView>
+                android:src="@drawable/ic_note"
+                android:tint="@color/colorAccent"></ImageView>
 
             <TextView
                 android:layout_height="match_parent"
@@ -178,8 +186,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_top_user">
-            </ImageView>
+                android:src="@drawable/ic_top_user"></ImageView>
 
             <TextView
                 android:layout_height="match_parent"
@@ -200,4 +207,4 @@
         </TableRow>
     </TableLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
