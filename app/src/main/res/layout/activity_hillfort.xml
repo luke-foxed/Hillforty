@@ -41,14 +41,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="40sp" />
 
-            <ImageView
-                android:id="@+id/hillfortMainImage"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/placeholder" />
 
             <View
                 android:id="@+id/hillfortImageDividerTop"
@@ -56,15 +48,10 @@
                 android:layout_height="1dp"
                 android:background="@drawable/divider" />
 
-            <LinearLayout
-                android:id="@+id/hillfortMoreImagesView"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-            </LinearLayout>
+                android:layout_height="300dp" />
 
             <View
                 android:id="@+id/hillfortImageDividerBottom"
