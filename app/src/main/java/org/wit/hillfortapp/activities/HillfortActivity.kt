@@ -7,12 +7,9 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +19,7 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_hillfort.*
+import kotlinx.android.synthetic.main.activity_hillfort.view.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -35,15 +33,11 @@ import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.Note
 
-
 class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     lateinit var app: MainApp
     private lateinit var presenter: HillfortPresenter
-    private var hillfort = HillfortModel()
-    private var edit = false
     private var moreImageView: LinearLayout? = null
-
     private var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +67,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
 
         hillfortDateVisited.setOnClickListener {
-            presenter.doDateDialog()
+            showDateDialog()
         }
 
         hillfortAddBtn.setOnClickListener {
@@ -124,20 +118,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             }
 
             R.id.popupDelete -> {
-                if (edit) {
-                    val builder = AlertDialog.Builder(this@HillfortActivity)
-                    builder.setMessage("Are you sure you want to delete this Hillfort?")
-                    builder.setPositiveButton("Yes") { dialog, _ ->
-                        presenter.doDelete()
-                        dialog.dismiss()
-                        startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
-                    }
-                    builder.setNegativeButton("No") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    val dialog: AlertDialog = builder.create()
-                    dialog.show()
-                }
+                presenter.doDelete()
             }
 
             R.id.popupNext -> {
@@ -153,7 +134,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        info("VIEW RECIEVED, DATA: " + data)
         if (data != null) {
             presenter.doActivityResult(requestCode, resultCode, data)
         }
@@ -183,8 +163,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         super.onLowMemory()
         hillfortMapView.onLowMemory()
     }
-
-    // helper methods
 
     fun showHillfort(hillfort: HillfortModel) {
         hillfortName.setText(hillfort.name)
@@ -221,7 +199,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
     }
 
-    fun renderImages(images: ArrayList<String>) {
+    private fun renderImages(images: ArrayList<String>) {
         // create new image view for each image, ignore first image
         for ((index) in (images.withIndex().drop(1))) {
             val newImageView = ImageView(this)
@@ -243,5 +221,23 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 newImageView.setImageDrawable(mainImageDrawable)
             }
         }
+    }
+
+    // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
+    @TargetApi(Build.VERSION_CODES.N)
+    fun showDateDialog() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                hillfortDateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
+            },
+            year, month, day
+        )
+        dpd.show()
     }
 }
