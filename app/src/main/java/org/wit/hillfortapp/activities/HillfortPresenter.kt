@@ -1,7 +1,11 @@
 package org.wit.hillfortapp.activities
 
+import android.annotation.TargetApi
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Intent
+import android.icu.util.Calendar
+import android.os.Build
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -13,7 +17,6 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.adapters.NotesAdapter
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
@@ -39,10 +42,6 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
         }
     }
 
-    fun doGetNotes(): ArrayList<Note>? {
-        return app.users.findOneUserHillfortNotes(app.activeUser, hillfort)
-    }
-
     fun doClickNote(note: Note) {
         val intent = Intent(view, NotesActivity::class.java)
         intent.putExtra("note_edit", note)
@@ -52,14 +51,6 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
         view.startActivityForResult(intent, NOTE_REQUEST)
     }
 
-    private fun doShowNotes() {
-        val userNotes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)
-        if (userNotes != null) {
-            view.recyclerNotes.adapter = NotesAdapter(userNotes, view)
-            view.recyclerNotes.adapter?.notifyDataSetChanged()
-        }
-    }
-
     fun doAddOrSave(tempHillfort: HillfortModel) {
         hillfort.name = tempHillfort.name
         hillfort.description = tempHillfort.description
@@ -67,7 +58,6 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
         hillfort.dateVisited = tempHillfort.dateVisited
         hillfort.location = tempHillfort.location
         if (edit) {
-            doShowNotes()
             hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
             app.users.updateHillfort(
                 hillfort, app.activeUser
@@ -75,7 +65,6 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
         } else {
             app.users.createHillfort(hillfort, app.activeUser)
         }
-
         view.finish()
     }
 
@@ -101,6 +90,24 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
             dialog.show()
         }
         view.finish()
+    }
+
+    // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
+    @TargetApi(Build.VERSION_CODES.N)
+    fun doDateDialog() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(
+            view,
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                view.hillfortDateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
+            },
+            year, month, day
+        )
+        dpd.show()
     }
 
     fun doNext() {
@@ -172,7 +179,6 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
                     newNote.content = noteContent.text.toString()
                     app.users.createNote(app.activeUser, hillfort, newNote)
                     dialog.dismiss()
-                    doShowNotes()
                 }
             }
 
@@ -190,7 +196,8 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
                 builder.setMessage("This will reset the existing images, continue?")
                 builder.setPositiveButton("YES") { dialog, _ ->
                     if (data != null) {
-                        val clipImages = ArrayList<String>()
+                        val imageArray = ArrayList<String>()
+
                         // if multiple images selected
                         if (data.clipData != null) {
                             if (data.clipData!!.itemCount > 4) {
@@ -199,18 +206,16 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
                                 val mClipData = data.clipData
                                 var counter = 0
                                 while (counter < mClipData!!.itemCount) {
-                                    clipImages.add(mClipData.getItemAt(counter).uri.toString())
+                                    imageArray.add(mClipData.getItemAt(counter).uri.toString())
                                     counter++
                                 }
                             }
                         } else {
-                            clipImages.add(data.data.toString())
+                            imageArray.add(data.data.toString())
                         }
+                        hillfort.images = imageArray
+                        view.showImages(imageArray)
                         dialog.dismiss()
-
-                        // reassign array to images from gallery
-                        hillfort.images = clipImages
-
                     }
                 }
                 builder.setNegativeButton("No") { dialog, _ ->
@@ -227,11 +232,6 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
                     view.hillfortMapView.getMapAsync {
                         view.setMapLocation(it, latLng)
                     }
-                }
-            }
-            NOTE_REQUEST -> {
-                if (data != null) {
-                    doShowNotes()
                 }
             }
         }

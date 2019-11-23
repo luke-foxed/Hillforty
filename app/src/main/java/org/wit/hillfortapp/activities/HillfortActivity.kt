@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
+import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
@@ -53,7 +54,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
 
         hillfortDateVisited.setOnClickListener {
-            showDateDialog()
+            presenter.doDateDialog()
         }
 
         hillfortAddBtn.setOnClickListener {
@@ -75,7 +76,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 presenter.doAddOrSave(tempHillfort)
 
                 // restart activity so that adapter updates
-                startActivity(Intent(this@HillfortActivity, Hil::class.java))
+                startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
             }
         }
 
@@ -182,26 +183,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
     }
 
-
-    // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
-    @TargetApi(Build.VERSION_CODES.N)
-    fun showDateDialog() {
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
-
-        val dpd = DatePickerDialog(
-            this,
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-                hillfortDateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
-            },
-            year, month, day
-        )
-        dpd.show()
-    }
-
-    private fun showNotes(notes: ArrayList<Note>?) {
+    internal fun showNotes(notes: ArrayList<Note>?) {
         val layoutManager = LinearLayoutManager(this)
         val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
         recyclerNotes.layoutManager = layoutManager
@@ -211,7 +193,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
     }
 
-    private fun showImages(images: ArrayList<String>?) {
+    internal fun showImages(images: ArrayList<String>?) {
         val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dotsIndicator)
         if (images != null) {
