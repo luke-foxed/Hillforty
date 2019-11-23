@@ -30,7 +30,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="org.wit.hillfortapp.activities.MapActivity"
+            android:name="org.wit.hillfortapp.views.editlocation.MapActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
@@ -40,11 +40,11 @@
         </activity>
 
         <activity
-            android:name=".activities.HillfortActivity"
+            android:name=".views.hillfort.HillfortView"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.HillfortListActivity"
+            android:name=".views.hillfortlist.HillfortListView"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -81,7 +81,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.HillfortMapsActivity"
+            android:name=".views.map.HillfortMapsView"
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>

@@ -1,4 +1,5 @@
 package org.wit.hillfortapp.activities
+import org.wit.hillfortapp.views.hillfort.HillfortView
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -13,6 +14,8 @@ import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
+import org.wit.hillfortapp.views.hillfortlist.HillfortListView
+import org.wit.hillfortapp.views.map.HillfortMapsView
 
 open class MainActivity : AppCompatActivity() {
 
@@ -53,15 +56,15 @@ open class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this@MainActivity, MainActivity::class.java))
                 }
                 R.id.nav_hillforts -> {
-                    startActivity(Intent(this@MainActivity, HillfortListActivity::class.java))
+                    startActivity(Intent(this@MainActivity, HillfortListView::class.java))
                 }
 
                 R.id.nav_hillfort_maps -> {
-                    startActivity(Intent(this@MainActivity, HillfortMapsActivity::class.java))
+                    startActivity(Intent(this@MainActivity, HillfortMapsView::class.java))
                 }
 
                 R.id.nav_add -> {
-                    startActivity(Intent(this@MainActivity, HillfortActivity::class.java))
+                    startActivity(Intent(this@MainActivity, HillfortView::class.java))
                 }
 
                 R.id.nav_account -> {

@@ -1,10 +1,6 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.views.hillfort
 
-import android.annotation.TargetApi
-import android.app.DatePickerDialog
 import android.content.Intent
-import android.icu.util.Calendar
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -24,17 +20,18 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.adapters.ImageAdapter
-import org.wit.hillfortapp.adapters.NoteListener
-import org.wit.hillfortapp.adapters.NotesAdapter
+import org.wit.hillfortapp.views.hillfortlist.HillfortListView
+import org.wit.hillfortapp.activities.MainActivity
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.Location
 
-class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
+class HillfortView : MainActivity(),
+    NoteListener, AnkoLogger {
 
     lateinit var app: MainApp
     private lateinit var presenter: HillfortPresenter
-    private var location = org.wit.hillfortapp.models.Location()
+    private var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -76,7 +73,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 presenter.doAddOrSave(tempHillfort)
 
                 // restart activity so that adapter updates
-                startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
+                startActivity(Intent(this@HillfortView, HillfortListView::class.java))
             }
         }
 
@@ -161,7 +158,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
         showImages(app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images)
 
-        location = hillfort.location
         val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
         hillfortMapView.getMapAsync {
             setMapLocation(it, latLng)
@@ -171,7 +167,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     }
 
     // source: https://stackoverflow.com/questions/16536414/how-to-use-mapview-in-android-using-google-map-v2
-    fun setMapLocation(map: GoogleMap, location: LatLng) {
+    private fun setMapLocation(map: GoogleMap, location: LatLng) {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
         with(map) {
             addMarker(
@@ -188,7 +184,8 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
         recyclerNotes.layoutManager = layoutManager
         if (notes != null) {
-            recyclerNotes.adapter = NotesAdapter(notes, this)
+            recyclerNotes.adapter =
+                HillfortNotesAdapter(notes, this)
             recyclerNotes.adapter?.notifyDataSetChanged()
         }
     }
@@ -197,9 +194,21 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dotsIndicator)
         if (images != null) {
-            imageViewPager.adapter = ImageAdapter(images, this)
+            imageViewPager.adapter =
+                HillfortImageAdapter(
+                    images,
+                    this
+                )
             dotsIndicator.setViewPager(imageViewPager)
             imageViewPager.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    internal fun showUpdatedMap(location: LatLng) {
+        val latLng = LatLng(location.latitude, location.longitude)
+        hillfortMapView.getMapAsync { it.clear() }
+        hillfortMapView.getMapAsync {
+            setMapLocation(it, latLng)
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.wit.hillfortapp.adapters
+package org.wit.hillfortapp.views.hillfort
 
 import android.content.Context
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.viewpager.widget.PagerAdapter
 import org.wit.hillfortapp.helpers.readImageFromPath
 
 // credit: https://codinginflow.com/tutorials/android/picasso-image-slider
-class ImageAdapter constructor(private var images: ArrayList<String>, val context: Context) :
+class HillfortImageAdapter constructor(private var images: ArrayList<String>, val context: Context) :
     PagerAdapter() {
 
     override fun isViewFromObject(view: View, obj: Any): Boolean {

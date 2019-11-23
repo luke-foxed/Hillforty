@@ -1,4 +1,4 @@
-package org.wit.hillfortapp.adapters
+package org.wit.hillfortapp.views.hillfort
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +12,9 @@ interface NoteListener {
     fun onNoteClick(note: Note)
 }
 
-class NotesAdapter constructor(private var notes: ArrayList<Note>,
+class HillfortNotesAdapter constructor(private var notes: ArrayList<Note>,
                                    private val listener: NoteListener
-) : RecyclerView.Adapter<NotesAdapter.MainHolder>() {
+) : RecyclerView.Adapter<HillfortNotesAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         return MainHolder(

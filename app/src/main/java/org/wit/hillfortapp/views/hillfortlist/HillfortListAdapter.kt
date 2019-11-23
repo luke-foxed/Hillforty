@@ -1,4 +1,4 @@
-package org.wit.hillfortapp.adapters
+package org.wit.hillfortapp.views.hillfortlist
 
 import android.view.LayoutInflater
 import android.view.View

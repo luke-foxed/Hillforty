@@ -1,4 +1,4 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.views.hillfort
 
 import android.annotation.TargetApi
 import android.app.AlertDialog
@@ -17,12 +17,15 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.activities.NotesActivity
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.views.editlocation.EditLocationView
+import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 
-class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
+class HillfortPresenter(val view: HillfortView) : AnkoLogger {
 
     var app: MainApp = view.application as MainApp
     private var hillfort = HillfortModel()
@@ -56,7 +59,7 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
         hillfort.description = tempHillfort.description
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
-        hillfort.location = tempHillfort.location
+
         if (edit) {
             hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
             app.users.updateHillfort(
@@ -70,7 +73,7 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
 
     fun doCancel() {
         view.finish()
-        view.startActivity(Intent(view, HillfortListActivity::class.java))
+        view.startActivity(Intent(view, HillfortListView::class.java))
     }
 
     fun doDelete() {
@@ -81,7 +84,7 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
             builder.setPositiveButton("Yes") { dialog, _ ->
                 app.users.deleteHillfort(hillfort, app.activeUser)
                 dialog.dismiss()
-                view.startActivity(Intent(view, HillfortListActivity::class.java))
+                view.startActivity(Intent(view, HillfortListView::class.java))
             }
             builder.setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
@@ -89,7 +92,6 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
-        view.finish()
     }
 
     // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
@@ -114,7 +116,7 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
         val index = app.activeUser.hillforts.indexOf(hillfort)
         try {
             view.startActivityForResult(
-                view.intentFor<HillfortActivity>().putExtra(
+                view.intentFor<HillfortView>().putExtra(
                     "hillfort_edit",
                     app.activeUser.hillforts[index + 1]
                 ), 0
@@ -128,7 +130,7 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
         val index = app.activeUser.hillforts.indexOf(hillfort)
         try {
             view.startActivityForResult(
-                view.intentFor<HillfortActivity>().putExtra(
+                view.intentFor<HillfortView>().putExtra(
                     "hillfort_edit",
                     app.activeUser.hillforts[index - 1]
                 ), 0
@@ -144,7 +146,7 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
 
     fun doSetLocation() {
         view.startActivityForResult(
-            view.intentFor<MapActivity>().putExtra("location", location),
+            view.intentFor<EditLocationView>().putExtra("location", hillfort.location),
             LOCATION_REQUEST
         )
     }
@@ -228,10 +230,9 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
             LOCATION_REQUEST -> {
                 if (data != null) {
                     location = data.extras?.getParcelable("location")!!
-                    val latLng = LatLng(location.lat, location.lng)
-                    view.hillfortMapView.getMapAsync {
-                        view.setMapLocation(it, latLng)
-                    }
+                    hillfort.location = location
+                    val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
+                    view.showUpdatedMap(latLng)
                 }
             }
         }
