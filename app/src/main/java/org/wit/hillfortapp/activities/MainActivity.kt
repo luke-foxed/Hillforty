@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
+import org.wit.hillfortapp.views.about.AboutView
+import org.wit.hillfortapp.views.account.AccountView
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 import org.wit.hillfortapp.views.map.HillfortMapsView
 
@@ -68,7 +70,7 @@ open class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_account -> {
-                    startActivity(Intent(this@MainActivity, AccountActivity::class.java))
+                    startActivity(Intent(this@MainActivity, AccountView::class.java))
                 }
 
                 R.id.nav_stats -> {
@@ -76,7 +78,7 @@ open class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.nav_about -> {
-                    startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+                    startActivity(Intent(this@MainActivity, AboutView::class.java))
                 }
 
                 R.id.nav_logout -> {
