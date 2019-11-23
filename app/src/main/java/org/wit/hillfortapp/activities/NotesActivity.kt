@@ -9,6 +9,7 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_notes.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
@@ -84,6 +85,9 @@ class NotesActivity : MainActivity(), AnkoLogger {
                 builder.setPositiveButton("Yes") { dialog, _ ->
                     app.users.deleteNote(app.activeUser, currentHillfort, note)
                     dialog.dismiss()
+
+                    val resultIntent = Intent()
+                    setResult(Activity.RESULT_OK, resultIntent)
                     finish()
                 }
 

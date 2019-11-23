@@ -47,11 +47,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@drawable/divider" />
-
+            
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />
+
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dotsIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:dotsColor="@color/colorAccent"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="12dp"
+                app:dotsSpacing="4dp"
+                app:dotsWidthFactor="2.5"
+                app:selectedDotColor="@color/colorPrimary"
+                app:progressMode="true"
+                />
 
             <View
                 android:id="@+id/hillfortImageDividerBottom"
