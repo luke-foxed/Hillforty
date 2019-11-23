@@ -1,7 +1,6 @@
 package org.wit.hillfortapp.activities
 
 import android.annotation.TargetApi
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.util.Calendar
@@ -10,54 +9,41 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import kotlinx.android.synthetic.main.activity_hillfort.view.*
-import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.adapters.ImageAdapter
 import org.wit.hillfortapp.adapters.NoteListener
 import org.wit.hillfortapp.adapters.NotesAdapter
-import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.models.HillfortModel
-import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.Note
 
 class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     lateinit var app: MainApp
     private lateinit var presenter: HillfortPresenter
-    private var moreImageView: LinearLayout? = null
-    private var location = Location()
+    private var location = org.wit.hillfortapp.models.Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
-        moreImageView = findViewById(R.id.hillfortMoreImagesView)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         app = application as MainApp
         presenter = HillfortPresenter(this)
-
-        val layoutManager = LinearLayoutManager(this)
-        recyclerNotes.layoutManager = layoutManager
-        recyclerNotes.adapter = presenter.doGetNotes()?.let {
-            NotesAdapter(
-                it, this
-            )
-        }
 
         with(hillfortMapView) {
             onCreate(null)
@@ -89,7 +75,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                 presenter.doAddOrSave(tempHillfort)
 
                 // restart activity so that adapter updates
-                startActivity(Intent(this@HillfortActivity, HillfortListActivity::class.java))
+                startActivity(Intent(this@HillfortActivity, Hil::class.java))
             }
         }
 
@@ -170,12 +156,9 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         hillfortVisited.isChecked = hillfort.visited
         hillfortDateVisited.setText(hillfort.dateVisited)
 
-        if (hillfort.images.size != 0) {
-            renderImages(hillfort.images)
-            hillfortMainImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
-        } else {
-            hillfortMainImage.setImageResource(R.drawable.placeholder)
-        }
+        // pull from model if contents have been updates
+        showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
+        showImages(app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images)
 
         location = hillfort.location
         val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
@@ -199,29 +182,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
     }
 
-    private fun renderImages(images: ArrayList<String>) {
-        // create new image view for each image, ignore first image
-        for ((index) in (images.withIndex().drop(1))) {
-            val newImageView = ImageView(this)
-
-            moreImageView?.addView(newImageView)
-            newImageView.setPadding(15,0,15,0)
-            newImageView.setImageBitmap(readImageFromPath(this, images[index]))
-            newImageView.layoutParams.height = 300
-            newImageView.layoutParams.width = 300
-            newImageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            newImageView.cropToPadding = true
-
-            // listener to switch small image view it main image view
-            newImageView.setOnClickListener {
-                val thisImageDrawable = newImageView.drawable
-                val mainImageDrawable = hillfortMainImage.drawable
-
-                hillfortMainImage.setImageDrawable(thisImageDrawable)
-                newImageView.setImageDrawable(mainImageDrawable)
-            }
-        }
-    }
 
     // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
     @TargetApi(Build.VERSION_CODES.N)
@@ -239,5 +199,25 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             year, month, day
         )
         dpd.show()
+    }
+
+    private fun showNotes(notes: ArrayList<Note>?) {
+        val layoutManager = LinearLayoutManager(this)
+        val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
+        recyclerNotes.layoutManager = layoutManager
+        if (notes != null) {
+            recyclerNotes.adapter = NotesAdapter(notes, this)
+            recyclerNotes.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    private fun showImages(images: ArrayList<String>?) {
+        val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
+        val dotsIndicator = findViewById<DotsIndicator>(R.id.dotsIndicator)
+        if (images != null) {
+            imageViewPager.adapter = ImageAdapter(images, this)
+            dotsIndicator.setViewPager(imageViewPager)
+            imageViewPager.adapter?.notifyDataSetChanged()
+        }
     }
 }

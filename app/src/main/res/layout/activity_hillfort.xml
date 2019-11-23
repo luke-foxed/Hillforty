@@ -41,14 +41,6 @@
                 android:textColor="@android:color/black"
                 android:textSize="40sp" />
 
-            <ImageView
-                android:id="@+id/hillfortMainImage"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:adjustViewBounds="true"
-                app:srcCompat="@drawable/placeholder" />
 
             <View
                 android:id="@+id/hillfortImageDividerTop"
@@ -56,15 +48,24 @@
                 android:layout_height="1dp"
                 android:background="@drawable/divider" />
 
-            <LinearLayout
-                android:id="@+id/hillfortMoreImagesView"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_height="300dp" />
 
-            </LinearLayout>
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/dotsIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:dotsColor="@color/colorAccent"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="12dp"
+                app:dotsSpacing="4dp"
+                app:dotsWidthFactor="2.5"
+                app:selectedDotColor="@color/colorPrimary"
+                app:progressMode="true"
+                />
 
             <View
                 android:id="@+id/hillfortImageDividerBottom"
@@ -292,4 +293,3 @@
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
-

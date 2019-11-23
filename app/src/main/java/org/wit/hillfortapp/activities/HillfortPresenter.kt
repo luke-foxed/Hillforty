@@ -1,25 +1,19 @@
 package org.wit.hillfortapp.activities
 
-import android.annotation.TargetApi
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Intent
-import android.icu.util.Calendar
-import android.os.Build
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import kotlinx.android.synthetic.main.activity_hillfort.view.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.adapters.NotesAdapter
-import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
@@ -214,20 +208,9 @@ class HillfortPresenter(val view: HillfortActivity) : AnkoLogger {
                         }
                         dialog.dismiss()
 
-                        // clear all images from view
-                        view.hillfortMoreImagesView.removeAllViews()
-
                         // reassign array to images from gallery
                         hillfort.images = clipImages
 
-                        // add new image(s) into view
-                        view.renderImages(clipImages)
-                        view.hillfortMainImage.setImageBitmap(
-                            readImageFromPath(
-                                view,
-                                clipImages[0]
-                            )
-                        )
                     }
                 }
                 builder.setNegativeButton("No") { dialog, _ ->
