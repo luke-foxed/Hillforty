@@ -16,6 +16,12 @@ class HillfortNotesAdapter constructor(private var notes: ArrayList<Note>,
                                    private val listener: NoteListener
 ) : RecyclerView.Adapter<HillfortNotesAdapter.MainHolder>() {
 
+
+    fun removeAt(position: Int) {
+        notes.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         return MainHolder(
             LayoutInflater.from(parent.context).inflate(

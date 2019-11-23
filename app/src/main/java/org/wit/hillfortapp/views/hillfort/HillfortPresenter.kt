@@ -11,13 +11,9 @@ import android.widget.Button
 import android.widget.EditText
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.activities.NotesActivity
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
@@ -33,7 +29,6 @@ class HillfortPresenter(val view: HillfortView) : AnkoLogger {
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
-    private val NOTE_REQUEST = 3
 
     private var location = Location()
 
@@ -46,12 +41,7 @@ class HillfortPresenter(val view: HillfortView) : AnkoLogger {
     }
 
     fun doClickNote(note: Note) {
-        val intent = Intent(view, NotesActivity::class.java)
-        intent.putExtra("note_edit", note)
-
-        // pass current hillfort for update/delete functionality
-        intent.putExtra("current_hillfort", hillfort)
-        view.startActivityForResult(intent, NOTE_REQUEST)
+        view.alert("${note.title}\n\n${note.content}").show()
     }
 
     fun doAddOrSave(tempHillfort: HillfortModel) {
@@ -180,6 +170,7 @@ class HillfortPresenter(val view: HillfortView) : AnkoLogger {
                     newNote.title = noteTitle.text.toString()
                     newNote.content = noteContent.text.toString()
                     app.users.createNote(app.activeUser, hillfort, newNote)
+                    view.showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
                     dialog.dismiss()
                 }
             }

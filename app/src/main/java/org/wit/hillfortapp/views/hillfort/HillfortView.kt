@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -20,11 +21,11 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 import org.wit.hillfortapp.activities.MainActivity
 import org.wit.hillfortapp.models.HillfortModel
-import org.wit.hillfortapp.models.Note
 import org.wit.hillfortapp.models.Location
+import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 
 class HillfortView : MainActivity(),
     NoteListener, AnkoLogger {
@@ -187,6 +188,19 @@ class HillfortView : MainActivity(),
             recyclerNotes.adapter =
                 HillfortNotesAdapter(notes, this)
             recyclerNotes.adapter?.notifyDataSetChanged()
+
+            val swipeHandler = object : HillfortNoteDeleteCallback(this) {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    val adapter =
+                        HillfortNotesAdapter(notes, this@HillfortView)
+                    adapter.removeAt(viewHolder.adapterPosition)
+
+                    (recyclerNotes.adapter as HillfortNotesAdapter).notifyDataSetChanged()
+                }
+            }
+
+            val itemTouchHelper = ItemTouchHelper(swipeHandler)
+            itemTouchHelper.attachToRecyclerView(recyclerNotes)
         }
     }
 

@@ -63,7 +63,7 @@
     <!--NOTE DIALOG-->
     <string name="noteDialogTitleField">Note Title</string>
     <string name="noteDialogContentField">Note Content</string>
-    <string name="noteDialogAddButton">Add Note</string>
+    <string name="noteDialogAddButton">Save Note</string>
     <string name="noteDialogCancelButton">Cancel</string>
 
     <!--ABOUT DIALOG-->

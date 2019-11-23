@@ -53,8 +53,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.619" />
+        app:layout_constraintTop_toBottomOf="@+id/loginUsernameInput"
+        app:layout_constraintVertical_bias="0.024" />
 
     <Button
         android:id="@+id/loginButton"
@@ -68,14 +68,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.724" />
+        app:layout_constraintVertical_bias="0.698" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="20dp"
+        android:padding="10dp"
         android:text="@string/loginDividerLabel"
         android:textColor="@android:color/white"
         android:textSize="14sp"
@@ -84,7 +84,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.808" />
+        app:layout_constraintVertical_bias="0.758" />
 
     <Button
         android:id="@+id/loginSignUpButton"
@@ -98,6 +98,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.863" />
+        app:layout_constraintVertical_bias="0.809" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

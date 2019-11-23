@@ -30,7 +30,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="org.wit.hillfortapp.views.editlocation.MapActivity"
+            android:name="org.wit.hillfortapp.views.editlocation.EditLocationView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
