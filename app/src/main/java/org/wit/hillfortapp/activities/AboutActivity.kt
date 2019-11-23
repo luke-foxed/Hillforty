@@ -12,4 +12,4 @@ class AboutActivity : MainActivity(), AnkoLogger {
         content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_about, content_frame)
     }
-}
+} 
