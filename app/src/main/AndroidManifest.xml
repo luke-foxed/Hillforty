@@ -57,11 +57,11 @@
         </activity>
 
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".views.login.LoginView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".views.signup.SignUpView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity

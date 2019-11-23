@@ -1,4 +1,4 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.views.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,11 +9,12 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.models.UserModel
+import org.wit.hillfortapp.views.signup.SignUpView
 
-class LoginActivity : AppCompatActivity(), AnkoLogger {
+class LoginView : AppCompatActivity(), AnkoLogger {
 
     lateinit var app: MainApp
+    private lateinit var presenter: LoginPresenter
 
     private var username: EditText? = null
     private var password: EditText? = null
@@ -23,13 +24,14 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
         setContentView(R.layout.activity_login)
 
         app = application as MainApp
+        presenter = LoginPresenter(this)
 
         username = findViewById(R.id.loginUsernameInput)
         password = findViewById(R.id.loginPasswordInput)
 
         val signUpButton = findViewById<Button>(R.id.loginSignUpButton)
         signUpButton.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
+            val intent = Intent(this, SignUpView::class.java)
             startActivity(intent)
             username!!.text.clear()
             password!!.text.clear()
@@ -51,15 +53,9 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
         ) {
             toast("Please fill out all fields")
         } else {
-            try {
-                val user: UserModel = app.users.findOne(usernameText, passwordText)!!
-                app.activeUser = user
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                username!!.text.clear()
-                password!!.text.clear()
-            } catch (e: Exception) {
-                toast("No user found!")
-            }
+            presenter.doLogin(usernameText, passwordText)
+            username!!.text.clear()
+            password!!.text.clear()
         }
     }
 }

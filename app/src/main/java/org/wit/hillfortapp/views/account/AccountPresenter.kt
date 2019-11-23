@@ -8,7 +8,7 @@ import android.widget.EditText
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.activities.LoginActivity
+import org.wit.hillfortapp.views.login.LoginView
 import org.wit.hillfortapp.models.UserModel
 
 class AccountPresenter(val view: AccountView) {
@@ -65,7 +65,7 @@ class AccountPresenter(val view: AccountView) {
         builder.setPositiveButton("Yes") { dialog, _ ->
             app.users.deleteUser(app.activeUser)
             dialog.dismiss()
-            view.startActivity(Intent(view, LoginActivity::class.java))
+            view.startActivity(Intent(view, LoginView::class.java))
         }
         builder.setNegativeButton("No") { dialog, _ ->
             dialog.dismiss()

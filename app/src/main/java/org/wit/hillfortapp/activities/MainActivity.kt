@@ -17,6 +17,7 @@ import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.about.AboutView
 import org.wit.hillfortapp.views.account.AccountView
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
+import org.wit.hillfortapp.views.login.LoginView
 import org.wit.hillfortapp.views.map.HillfortMapsView
 
 open class MainActivity : AppCompatActivity() {
@@ -83,7 +84,7 @@ open class MainActivity : AppCompatActivity() {
 
                 R.id.nav_logout -> {
                     app.activeUser = UserModel()
-                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                    startActivity(Intent(this@MainActivity, LoginView::class.java))
                 }
             }
 

@@ -1,4 +1,4 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.views.signup
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,11 +10,13 @@ import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
+import org.wit.hillfortapp.views.login.LoginView
 
-class SignUpActivity : AppCompatActivity(), AnkoLogger {
+class SignUpView : AppCompatActivity(), AnkoLogger {
 
     private var user = UserModel()
     lateinit var app: MainApp
+    private lateinit var presenter: SignUpPresenter
 
     private var username: EditText? = null
     private var email: EditText? = null
@@ -26,6 +28,7 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
         setContentView(R.layout.activity_signup)
 
         app = application as MainApp
+        presenter = SignUpPresenter(this)
 
         username = findViewById(R.id.signUpUsernameInput)
         email = findViewById(R.id.signUpEmailInput)
@@ -45,9 +48,9 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
                 user.username = usernameText
                 user.email = emailText
                 user.password = password1Text
-                app.users.create(user.copy())
+            presenter.doSignup(user)
                 toast("Account created!")
-                startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+            startActivity(Intent(this@SignUpView, LoginView::class.java))
         }
     }
 
@@ -70,7 +73,7 @@ class SignUpActivity : AppCompatActivity(), AnkoLogger {
                 hasErrors = true
             }
 
-            app.users.findUsername(usernameText) -> {
+            presenter.doFindUsername(usernameText) -> {
                 toast("This username already exists")
                 hasErrors = true
             }
