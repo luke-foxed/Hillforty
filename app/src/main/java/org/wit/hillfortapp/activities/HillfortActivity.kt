@@ -13,14 +13,15 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
@@ -29,9 +30,9 @@ import org.jetbrains.anko.toast
 import org.jetbrains.anko.warn
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.adapters.ImageAdapter
 import org.wit.hillfortapp.adapters.NoteListener
 import org.wit.hillfortapp.adapters.NotesAdapter
-import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
@@ -43,7 +44,6 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
     lateinit var app: MainApp
     private var hillfort = HillfortModel()
     private var edit = false
-    private var moreImageView: LinearLayout? = null
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
@@ -56,18 +56,9 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         super.onCreate(savedInstanceState)
         content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
-        moreImageView = findViewById(R.id.hillfortMoreImagesView)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         app = application as MainApp
-
-        val layoutManager = LinearLayoutManager(this)
-        recyclerNotes.layoutManager = layoutManager
-        recyclerNotes.adapter = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)?.let {
-            NotesAdapter(
-                it, this
-            )
-        }
 
         with(hillfortMapView) {
             onCreate(null)
@@ -84,14 +75,9 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             hillfortVisited.isChecked = hillfort.visited
             hillfortDateVisited.setText(hillfort.dateVisited)
 
-            loadNotes()
-
-            if (hillfort.images.size != 0) {
-                renderImages(hillfort.images)
-                hillfortMainImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
-            } else {
-                hillfortMainImage.setImageResource(R.drawable.placeholder)
-            }
+            // pull from model if contents have been updates
+            showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
+            showImages(app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images)
 
             location = hillfort.location
             val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
@@ -170,10 +156,11 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                         val newNote = Note()
                         newNote.title = noteTitle.text.toString()
                         newNote.content = noteContent.text.toString()
-
                         app.users.createNote(app.activeUser, hillfort, newNote)
+
+                        // refresh notes
+                        showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!)
                         dialog.dismiss()
-                        loadNotes()
                     }
                 }
 
@@ -258,14 +245,14 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        loadNotes()
         when (requestCode) {
             IMAGE_REQUEST -> {
                 val builder = AlertDialog.Builder(this@HillfortActivity)
                 builder.setMessage("This will reset the existing images, continue?")
                 builder.setPositiveButton("YES") { dialog, _ ->
                     if (data != null) {
-                        val clipImages = ArrayList<String>()
+                        val imageArray = ArrayList<String>()
+
                         // if multiple images selected
                         if (data.clipData != null) {
                             if (data.clipData!!.itemCount > 4) {
@@ -274,22 +261,16 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
                                 val mClipData = data.clipData
                                 var counter = 0
                                 while (counter < mClipData!!.itemCount) {
-                                    clipImages.add(mClipData.getItemAt(counter).uri.toString())
+                                    imageArray.add(mClipData.getItemAt(counter).uri.toString())
                                     counter++
                                 }
                             }
                         } else {
-                            clipImages.add(data.data.toString())
-
+                            imageArray.add(data.data.toString())
                         }
+                        hillfort.images = imageArray
+                        showImages(imageArray)
                         dialog.dismiss()
-
-                        // clear all images from view
-                        hillfortMoreImagesView.removeAllViews()
-
-                        // add new image(s) into view
-                        renderImages(clipImages)
-                        hillfortMainImage.setImageBitmap(readImageFromPath(this, clipImages[0]))
                     }
                 }
 
@@ -311,7 +292,7 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
             }
             NOTE_REQUEST -> {
                 if (data != null) {
-                    loadNotes()
+                    showNotes(hillfort.notes)
                 }
             }
         }
@@ -324,6 +305,10 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         // pass current hillfort for update/delete functionality
         intent.putExtra("current_hillfort", hillfort)
         startActivityForResult(intent, NOTE_REQUEST)
+
+        // refresh notes list if notes where updates/deleted
+        hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
+        showNotes(hillfort.notes)
     }
 
     // hillfortMapView methods
@@ -380,43 +365,24 @@ class HillfortActivity : MainActivity(), NoteListener, AnkoLogger {
         }
     }
 
-    private fun renderImages(images: ArrayList<String>) {
 
-        // reassign array to images from gallery
-        hillfort.images = images
-
-        // create new image view for each image, ignore first image
-        for ((index) in (images.withIndex().drop(1))) {
-            val newImageView = ImageView(this)
-
-            moreImageView?.addView(newImageView)
-            newImageView.setPadding(15,0,15,0)
-            newImageView.setImageBitmap(readImageFromPath(this, images[index]))
-            newImageView.layoutParams.height = 300
-            newImageView.layoutParams.width = 300
-            newImageView.scaleType = ImageView.ScaleType.CENTER_CROP
-            newImageView.cropToPadding = true
-
-            // listener to switch small image view it main image view
-            newImageView.setOnClickListener {
-                val thisImageDrawable = newImageView.drawable
-                val mainImageDrawable = hillfortMainImage.drawable
-
-                hillfortMainImage.setImageDrawable(thisImageDrawable)
-                newImageView.setImageDrawable(mainImageDrawable)
-            }
+    private fun showNotes(notes: ArrayList<Note>?) {
+        val layoutManager = LinearLayoutManager(this)
+        val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
+        recyclerNotes.layoutManager = layoutManager
+        if (notes != null) {
+            recyclerNotes.adapter = NotesAdapter(notes, this)
+            recyclerNotes.adapter?.notifyDataSetChanged()
         }
     }
 
-    private fun loadNotes() {
-        val userNotes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)
-        if (userNotes != null) {
-            showNotes(userNotes)
+    private fun showImages(images: ArrayList<String>?) {
+        val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
+        val dotsIndicator = findViewById<DotsIndicator>(R.id.dotsIndicator)
+        if (images != null) {
+            imageViewPager.adapter = ImageAdapter(images, this)
+            dotsIndicator.setViewPager(imageViewPager)
+            imageViewPager.adapter?.notifyDataSetChanged()
         }
-    }
-
-    private fun showNotes(notes: ArrayList<Note>) {
-        recyclerNotes.adapter = NotesAdapter(notes, this)
-        recyclerNotes.adapter?.notifyDataSetChanged()
     }
 }
