@@ -1,22 +1,21 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.views.map
 
 import android.os.Bundle
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.content_hillfort_maps.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.helpers.readImageFromPath
+import org.wit.hillfortapp.models.HillfortModel
 
 
-class HillfortMapsActivity : MainActivity(), GoogleMap.OnMarkerClickListener {
+class HillfortMapsView : MainView(), GoogleMap.OnMarkerClickListener {
 
-    private lateinit var map: GoogleMap
     lateinit var app: MainApp
+    private lateinit var presenter: PlacemarkMapPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,22 +23,18 @@ class HillfortMapsActivity : MainActivity(), GoogleMap.OnMarkerClickListener {
         layoutInflater.inflate(R.layout.activity_hillfort_maps, content_frame)
 
         app = application as MainApp
-        mapView.onCreate(savedInstanceState)
+        presenter = PlacemarkMapPresenter(this)
+
+        mapView.onCreate(savedInstanceState);
         mapView.getMapAsync {
-            map = it
-            configureMap()
+            presenter.doPopulateMap(it)
         }
     }
 
-    private fun configureMap() {
-        map.setOnMarkerClickListener(this)
-        map.uiSettings.isZoomControlsEnabled = true
-        app.users.findAllHillforts()?.forEach {
-            val loc = LatLng(it.location.lat, it.location.lng)
-            val options = MarkerOptions().title(it.name).position(loc)
-            map.addMarker(options).tag = it.id
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.location.zoom))
-        }
+    fun showHillfort(hillfort: HillfortModel) {
+        currentTitle.text = hillfort.name
+        currentDescription.text = hillfort.description
+        currentImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
     }
 
     override fun onDestroy() {

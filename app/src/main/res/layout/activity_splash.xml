@@ -8,7 +8,7 @@
     android:gravity="center"
     android:background="@drawable/splash_background"
     android:id="@+id/splashContainer"
-    tools:context=".activities.SplashActivity">
+    tools:context=".views.splash.SplashView">
 
     <ImageView
         android:id="@+id/splashImage"
@@ -17,6 +17,8 @@
         android:src="@drawable/splash"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
 </androidx.constraintlayout.widget.ConstraintLayout>

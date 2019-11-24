@@ -1,4 +1,5 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.views.main
+import org.wit.hillfortapp.views.hillfort.HillfortView
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -13,8 +14,14 @@ import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
+import org.wit.hillfortapp.views.about.AboutView
+import org.wit.hillfortapp.views.account.AccountView
+import org.wit.hillfortapp.views.hillfortlist.HillfortListView
+import org.wit.hillfortapp.views.login.LoginView
+import org.wit.hillfortapp.views.map.HillfortMapsView
+import org.wit.hillfortapp.views.stats.StatsView
 
-open class MainActivity : AppCompatActivity() {
+open class MainView : AppCompatActivity() {
 
     private lateinit var mDrawerLayout: DrawerLayout
     private lateinit var app: MainApp
@@ -50,35 +57,35 @@ open class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
 
                 R.id.nav_home -> {
-                    startActivity(Intent(this@MainActivity, MainActivity::class.java))
+                    startActivity(Intent(this@MainView, MainView::class.java))
                 }
                 R.id.nav_hillforts -> {
-                    startActivity(Intent(this@MainActivity, HillfortListActivity::class.java))
+                    startActivity(Intent(this@MainView, HillfortListView::class.java))
                 }
 
                 R.id.nav_hillfort_maps -> {
-                    startActivity(Intent(this@MainActivity, HillfortMapsActivity::class.java))
+                    startActivity(Intent(this@MainView, HillfortMapsView::class.java))
                 }
 
                 R.id.nav_add -> {
-                    startActivity(Intent(this@MainActivity, HillfortActivity::class.java))
+                    startActivity(Intent(this@MainView, HillfortView::class.java))
                 }
 
                 R.id.nav_account -> {
-                    startActivity(Intent(this@MainActivity, AccountActivity::class.java))
+                    startActivity(Intent(this@MainView, AccountView::class.java))
                 }
 
                 R.id.nav_stats -> {
-                    startActivity(Intent(this@MainActivity, StatsActivity::class.java))
+                    startActivity(Intent(this@MainView, StatsView::class.java))
                 }
 
                 R.id.nav_about -> {
-                    startActivity(Intent(this@MainActivity, AboutActivity::class.java))
+                    startActivity(Intent(this@MainView, AboutView::class.java))
                 }
 
                 R.id.nav_logout -> {
                     app.activeUser = UserModel()
-                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                    startActivity(Intent(this@MainView, LoginView::class.java))
                 }
             }
 

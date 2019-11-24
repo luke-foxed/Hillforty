@@ -1,11 +1,12 @@
-package org.wit.hillfortapp.activities
+package org.wit.hillfortapp.views.about
 
 import android.os.Bundle
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.views.main.MainView
 
-class AboutActivity : MainActivity(), AnkoLogger {
+class AboutView : MainView(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -30,25 +30,25 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="org.wit.hillfortapp.activities.MapActivity"
+            android:name="org.wit.hillfortapp.views.editlocation.EditLocationView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".views.main.MainView"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
         <activity
-            android:name=".activities.HillfortActivity"
+            android:name=".views.hillfort.HillfortView"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.HillfortListActivity"
+            android:name=".views.hillfortlist.HillfortListView"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".views.splash.SplashView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,19 +57,19 @@
         </activity>
 
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".views.login.LoginView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".views.signup.SignUpView"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".activities.StatsActivity"
+            android:name=".views.stats.StatsView"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.AccountActivity"
+            android:name=".views.account.AccountView"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -77,11 +77,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.AboutActivity"
+            android:name=".views.about.AboutView"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.HillfortMapsActivity"
+            android:name=".views.map.HillfortMapsView"
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
