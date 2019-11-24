@@ -1,5 +1,6 @@
 package org.wit.hillfortapp.views.hillfort
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -9,11 +10,14 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
@@ -30,12 +34,27 @@ class HillfortPresenter(val view: HillfortView) : AnkoLogger {
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
 
+    var locationService: FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(view)
     private var location = Location()
 
     init {
         if (view.intent.hasExtra("hillfort_edit")) {
             edit = true
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
+            view.showHillfort(hillfort)
+        } else {
+            if (checkLocationPermissions(view)) {
+                doSetCurrentLocation()
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun doSetCurrentLocation() {
+        locationService.lastLocation.addOnSuccessListener {
+            hillfort.location.lat = it.latitude
+            hillfort.location.lng = it.longitude
             view.showHillfort(hillfort)
         }
     }
