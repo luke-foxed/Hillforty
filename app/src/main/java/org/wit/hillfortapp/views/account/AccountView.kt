@@ -6,10 +6,10 @@ import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.activities.MainActivity
+import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.models.UserModel
 
-class AccountView : MainActivity(), AnkoLogger {
+class AccountView : MainView(), AnkoLogger {
 
     lateinit var app: MainApp
     private lateinit var presenter: AccountPresenter

@@ -21,13 +21,13 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.activities.MainActivity
+import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.Note
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 
-class HillfortView : MainActivity(),
+class HillfortView : MainView(),
     NoteListener, AnkoLogger {
 
     lateinit var app: MainApp

@@ -3,7 +3,7 @@ package org.wit.hillfortapp.views.login
 import android.content.Intent
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
-import org.wit.hillfortapp.activities.MainActivity
+import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.models.UserModel
 
 class LoginPresenter(val view: LoginView) {
@@ -14,7 +14,7 @@ class LoginPresenter(val view: LoginView) {
         try {
             val user: UserModel = app.users.findOne(username, password)!!
             app.activeUser = user
-            view.startActivity(Intent(view, MainActivity::class.java))
+            view.startActivity(Intent(view, MainView::class.java))
         } catch (e: Exception) {
             view.toast("No user found!")
         }

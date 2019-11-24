@@ -8,10 +8,10 @@ import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.activities.MainActivity
+import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.models.HillfortModel
 
-class HillfortListView : MainActivity(),
+class HillfortListView : MainView(),
     HillfortListener {
 
     lateinit var app: MainApp

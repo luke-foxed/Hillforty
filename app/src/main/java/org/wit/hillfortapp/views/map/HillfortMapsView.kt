@@ -7,12 +7,12 @@ import kotlinx.android.synthetic.main.content_hillfort_maps.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.activities.MainActivity
+import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.models.HillfortModel
 
 
-class HillfortMapsView : MainActivity(), GoogleMap.OnMarkerClickListener {
+class HillfortMapsView : MainView(), GoogleMap.OnMarkerClickListener {
 
     lateinit var app: MainApp
     private lateinit var presenter: PlacemarkMapPresenter
