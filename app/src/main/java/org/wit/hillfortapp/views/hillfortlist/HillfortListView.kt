@@ -10,8 +10,9 @@ import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.models.HillfortModel
+import org.wit.hillfortapp.views.BaseView
 
-class HillfortListView : MainView(),
+class HillfortListView : BaseView(),
     HillfortListener {
 
     lateinit var app: MainApp
@@ -23,21 +24,20 @@ class HillfortListView : MainView(),
         layoutInflater.inflate(R.layout.activity_hillfort_list, content_frame)
 
         app = application as MainApp
-        presenter =
-            HillfortListPresenter(this)
+        presenter = initPresenter(HillfortListPresenter(this)) as HillfortListPresenter
 
         val layoutManager = LinearLayoutManager(this)
         hillfortRecyclerView.layoutManager = layoutManager
-        hillfortRecyclerView.adapter =
-            HillfortAdapter(
-                presenter.getHillforts(),
-                this
-            )
-        hillfortRecyclerView.adapter?.notifyDataSetChanged()
+        presenter.loadHillforts()
 
         hillfortListFloatingBtn.setOnClickListener {
             presenter.doAddHillfort()
         }
+    }
+
+    override fun showHillforts(hillforts: ArrayList<HillfortModel>) {
+        hillfortRecyclerView.adapter = HillfortListAdapter(hillforts, this)
+        hillfortRecyclerView.adapter?.notifyDataSetChanged()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -50,8 +50,8 @@ class HillfortListView : MainView(),
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        presenter.loadHillforts()
         super.onActivityResult(requestCode, resultCode, data)
     }
-
 }
 
