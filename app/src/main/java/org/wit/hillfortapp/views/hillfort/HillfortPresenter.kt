@@ -9,6 +9,7 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.helpers.checkLocationPermissions
+import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
@@ -38,6 +39,16 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             if (checkLocationPermissions(view)) {
                 doSetCurrentLocation()
             }
+        }
+    }
+
+    override fun doRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (isPermissionGranted(requestCode, grantResults)) {
+            doSetCurrentLocation()
         }
     }
 

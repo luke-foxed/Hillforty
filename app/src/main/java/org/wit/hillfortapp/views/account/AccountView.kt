@@ -11,7 +11,7 @@ import org.wit.hillfortapp.models.UserModel
 
 class AccountView : MainView(), AnkoLogger {
 
-    lateinit var app: MainApp
+   // lateinit var app: MainApp
     private lateinit var presenter: AccountPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -24,7 +24,7 @@ import org.wit.hillfortapp.views.stats.StatsView
 open class MainView : AppCompatActivity() {
 
     private lateinit var mDrawerLayout: DrawerLayout
-    private lateinit var app: MainApp
+    lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

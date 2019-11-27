@@ -8,14 +8,12 @@ import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.views.BaseView
 
 class HillfortListView : BaseView(),
     HillfortListener {
 
-    lateinit var app: MainApp
     private lateinit var presenter: HillfortListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +21,6 @@ class HillfortListView : BaseView(),
         content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort_list, content_frame)
 
-        app = application as MainApp
         presenter = initPresenter(HillfortListPresenter(this)) as HillfortListPresenter
 
         val layoutManager = LinearLayoutManager(this)

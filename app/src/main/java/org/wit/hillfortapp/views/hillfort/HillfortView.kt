@@ -38,7 +38,6 @@ import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 class HillfortView : BaseView(),
     NoteListener, AnkoLogger {
 
-    lateinit var app: MainApp
     private lateinit var presenter: HillfortPresenter
     private var location = Location()
 
@@ -49,7 +48,6 @@ class HillfortView : BaseView(),
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-        app = application as MainApp
         presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
 
         with(hillfortMapView) {

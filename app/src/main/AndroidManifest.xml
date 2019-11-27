@@ -72,9 +72,6 @@
             android:name=".views.account.AccountView"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity
-            android:name=".activities.NotesActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".views.about.AboutView"

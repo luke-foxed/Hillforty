@@ -10,7 +10,7 @@ import org.wit.hillfortapp.views.main.MainView
 
 class StatsView : MainView(), AnkoLogger {
 
-    lateinit var app: MainApp
+    // lateinit var app: MainApp
     private lateinit var presenter: StatsPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
