@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.editlocation.EditLocationView
 import org.wit.hillfortapp.views.hillfort.HillfortView
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
@@ -69,6 +70,7 @@ abstract class BaseView : MainView(), AnkoLogger {
     open fun showNotes(notes: ArrayList<Note>?) {}
     open fun showImages(images: ArrayList<String>?) {}
     open fun showUpdatedMap(latLng: LatLng) {}
+    open fun showAccount(user: UserModel) {}
     open fun showProgress() {}
     open fun hideProgress() {}
 
