@@ -3,19 +3,17 @@ package org.wit.hillfortapp.views.signup
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_signup.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
-import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
+import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.login.LoginView
 
-class SignUpView : AppCompatActivity(), AnkoLogger {
+class SignUpView : BaseView(), AnkoLogger {
 
     private var user = UserModel()
-    lateinit var app: MainApp
     private lateinit var presenter: SignUpPresenter
 
     private var username: EditText? = null
@@ -26,8 +24,6 @@ class SignUpView : AppCompatActivity(), AnkoLogger {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
-
-        app = application as MainApp
         presenter = SignUpPresenter(this)
 
         username = findViewById(R.id.signUpUsernameInput)

@@ -1,11 +1,10 @@
 package org.wit.hillfortapp.views.stats
 
-import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.models.HillfortModel
+import org.wit.hillfortapp.views.BasePresenter
+import org.wit.hillfortapp.views.BaseView
 
-class StatsPresenter(val view: StatsView) {
-
-    var app: MainApp = view.application as MainApp
+class StatsPresenter(view: BaseView) : BasePresenter(view) {
 
     fun doGetNotes(): Int {
         return app.users.findAllHillfortNotes().size

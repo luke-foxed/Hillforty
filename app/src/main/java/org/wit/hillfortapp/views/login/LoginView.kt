@@ -9,11 +9,12 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.views.BaseView
+import org.wit.hillfortapp.views.hillfort.HillfortPresenter
 import org.wit.hillfortapp.views.signup.SignUpView
 
-class LoginView : AppCompatActivity(), AnkoLogger {
+class LoginView : BaseView(), AnkoLogger {
 
-    lateinit var app: MainApp
     private lateinit var presenter: LoginPresenter
 
     private var username: EditText? = null
@@ -23,8 +24,7 @@ class LoginView : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        app = application as MainApp
-        presenter = LoginPresenter(this)
+        presenter = initPresenter(LoginPresenter(this)) as LoginPresenter
 
         username = findViewById(R.id.loginUsernameInput)
         password = findViewById(R.id.loginPasswordInput)

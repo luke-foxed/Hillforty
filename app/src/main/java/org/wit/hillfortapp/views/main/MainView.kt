@@ -11,6 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_main.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
+import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
@@ -21,7 +24,7 @@ import org.wit.hillfortapp.views.login.LoginView
 import org.wit.hillfortapp.views.map.HillfortMapsView
 import org.wit.hillfortapp.views.stats.StatsView
 
-open class MainView : AppCompatActivity() {
+open class MainView : AppCompatActivity(), AnkoLogger {
 
     private lateinit var mDrawerLayout: DrawerLayout
     lateinit var app: MainApp
@@ -41,7 +44,11 @@ open class MainView : AppCompatActivity() {
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
 
-        mainActivityUsernameText.text = app.activeUser.username
+        if (intent.hasExtra("username")) {
+            val username = intent.extras?.getString("username")!!
+            mainActivityUsernameText.text = username
+        }
+
         mDrawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
 
