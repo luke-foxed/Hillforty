@@ -45,7 +45,7 @@ class HillfortNotesAdapter constructor(private var notes: ArrayList<Note>,
 
             if (note.content.length > 30) {
                 // only show part of string to prevent recycleview from resizing
-                itemView.noteContent.text = note.content.substring(0, 30) + "..."
+                itemView.noteContent.text = "${note.content.substring(0, 30)}..."
             } else {
                 itemView.noteContent.text = note.content
             }

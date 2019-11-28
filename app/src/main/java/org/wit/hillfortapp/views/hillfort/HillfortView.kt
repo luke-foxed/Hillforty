@@ -1,10 +1,18 @@
 package org.wit.hillfortapp.views.hillfort
 
+import android.annotation.TargetApi
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Intent
+import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.EditText
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,16 +29,15 @@ import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 
-class HillfortView : MainView(),
+class HillfortView : BaseView(),
     NoteListener, AnkoLogger {
 
-    lateinit var app: MainApp
     private lateinit var presenter: HillfortPresenter
     private var location = Location()
 
@@ -41,8 +48,7 @@ class HillfortView : MainView(),
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-        app = application as MainApp
-        presenter = HillfortPresenter(this)
+        presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
 
         with(hillfortMapView) {
             onCreate(null)
@@ -52,7 +58,7 @@ class HillfortView : MainView(),
         }
 
         hillfortDateVisited.setOnClickListener {
-            presenter.doDateDialog()
+            showDatePickerDialog()
         }
 
         hillfortAddBtn.setOnClickListener {
@@ -72,18 +78,53 @@ class HillfortView : MainView(),
                 tempHillfort.location = location
 
                 presenter.doAddOrSave(tempHillfort)
-
-                // restart activity so that adapter updates
-                startActivity(Intent(this@HillfortView, HillfortListView::class.java))
             }
         }
 
         hillfortAddNoteBtn.setOnClickListener {
-            presenter.doNoteDialog()
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_note, null)
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Enter note details: ")
+            builder.setView(mDialogView)
+
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+
+            val addBtn = dialog.findViewById(R.id.noteDialogAddBtn) as Button
+            val cancelBtn = dialog.findViewById(R.id.noteDialogCancelBtn) as Button
+            val noteTitle = dialog.findViewById(R.id.noteDialogTitle) as? EditText
+            val noteContent = dialog.findViewById(R.id.noteDialogContent) as? EditText
+
+            addBtn.setOnClickListener {
+
+                if (listOf(noteTitle!!.text.toString(), noteContent!!.text.toString())
+                        .contains("")
+                ) {
+                    toast("Please fill out all fields!")
+                } else {
+                    presenter.doAddNote(noteTitle.text.toString(), noteContent.text.toString())
+                    dialog.dismiss()
+                }
+            }
+            cancelBtn.setOnClickListener {
+                dialog.dismiss()
+            }
         }
 
         hillfortChooseImageBtn.setOnClickListener {
-            presenter.doSelectImage()
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("This will reset the existing images, continue?")
+            builder.setPositiveButton("YES") { dialog, _ ->
+                presenter.doSelectImage()
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
         }
 
         hillfortLocationBtn.setOnClickListener {
@@ -103,7 +144,17 @@ class HillfortView : MainView(),
             }
 
             R.id.popupDelete -> {
-                presenter.doDelete()
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("Are you sure you want to delete this Hillfort?")
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    presenter.doDelete()
+                    dialog.dismiss()
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
             }
 
             R.id.popupNext -> {
@@ -149,7 +200,7 @@ class HillfortView : MainView(),
         hillfortMapView.onLowMemory()
     }
 
-    fun showHillfort(hillfort: HillfortModel) {
+    override fun showHillfort(hillfort: HillfortModel) {
         hillfortName.setText(hillfort.name)
         hillfortDescription.setText(hillfort.description)
         hillfortVisited.isChecked = hillfort.visited
@@ -167,6 +218,25 @@ class HillfortView : MainView(),
         hillfortAddBtn.setBackgroundResource(R.drawable.ic_check_circle)
     }
 
+    // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
+    @TargetApi(Build.VERSION_CODES.N)
+    private fun showDatePickerDialog() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(
+            this,
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                hillfortDateVisited.setText("$dayOfMonth/${monthOfYear + 1}/$year")
+            },
+            year, month, day
+        )
+        dpd.show()
+    }
+
+
     // source: https://stackoverflow.com/questions/16536414/how-to-use-mapview-in-android-using-google-map-v2
     private fun setMapLocation(map: GoogleMap, location: LatLng) {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 5f))
@@ -180,7 +250,7 @@ class HillfortView : MainView(),
         }
     }
 
-    internal fun showNotes(notes: ArrayList<Note>?) {
+    override fun showNotes(notes: ArrayList<Note>?) {
         val layoutManager = LinearLayoutManager(this)
         val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
         recyclerNotes.layoutManager = layoutManager
@@ -204,7 +274,7 @@ class HillfortView : MainView(),
         }
     }
 
-    internal fun showImages(images: ArrayList<String>?) {
+     override fun showImages(images: ArrayList<String>?) {
         val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dotsIndicator)
         if (images != null) {
@@ -218,8 +288,7 @@ class HillfortView : MainView(),
         }
     }
 
-    internal fun showUpdatedMap(location: LatLng) {
-        val latLng = LatLng(location.latitude, location.longitude)
+    override fun showUpdatedMap(latLng: LatLng) {
         hillfortMapView.getMapAsync { it.clear() }
         hillfortMapView.getMapAsync {
             setMapLocation(it, latLng)

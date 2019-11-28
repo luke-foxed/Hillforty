@@ -58,11 +58,11 @@
 
         <activity
             android:name=".views.login.LoginView"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".views.signup.SignUpView"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".views.stats.StatsView"
@@ -72,9 +72,6 @@
             android:name=".views.account.AccountView"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity
-            android:name=".activities.NotesActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".views.about.AboutView"

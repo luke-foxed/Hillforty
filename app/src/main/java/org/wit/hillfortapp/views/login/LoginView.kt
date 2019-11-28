@@ -1,19 +1,16 @@
 package org.wit.hillfortapp.views.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
-import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.views.signup.SignUpView
+import org.wit.hillfortapp.views.BaseView
+import org.wit.hillfortapp.views.VIEW
 
-class LoginView : AppCompatActivity(), AnkoLogger {
+class LoginView : BaseView(), AnkoLogger {
 
-    lateinit var app: MainApp
     private lateinit var presenter: LoginPresenter
 
     private var username: EditText? = null
@@ -23,16 +20,14 @@ class LoginView : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        app = application as MainApp
-        presenter = LoginPresenter(this)
+        presenter = initPresenter(LoginPresenter(this)) as LoginPresenter
 
         username = findViewById(R.id.loginUsernameInput)
         password = findViewById(R.id.loginPasswordInput)
 
         val signUpButton = findViewById<Button>(R.id.loginSignUpButton)
         signUpButton.setOnClickListener {
-            val intent = Intent(this, SignUpView::class.java)
-            startActivity(intent)
+            navigateTo(VIEW.SIGNUP)
             username!!.text.clear()
             password!!.text.clear()
         }
