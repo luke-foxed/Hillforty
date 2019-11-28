@@ -44,9 +44,9 @@ open class MainView : AppCompatActivity(), AnkoLogger {
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
 
-        if (intent.hasExtra("username")) {
-            val username = intent.extras?.getString("username")!!
-            mainActivityUsernameText.text = username
+        if (intent.hasExtra("user")) {
+            val user: UserModel = intent.extras?.getParcelable("user")!!
+            mainActivityUsernameText.text = user.username
         }
 
         mDrawerLayout = findViewById(R.id.drawer_layout)

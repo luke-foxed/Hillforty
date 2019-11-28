@@ -1,6 +1,5 @@
 package org.wit.hillfortapp.views.signup
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import kotlinx.android.synthetic.main.activity_signup.*
@@ -9,7 +8,6 @@ import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.BaseView
-import org.wit.hillfortapp.views.login.LoginView
 
 class SignUpView : BaseView(), AnkoLogger {
 
@@ -41,12 +39,11 @@ class SignUpView : BaseView(), AnkoLogger {
         val password2Text = password2?.text.toString().trim()
 
         if (!validationCheck(usernameText, emailText, password1Text, password2Text)) {
-                user.username = usernameText
-                user.email = emailText
-                user.password = password1Text
+            user.username = usernameText
+            user.email = emailText
+            user.password = password1Text
             presenter.doSignup(user)
-                toast("Account created!")
-            startActivity(Intent(this@SignUpView, LoginView::class.java))
+            toast("Account created!")
         }
     }
 

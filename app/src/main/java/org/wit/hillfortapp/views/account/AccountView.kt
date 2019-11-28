@@ -70,7 +70,6 @@ class AccountView : BaseView(), AnkoLogger {
             builder.setPositiveButton("Yes") { dialog, _ ->
                 presenter.doDelete()
                 dialog.dismiss()
-                startActivity(Intent(this, LoginView::class.java))
             }
             builder.setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()

@@ -6,7 +6,6 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import org.jetbrains.anko.alert
-import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
@@ -80,6 +79,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             app.users.createHillfort(hillfort, app.activeUser)
         }
         view?.finish()
+        view?.navigateTo(VIEW.LIST)
     }
 
     fun doCancel() {
@@ -94,12 +94,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     fun doNext() {
         val index = app.activeUser.hillforts.indexOf(hillfort)
         try {
-            view?.startActivityForResult(
-                view?.intentFor<HillfortView>()?.putExtra(
-                    "hillfort_edit",
-                    app.activeUser.hillforts[index + 1]
-                ), 0
-            )
+            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", app.activeUser.hillforts[index + 1])
         } catch (e: IndexOutOfBoundsException) {
             view?.toast("Next Hillfort is Empty!")
         }
@@ -108,12 +103,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     fun doPrevious() {
         val index = app.activeUser.hillforts.indexOf(hillfort)
         try {
-            view?.startActivityForResult(
-                view?.intentFor<HillfortView>()?.putExtra(
-                    "hillfort_edit",
-                    app.activeUser.hillforts[index - 1]
-                ), 0
-            )
+            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", app.activeUser.hillforts[index - 1])
         } catch (e: IndexOutOfBoundsException) {
             view?.toast("Previous Hillfort is Empty!")
         }

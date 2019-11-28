@@ -3,6 +3,7 @@ package org.wit.hillfortapp.views.account
 import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
+import org.wit.hillfortapp.views.VIEW
 
 class AccountPresenter(view: BaseView) : BasePresenter(view) {
 
@@ -17,7 +18,7 @@ class AccountPresenter(view: BaseView) : BasePresenter(view) {
 
     fun doDelete() {
         app.users.deleteUser(app.activeUser)
-        view?.finish()
+        view?.navigateTo(VIEW.LOGIN)
     }
 
     fun doDeleteHillforts() {

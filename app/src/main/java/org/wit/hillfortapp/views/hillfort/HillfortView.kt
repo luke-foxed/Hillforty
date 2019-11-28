@@ -78,9 +78,6 @@ class HillfortView : BaseView(),
                 tempHillfort.location = location
 
                 presenter.doAddOrSave(tempHillfort)
-
-                // restart activity so that adapter updates
-                startActivity(Intent(this@HillfortView, HillfortListView::class.java))
             }
         }
 
@@ -152,7 +149,6 @@ class HillfortView : BaseView(),
                 builder.setPositiveButton("Yes") { dialog, _ ->
                     presenter.doDelete()
                     dialog.dismiss()
-                    startActivity(Intent(this, HillfortListView::class.java))
                 }
                 builder.setNegativeButton("No") { dialog, _ ->
                     dialog.dismiss()
