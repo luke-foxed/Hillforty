@@ -2,24 +2,23 @@ package org.wit.hillfortapp.room
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-
 import com.google.gson.reflect.TypeToken
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
-import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.NoteModel
 
 class UserConvertor {
 
     @TypeConverter
-    fun restoreList(listOfHillforts: String?): ArrayList<HillfortModel?>? {
-        return Gson().fromJson<ArrayList<HillfortModel?>>(
+    fun restoreList(listOfHillforts: String?): List<HillfortModel?>? {
+        return Gson().fromJson<List<HillfortModel?>>(
             listOfHillforts,
-            object : TypeToken<ArrayList<HillfortModel?>?>() {}.type
+            object : TypeToken<List<HillfortModel?>?>() {}.type
         )
     }
 
     @TypeConverter
-    fun saveListHillfort(listOfHillforts: ArrayList<HillfortModel?>?): String? {
+    fun saveListHillfort(listOfHillforts: List<HillfortModel?>?): String? {
         return Gson().toJson(listOfHillforts)
     }
 
@@ -38,28 +37,28 @@ class UserConvertor {
 
 
     @TypeConverter
-    fun saveImages(images: ArrayList<String>?): String? {
+    fun saveImages(images: List<String>?): String? {
         return Gson().toJson(images)
     }
 
     @TypeConverter
-    fun restoreImages(images: String?): ArrayList<String>? {
+    fun restoreImages(images: String?): List<String>? {
         return Gson().fromJson(
             images,
-            object : TypeToken<ArrayList<String>?>() {}.type
+            object : TypeToken<List<String>?>() {}.type
         )
     }
 
     @TypeConverter
-    fun saveNotes(notes: List<Note>?): String? {
+    fun saveNotes(notes: List<NoteModel>?): String? {
         return Gson().toJson(notes)
     }
 
     @TypeConverter
-    fun restoreNotes(notes: String?): List<Note>? {
+    fun restoreNotes(notes: String?): List<NoteModel>? {
         return Gson().fromJson(
             notes,
-            object : TypeToken<List<Note>?>() {}.type
+            object : TypeToken<List<NoteModel>?>() {}.type
         )
     }
 }

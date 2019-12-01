@@ -27,13 +27,11 @@ import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
-import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
-import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.views.BaseView
-import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 
 class HillfortView : BaseView(),
     NoteListener, AnkoLogger {
@@ -175,7 +173,7 @@ class HillfortView : BaseView(),
         }
     }
 
-    override fun onNoteClick(note: Note) {
+    override fun onNoteClick(note: NoteModel) {
         presenter.doClickNote(note)
     }
 
@@ -207,8 +205,10 @@ class HillfortView : BaseView(),
         hillfortDateVisited.setText(hillfort.dateVisited)
 
         // pull from model if contents have been updates
-        showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
-        showImages(app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images)
+//        showNotes()
+//        showImages()
+        getNotes()
+        // getImages()
 
         val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
         hillfortMapView.getMapAsync {
@@ -250,7 +250,11 @@ class HillfortView : BaseView(),
         }
     }
 
-    override fun showNotes(notes: ArrayList<Note>?) {
+    private fun getNotes() {
+        presenter.getNotes()?.let { showNotes(it) }
+    }
+
+    override fun showNotes(notes: List<NoteModel>?) {
         val layoutManager = LinearLayoutManager(this)
         val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
         recyclerNotes.layoutManager = layoutManager
@@ -274,7 +278,8 @@ class HillfortView : BaseView(),
         }
     }
 
-     override fun showImages(images: ArrayList<String>?) {
+     override fun showImages() {
+         val images = presenter.getImages()
         val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dotsIndicator)
         if (images != null) {

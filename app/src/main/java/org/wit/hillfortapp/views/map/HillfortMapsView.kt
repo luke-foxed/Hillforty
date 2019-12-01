@@ -37,7 +37,7 @@ class HillfortMapsView : BaseView(), GoogleMap.OnMarkerClickListener {
         currentImage.setImageBitmap(readImageFromPath(this, hillfort.images[0]))
     }
 
-    override fun showHillforts(hillforts: ArrayList<HillfortModel>) {
+    override fun showHillforts(hillforts: List<HillfortModel>) {
         presenter.doPopulateMap(map, hillforts)
     }
 

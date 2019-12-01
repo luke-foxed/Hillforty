@@ -6,6 +6,7 @@ import android.os.Bundle
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.wit.hillfortapp.models.*
+import org.wit.hillfortapp.room.UserStoreRoom
 
 class MainApp : Application(), AnkoLogger {
 
@@ -15,6 +16,6 @@ class MainApp : Application(), AnkoLogger {
     override fun onCreate() {
         super.onCreate()
         info("App started")
-        users = UserJSONStore(applicationContext)
+        users = UserStoreRoom(applicationContext)
     }
 }

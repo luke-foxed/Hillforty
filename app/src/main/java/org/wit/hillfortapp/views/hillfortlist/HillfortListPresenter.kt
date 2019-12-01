@@ -1,6 +1,8 @@
 package org.wit.hillfortapp.views.hillfortlist
 
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivityForResult
+import org.jetbrains.anko.uiThread
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
@@ -18,7 +20,14 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun loadHillforts() {
-        view?.showHillforts(app.activeUser.hillforts)
+        var hillforts: List<HillfortModel>?
+        doAsync {
+            hillforts = app.users.findAllUserHillforts(app.activeUser)
+            uiThread {
+                view?.showHillforts(hillforts!!)
+            }
+        }
+
     }
 
     // TODO --> Refactor 'show all hillforts map' to contain only active user hillforts on map

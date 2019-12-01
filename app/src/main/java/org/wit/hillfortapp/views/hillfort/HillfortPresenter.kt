@@ -6,13 +6,15 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
-import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.VIEW
@@ -60,7 +62,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
-    fun doClickNote(note: Note) {
+    fun doClickNote(note: NoteModel) {
         view?.alert("${note.title}\n\n${note.content}")?.show()
     }
 
@@ -69,17 +71,21 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.description = tempHillfort.description
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
+        hillfort.userID = app.activeUser.id
 
-        if (edit) {
-            hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
-            app.users.updateHillfort(
-                hillfort, app.activeUser
-            )
-        } else {
-            app.users.createHillfort(hillfort, app.activeUser)
+
+        doAsync {
+            if (edit) {
+                hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id)!!
+                app.users.updateHillfort(hillfort, app.activeUser)
+            } else {
+                app.users.createHillfort(hillfort, app.activeUser)
+            }
+            uiThread {
+                view?.finish()
+                view?.navigateTo(VIEW.LIST)
+            }
         }
-        view?.finish()
-        view?.navigateTo(VIEW.LIST)
     }
 
     fun doCancel() {
@@ -128,12 +134,37 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         if (!edit) {
             view?.toast("Please create a hillfort before adding notes to it!")
         } else {
-            val newNote = Note()
+            val newNote = NoteModel()
             newNote.title = title
             newNote.content = content
-            app.users.createNote(app.activeUser, hillfort, newNote)
-            view?.showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
+            newNote.hillfortID = hillfort.id
+            newNote.userID = app.activeUser.id
+            doAsync {
+                app.users.createNote(newNote)
+//                uiThread {
+//                    view?.showNotes()
+//                }
+            }
         }
+    }
+
+    fun getNotes(): List<NoteModel>? {
+        var notes:List<NoteModel>? = null
+        doAsync {
+            notes = app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id)
+            uiThread {
+                view?.showNotes(notes)
+            }
+        }
+        return notes
+    }
+
+    fun getImages(): List<String>? {
+        var images:List<String>? = null
+        doAsync {
+            images = app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images
+        }
+        return images
     }
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -157,7 +188,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                     imageArray.add(data.data.toString())
                 }
                 hillfort.images = imageArray
-                view?.showImages(imageArray)
+                view?.showImages()
             }
             LOCATION_REQUEST -> {
                 location = data.extras?.getParcelable("location")!!

@@ -2,10 +2,7 @@ package org.wit.hillfortapp.room
 
 import android.content.Context
 import androidx.room.Room
-import org.wit.hillfortapp.models.HillfortModel
-import org.wit.hillfortapp.models.Note
-import org.wit.hillfortapp.models.UserModel
-import org.wit.hillfortapp.models.UserStore
+import org.wit.hillfortapp.models.*
 
 class UserStoreRoom(val context: Context) : UserStore {
 
@@ -18,7 +15,7 @@ class UserStoreRoom(val context: Context) : UserStore {
         dao = database.userDao()
     }
 
-    override fun findAll(): ArrayList<UserModel> {
+    override fun findAll(): List<UserModel> {
         return dao.findAllUsers()
     }
 
@@ -48,11 +45,11 @@ class UserStoreRoom(val context: Context) : UserStore {
     -------
     */
 
-    override fun findAllHillforts(): ArrayList<HillfortModel>? {
+    override fun findAllHillforts(): List<HillfortModel>? {
         return dao.findAllHillforts()
     }
 
-    override fun findAllUserHillforts(activeUser: UserModel): ArrayList<HillfortModel> {
+    override fun findAllUserHillforts(activeUser: UserModel): List<HillfortModel> {
         return dao.findAllUserHillforts(activeUser.id)
     }
 
@@ -87,25 +84,24 @@ class UserStoreRoom(val context: Context) : UserStore {
 
 
     override fun findOneUserHillfortNotes(
-        activeUser: UserModel,
-        hillfort: HillfortModel
-    ): ArrayList<Note>? {
+        activeUserID: Int,
+        hillfortID: Int
+    ): List<NoteModel>? {
+return dao.findOneUserHillfortNotes(activeUserID, hillfortID)   }
+
+    override fun findAllHillfortNotes(): List<NoteModel> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun findAllHillfortNotes(): ArrayList<Note> {
+    override fun createNote(note: NoteModel) {
+        dao.createUserNote(note)
+    }
+
+    override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: NoteModel) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+    override fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, note: NoteModel) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

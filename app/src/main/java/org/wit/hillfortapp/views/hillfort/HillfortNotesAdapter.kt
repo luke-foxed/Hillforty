@@ -6,19 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.recycle_item_note.view.*
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.NoteModel
 
 interface NoteListener {
-    fun onNoteClick(note: Note)
+    fun onNoteClick(note: NoteModel)
 }
 
-class HillfortNotesAdapter constructor(private var notes: ArrayList<Note>,
+class HillfortNotesAdapter constructor(private var notes: List<NoteModel>,
                                    private val listener: NoteListener
 ) : RecyclerView.Adapter<HillfortNotesAdapter.MainHolder>() {
 
 
     fun removeAt(position: Int) {
-        notes.removeAt(position)
+        notes.toMutableList().removeAt(position)
         notifyItemRemoved(position)
     }
 
@@ -41,7 +41,7 @@ class HillfortNotesAdapter constructor(private var notes: ArrayList<Note>,
 
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(note: Note, listener: NoteListener) {
+        fun bind(note: NoteModel, listener: NoteListener) {
 
             if (note.content.length > 30) {
                 // only show part of string to prevent recycleview from resizing

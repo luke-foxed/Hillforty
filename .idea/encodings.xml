@@ -2,6 +2,6 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/../../AndroidStudio/DeviceExplorer/lge-lg_h930-LGH93058417d25/data/data/org.wit.hillfortapp/databases/room_sample.db" charset="windows-1252" />
-    <file url="PROJECT" charset="windows-1252" />
+    <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
