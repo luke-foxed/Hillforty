@@ -116,12 +116,13 @@ class HillfortView : BaseView(),
                 ) {
                     toast("Please fill out all fields!")
                 } else {
+
                     val newNote = NoteModel()
                     newNote.title = noteTitle.text.toString()
                     newNote.content = noteContent.text.toString()
                     newNote.hillfortID = hillfort.id
                     newNote.userID = app.activeUser.id
-                    newNote.id = (hillfort.notes?.size ?: +1)
+                    newNote.id = hillfort.notes.size + 1
                     presenter.doAddNote(newNote)
                     dialog.dismiss()
                 }
@@ -287,9 +288,9 @@ class HillfortView : BaseView(),
                     val adapter =
                         HillfortNotesAdapter(notes, this@HillfortView)
                     adapter.removeAt(viewHolder.adapterPosition)
-                    // val note = hillfort.notes[viewHolder.adapterPosition]
-                    // info(note)
-                    // presenter.doDeleteNote(note)
+                     val note = hillfort.notes[viewHolder.adapterPosition]
+                     info(note)
+                     presenter.doDeleteNote(note)
 
                     (recyclerNotes.adapter as HillfortNotesAdapter).notifyDataSetChanged()
                 }
