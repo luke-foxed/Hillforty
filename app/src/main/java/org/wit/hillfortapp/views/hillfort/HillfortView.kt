@@ -26,8 +26,11 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.helpers.checkLocationPermissions
+import org.wit.hillfortapp.helpers.generateID
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.NoteModel
@@ -38,6 +41,8 @@ class HillfortView : BaseView(),
 
     private lateinit var presenter: HillfortPresenter
     private var location = Location()
+    private var hillfort = HillfortModel()
+    private var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -52,6 +57,15 @@ class HillfortView : BaseView(),
             onCreate(null)
             getMapAsync {
                 MapsInitializer.initialize(applicationContext)
+            }
+        }
+        if (intent.hasExtra("hillfort_edit")) {
+            edit = true
+            hillfort = intent.extras?.getParcelable("hillfort_edit")!!
+            this.showHillfort(hillfort)
+        } else {
+            if (checkLocationPermissions(this)) {
+                presenter.doSetCurrentLocation()
             }
         }
 
@@ -74,6 +88,8 @@ class HillfortView : BaseView(),
                 tempHillfort.visited = hillfortVisited.isChecked
                 tempHillfort.dateVisited = hillfortDateVisited.text.toString().trim()
                 tempHillfort.location = location
+                tempHillfort.userID = app.activeUser.id
+                tempHillfort.id = generateID()
 
                 presenter.doAddOrSave(tempHillfort)
             }
@@ -100,7 +116,13 @@ class HillfortView : BaseView(),
                 ) {
                     toast("Please fill out all fields!")
                 } else {
-                    presenter.doAddNote(noteTitle.text.toString(), noteContent.text.toString())
+                    val newNote = NoteModel()
+                    newNote.title = noteTitle.text.toString()
+                    newNote.content = noteContent.text.toString()
+                    newNote.hillfortID = hillfort.id
+                    newNote.userID = app.activeUser.id
+                    newNote.id = hillfort.notes.size + 1
+                    presenter.doAddNote(newNote)
                     dialog.dismiss()
                 }
             }
@@ -177,6 +199,7 @@ class HillfortView : BaseView(),
         presenter.doClickNote(note)
     }
 
+
     // hillfortMapView methods
     public override fun onResume() {
         hillfortMapView.onResume()
@@ -199,14 +222,13 @@ class HillfortView : BaseView(),
     }
 
     override fun showHillfort(hillfort: HillfortModel) {
+
         hillfortName.setText(hillfort.name)
         hillfortDescription.setText(hillfort.description)
         hillfortVisited.isChecked = hillfort.visited
         hillfortDateVisited.setText(hillfort.dateVisited)
 
         // pull from model if contents have been updates
-//        showNotes()
-//        showImages()
         getNotes()
         // getImages()
 
@@ -268,6 +290,11 @@ class HillfortView : BaseView(),
                     val adapter =
                         HillfortNotesAdapter(notes, this@HillfortView)
                     adapter.removeAt(viewHolder.adapterPosition)
+                    info("HILLFORT NOTES")
+                    info(hillfort.notes)
+                    // val note = hillfort.notes[viewHolder.adapterPosition]
+                    // info(note)
+                    // presenter.doDeleteNote(note)
 
                     (recyclerNotes.adapter as HillfortNotesAdapter).notifyDataSetChanged()
                 }

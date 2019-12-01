@@ -6,6 +6,7 @@ import kotlinx.android.synthetic.main.activity_signup.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.helpers.generateID
 import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.BaseView
 
@@ -42,6 +43,7 @@ class SignUpView : BaseView(), AnkoLogger {
             user.username = usernameText
             user.email = emailText
             user.password = password1Text
+            user.id = generateID()
             presenter.doSignup(user)
             toast("Account created!")
         }

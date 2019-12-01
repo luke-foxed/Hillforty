@@ -33,13 +33,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     init {
         if (view.intent.hasExtra("hillfort_edit")) {
+            hillfort = view.intent.getParcelableExtra("hillfort_edit")
             edit = true
-            hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
-            view.showHillfort(hillfort)
-        } else {
-            if (checkLocationPermissions(view)) {
-                doSetCurrentLocation()
-            }
         }
     }
 
@@ -71,7 +66,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.description = tempHillfort.description
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
-        hillfort.userID = app.activeUser.id
+        hillfort.userID = tempHillfort.userID
+        hillfort.id = tempHillfort.id
 
 
         doAsync {
@@ -130,21 +126,23 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         )
     }
 
-    fun doAddNote(title: String, content: String) {
+    fun doAddNote(note: NoteModel) {
         if (!edit) {
             view?.toast("Please create a hillfort before adding notes to it!")
         } else {
-            val newNote = NoteModel()
-            newNote.title = title
-            newNote.content = content
-            newNote.hillfortID = hillfort.id
-            newNote.userID = app.activeUser.id
             doAsync {
-                app.users.createNote(newNote)
-//                uiThread {
-//                    view?.showNotes()
-//                }
+                app.users.createNote(note)
+                val notes = app.users.findOneUserHillfortNotes(note.userID, note.hillfortID)
+                uiThread {
+                    view?.showNotes(notes)
+                }
             }
+        }
+    }
+
+    fun doDeleteNote(note: NoteModel) {
+        doAsync {
+            app.users.deleteNote(note)
         }
     }
 

@@ -5,8 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.recycle_item_note.view.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.NoteModel
+import org.wit.hillfortapp.views.BaseView
 
 interface NoteListener {
     fun onNoteClick(note: NoteModel)
@@ -14,7 +17,7 @@ interface NoteListener {
 
 class HillfortNotesAdapter constructor(private var notes: List<NoteModel>,
                                    private val listener: NoteListener
-) : RecyclerView.Adapter<HillfortNotesAdapter.MainHolder>() {
+) : RecyclerView.Adapter<HillfortNotesAdapter.MainHolder>(), AnkoLogger {
 
 
     fun removeAt(position: Int) {

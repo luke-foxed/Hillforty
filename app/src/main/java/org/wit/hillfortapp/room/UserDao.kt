@@ -58,10 +58,13 @@ interface UserDao {
     fun findOneUserHillfortNotes(
         activeUserID: Int,
         hillfortID: Int
-    ): List<NoteModel>?
+    ): MutableList<NoteModel>?
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     fun createUserNote(note:NoteModel)
+
+    @Delete
+    fun deleteUserNote(note:NoteModel)
 
 //    override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
 //        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)

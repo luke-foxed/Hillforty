@@ -1,5 +1,7 @@
 package org.wit.hillfortapp.models
 
+import org.w3c.dom.Node
+
 interface UserStore {
 
     // User functionality
@@ -21,10 +23,10 @@ interface UserStore {
     fun deleteAllHillforts(activeUser: UserModel)
 
     // Note functionality
-    fun findOneUserHillfortNotes(activeUserID: Int, hillfortID: Int): List<NoteModel>?
+    fun findOneUserHillfortNotes(activeUserID: Int, hillfortID: Int): MutableList<NoteModel>?
     fun findAllHillfortNotes(): List<NoteModel>
     fun createNote(note: NoteModel)
     fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: NoteModel)
-    fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, note: NoteModel)
+    fun deleteNote(note:NoteModel)
 
 }

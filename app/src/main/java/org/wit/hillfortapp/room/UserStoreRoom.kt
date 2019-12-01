@@ -86,7 +86,7 @@ class UserStoreRoom(val context: Context) : UserStore {
     override fun findOneUserHillfortNotes(
         activeUserID: Int,
         hillfortID: Int
-    ): List<NoteModel>? {
+    ): MutableList<NoteModel>? {
 return dao.findOneUserHillfortNotes(activeUserID, hillfortID)   }
 
     override fun findAllHillfortNotes(): List<NoteModel> {
@@ -101,7 +101,7 @@ return dao.findOneUserHillfortNotes(activeUserID, hillfortID)   }
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, note: NoteModel) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun deleteNote(note:NoteModel) {
+        dao.deleteUserNote(note)
     }
 }
