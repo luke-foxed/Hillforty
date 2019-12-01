@@ -41,11 +41,11 @@ class HillfortListAdapter constructor(private var hillforts: List<HillfortModel>
             itemView.hillfortRecycleItemName.text = hillfort.name
             itemView.hillfortRecycleItemLocation.text = location
             itemView.hillfortRecycleItemVisited.text = "Visited: ${hillfort.visited}"
-            if(hillfort.images.size !=0) {
+            if(hillfort.images?.size !=0) {
                 itemView.hillfortRecycleItemImageIcon.setImageBitmap(
                     readImageFromPath(
                         itemView.context,
-                        hillfort.images[0]
+                        hillfort.images?.get(0).toString()
                     )
                 )
             }

@@ -146,10 +146,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
-    fun getNotes(): List<NoteModel>? {
+    fun getNotes(activeUserID: Int, hillfortID:Int): List<NoteModel>? {
         var notes:List<NoteModel>? = null
         doAsync {
-            notes = app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id)
+            notes = app.users.findOneUserHillfortNotes(activeUserID, hillfortID)
+            hillfort.notes = notes!!
             uiThread {
                 view?.showNotes(notes)
             }

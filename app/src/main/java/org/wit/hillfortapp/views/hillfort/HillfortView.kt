@@ -121,7 +121,7 @@ class HillfortView : BaseView(),
                     newNote.content = noteContent.text.toString()
                     newNote.hillfortID = hillfort.id
                     newNote.userID = app.activeUser.id
-                    newNote.id = hillfort.notes.size + 1
+                    newNote.id = (hillfort.notes?.size ?: +1)
                     presenter.doAddNote(newNote)
                     dialog.dismiss()
                 }
@@ -229,7 +229,7 @@ class HillfortView : BaseView(),
         hillfortDateVisited.setText(hillfort.dateVisited)
 
         // pull from model if contents have been updates
-        getNotes()
+        presenter.getNotes(app.activeUser.id, hillfort.id)
         // getImages()
 
         val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
@@ -272,9 +272,6 @@ class HillfortView : BaseView(),
         }
     }
 
-    private fun getNotes() {
-        presenter.getNotes()?.let { showNotes(it) }
-    }
 
     override fun showNotes(notes: List<NoteModel>?) {
         val layoutManager = LinearLayoutManager(this)
@@ -290,8 +287,6 @@ class HillfortView : BaseView(),
                     val adapter =
                         HillfortNotesAdapter(notes, this@HillfortView)
                     adapter.removeAt(viewHolder.adapterPosition)
-                    info("HILLFORT NOTES")
-                    info(hillfort.notes)
                     // val note = hillfort.notes[viewHolder.adapterPosition]
                     // info(note)
                     // presenter.doDeleteNote(note)

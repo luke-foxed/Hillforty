@@ -42,7 +42,7 @@ class StatsPresenter(view: BaseView) : BasePresenter(view) {
         var totalImages = 0
         if (hillforts != null) {
             for (hillfort in hillforts) {
-                totalImages += hillfort.images.size
+                totalImages += hillfort.images?.size
             }
         }
         return totalImages
