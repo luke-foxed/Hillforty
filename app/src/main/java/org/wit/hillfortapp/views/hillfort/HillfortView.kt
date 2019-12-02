@@ -41,8 +41,7 @@ class HillfortView : BaseView(),
 
     private lateinit var presenter: HillfortPresenter
     private var location = Location()
-    private var hillfort = HillfortModel()
-    private var edit = false
+    // private var hillfort: HillfortModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -60,8 +59,7 @@ class HillfortView : BaseView(),
             }
         }
         if (intent.hasExtra("hillfort_edit")) {
-            edit = true
-            hillfort = intent.extras?.getParcelable("hillfort_edit")!!
+            val hillfort:HillfortModel = intent.extras?.getParcelable("hillfort_edit")!!
             this.showHillfort(hillfort)
         } else {
             if (checkLocationPermissions(this)) {
@@ -117,13 +115,9 @@ class HillfortView : BaseView(),
                     toast("Please fill out all fields!")
                 } else {
 
-                    val newNote = NoteModel()
-                    newNote.title = noteTitle.text.toString()
-                    newNote.content = noteContent.text.toString()
-                    newNote.hillfortID = hillfort.id
-                    newNote.userID = app.activeUser.id
-                    newNote.id = hillfort.notes.size + 1
-                    presenter.doAddNote(newNote)
+                    val title = noteTitle.text.toString()
+                    val content= noteContent.text.toString()
+                    presenter.doAddNote(title, content)
                     dialog.dismiss()
                 }
             }
@@ -288,11 +282,12 @@ class HillfortView : BaseView(),
                     val adapter =
                         HillfortNotesAdapter(notes, this@HillfortView)
                     adapter.removeAt(viewHolder.adapterPosition)
-                     val note = hillfort.notes[viewHolder.adapterPosition]
-                     info(note)
-                     presenter.doDeleteNote(note)
-
                     (recyclerNotes.adapter as HillfortNotesAdapter).notifyDataSetChanged()
+//                     val note = hillfort.notes[viewHolder.adapterPosition]
+
+                    // this returns -1, notes are not being loaded to array
+
+                     // presenter.doDeleteNote(note)
                 }
             }
 

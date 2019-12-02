@@ -16,9 +16,9 @@ data class HillfortModel(
     var description: String = "",
     var visited: Boolean = false,
     var dateVisited: String = "",
-    @Embedded @Ignore var location: Location = Location(),
-    @Embedded @Ignore var images: List<String> = ArrayList(),
-    @Embedded @Ignore var notes: List<NoteModel> = ArrayList()
+    var images: MutableList<String> = ArrayList(),
+    var notes: MutableList<NoteModel> = ArrayList(),
+    @Embedded var location: Location = Location()
 
 ) : Parcelable
 

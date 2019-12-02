@@ -60,8 +60,11 @@ interface UserDao {
         hillfortID: Int
     ): MutableList<NoteModel>?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createUserNote(note:NoteModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addNoteList(notes: List<NoteModel>)
 
     @Delete
     fun deleteUserNote(note:NoteModel)

@@ -22,7 +22,7 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
     fun loadHillforts() {
         var hillforts: List<HillfortModel>?
         doAsync {
-            hillforts = app.users.findAllUserHillforts(app.activeUser)
+            hillforts = app.users.findAllUserHillforts(app.activeUser.id)
             uiThread {
                 view?.showHillforts(hillforts!!)
             }

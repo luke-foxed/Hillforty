@@ -49,27 +49,27 @@ class UserStoreRoom(val context: Context) : UserStore {
         return dao.findAllHillforts()
     }
 
-    override fun findAllUserHillforts(activeUser: UserModel): List<HillfortModel> {
-        return dao.findAllUserHillforts(activeUser.id)
+    override fun findAllUserHillforts(activeUserID: Int): List<HillfortModel> {
+        return dao.findAllUserHillforts(activeUserID)
     }
 
     override fun findOneHillfort(hillfortID: Int): HillfortModel? {
         return dao.findHillfortByID(hillfortID)
     }
 
-    override fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel? {
-        return dao.findOneUserHillfort(hillfortID, activeUser.id)
+    override fun findOneUserHillfort(hillfortID: Int, activeUserID: Int): HillfortModel? {
+        return dao.findOneUserHillfort(hillfortID, activeUserID)
     }
 
-    override fun createHillfort(hillfort: HillfortModel, activeUser: UserModel) {
+    override fun createHillfort(hillfort: HillfortModel) {
         return dao.createHillfort(hillfort)
     }
 
-    override fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel) {
+    override fun updateHillfort(hillfort: HillfortModel) {
         return dao.updateHillfort(hillfort)
     }
 
-    override fun deleteHillfort(hillfort: HillfortModel, activeUser: UserModel) {
+    override fun deleteHillfort(hillfort: HillfortModel) {
         return dao.deleteHillfort(hillfort)
     }
 
@@ -95,6 +95,10 @@ return dao.findOneUserHillfortNotes(activeUserID, hillfortID)   }
 
     override fun createNote(note: NoteModel) {
         dao.createUserNote(note)
+    }
+
+    override fun addNoteList(notes: List<NoteModel>) {
+        dao.addNoteList(notes)
     }
 
     override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: NoteModel) {

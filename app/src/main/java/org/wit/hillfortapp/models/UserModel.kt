@@ -15,5 +15,5 @@ data class UserModel(
     var username: String = "",
     var email: String = "",
     var password: String = "",
-    @Embedded @Ignore var hillforts: List<HillfortModel> = ArrayList()
+    var hillforts: List<HillfortModel> = ArrayList()
 ) : Parcelable

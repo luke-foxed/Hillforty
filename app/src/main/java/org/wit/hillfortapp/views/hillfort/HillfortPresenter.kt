@@ -5,10 +5,7 @@ import android.content.Intent
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
@@ -22,6 +19,8 @@ import org.wit.hillfortapp.views.VIEW
 class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     private var hillfort = HillfortModel()
+    private var note = NoteModel()
+    private var notes: MutableList<NoteModel>? = null
     private var edit = false
 
     private val IMAGE_REQUEST = 1
@@ -33,8 +32,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     init {
         if (view.intent.hasExtra("hillfort_edit")) {
-            hillfort = view.intent.getParcelableExtra("hillfort_edit")
             edit = true
+            hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
+            doAsync {
+
+            }
         }
     }
 
@@ -69,13 +71,12 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.userID = tempHillfort.userID
         hillfort.id = tempHillfort.id
 
-
         doAsync {
             if (edit) {
                 hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id)!!
-                app.users.updateHillfort(hillfort, app.activeUser)
+                app.users.updateHillfort(hillfort)
             } else {
-                app.users.createHillfort(hillfort, app.activeUser)
+                app.users.createHillfort(hillfort)
             }
             uiThread {
                 view?.finish()
@@ -89,8 +90,12 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doDelete() {
-        app.users.deleteHillfort(hillfort, app.activeUser)
-        view?.finish()
+        doAsync {
+            app.users.deleteHillfort(hillfort)
+            uiThread {
+                view?.finish()
+            }
+        }
     }
 
     fun doNext() {
@@ -126,13 +131,22 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         )
     }
 
-    fun doAddNote(note: NoteModel) {
+    fun doAddNote(title: String, content: String) {
         if (!edit) {
             view?.toast("Please create a hillfort before adding notes to it!")
         } else {
             doAsync {
+                notes = getNotes(app.activeUser.id, hillfort.id)
+
+                note.title = title
+                note.content = content
+                note.hillfortID = hillfort.id
+                note.userID = app.activeUser.id
+                note.id = notes?.size!! + 1
+
+                notes!!.add(note)
                 app.users.createNote(note)
-                val notes = app.users.findOneUserHillfortNotes(note.userID, note.hillfortID)
+
                 uiThread {
                     view?.showNotes(notes)
                 }
@@ -146,11 +160,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
-    fun getNotes(activeUserID: Int, hillfortID:Int): List<NoteModel>? {
-        var notes:List<NoteModel>? = null
+    fun getNotes(activeUserID: Int, hillfortID:Int): MutableList<NoteModel>? {
+        var notes:MutableList<NoteModel>? = null
         doAsync {
             notes = app.users.findOneUserHillfortNotes(activeUserID, hillfortID)
-            hillfort.notes = notes!!
             uiThread {
                 view?.showNotes(notes)
             }
@@ -161,7 +174,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     fun getImages(): List<String>? {
         var images:List<String>? = null
         doAsync {
-            images = app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images
+            images = app.users.findOneUserHillfort(hillfort.id, app.activeUser.id)?.images
         }
         return images
     }

@@ -1,6 +1,5 @@
 package org.wit.hillfortapp.models
 
-import org.w3c.dom.Node
 
 interface UserStore {
 
@@ -14,18 +13,19 @@ interface UserStore {
 
     // Hillfort functionality
     fun findAllHillforts(): List<HillfortModel>?
-    fun findAllUserHillforts(activeUser: UserModel): List<HillfortModel>
+    fun findAllUserHillforts(activeUserID: Int): List<HillfortModel>
     fun findOneHillfort(hillfortID: Int): HillfortModel?
-    fun findOneUserHillfort(hillfortID: Int, activeUser: UserModel): HillfortModel?
-    fun createHillfort(hillfort: HillfortModel, activeUser: UserModel)
-    fun updateHillfort(hillfort: HillfortModel, activeUser: UserModel)
-    fun deleteHillfort(hillfort: HillfortModel, activeUser: UserModel)
+    fun findOneUserHillfort(hillfortID: Int, activeUserID: Int): HillfortModel?
+    fun createHillfort(hillfort: HillfortModel)
+    fun updateHillfort(hillfort: HillfortModel)
+    fun deleteHillfort(hillfort: HillfortModel)
     fun deleteAllHillforts(activeUser: UserModel)
 
     // Note functionality
     fun findOneUserHillfortNotes(activeUserID: Int, hillfortID: Int): MutableList<NoteModel>?
     fun findAllHillfortNotes(): List<NoteModel>
     fun createNote(note: NoteModel)
+    fun addNoteList(notes: List<NoteModel>)
     fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: NoteModel)
     fun deleteNote(note:NoteModel)
 
