@@ -131,13 +131,13 @@ class UserJSONStore(val context: Context) : UserStore, AnkoLogger {
 
     // Note Functionality
 
-    override fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<Note>? {
+    override fun findOneUserHillfortNotes(activeUser: UserModel, hillfort: HillfortModel): ArrayList<NoteModel>? {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         return foundHillfort?.notes
     }
 
-    override fun findAllHillfortNotes(): ArrayList<Note> {
-        val totalNotes = ArrayList<Note>()
+    override fun findAllHillfortNotes(): ArrayList<NoteModel> {
+        val totalNotes = ArrayList<NoteModel>()
         val totalHillforts = findAllHillforts()
         for(hillfort in totalHillforts) {
             totalNotes.addAll(hillfort.notes)
@@ -145,34 +145,34 @@ class UserJSONStore(val context: Context) : UserStore, AnkoLogger {
         return totalNotes
     }
 
-    override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+    override fun createNote(activeUser: UserModel, hillfort: HillfortModel, noteModel: NoteModel) {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         val index = activeUser.hillforts.indexOf(foundHillfort)
-        note.id = generateRandomId().toInt()
-        activeUser.hillforts[index].notes.add(note)
+        noteModel.id = generateRandomId().toInt()
+        activeUser.hillforts[index].notes.add(noteModel)
         serialize()
     }
 
-    override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+    override fun updateNote(activeUser: UserModel, hillfort: HillfortModel, noteModel: NoteModel) {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         val foundHillfortNotes = findOneUserHillfortNotes(activeUser, hillfort)
         val foundNote = foundHillfortNotes?.singleOrNull { matchingNote ->
-            matchingNote.id == note.id
+            matchingNote.id == noteModel.id
         }
         val hillfortIndex = activeUser.hillforts.indexOf(foundHillfort)
         val noteIndex = activeUser.hillforts[hillfortIndex].notes.indexOf(foundNote)
 
         if (foundNote != null) {
-            activeUser.hillforts[hillfortIndex].notes[noteIndex] = note
+            activeUser.hillforts[hillfortIndex].notes[noteIndex] = noteModel
             serialize()
         }
     }
 
-    override fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
+    override fun deleteNote(activeUser: UserModel, hillfort: HillfortModel, noteModel: NoteModel) {
         val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
         val foundHillfortNotes = findOneUserHillfortNotes(activeUser, hillfort)
         val foundNote = foundHillfortNotes?.singleOrNull { matchingNote ->
-            matchingNote.id == note.id
+            matchingNote.id == noteModel.id
         }
         val hillfortIndex = activeUser.hillforts.indexOf(foundHillfort)
         val noteIndex = activeUser.hillforts[hillfortIndex].notes.indexOf(foundNote)

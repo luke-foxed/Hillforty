@@ -25,7 +25,7 @@ class StatsPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doGetVisits(): Int {
-        val hillforts: ArrayList<HillfortModel>? = app.users.findAllHillforts()
+        val hillforts: List<HillfortModel>? = app.users.findAllHillforts()
         var totalVisits = 0
         if (hillforts != null) {
             for (hillfort in hillforts) {
@@ -38,7 +38,7 @@ class StatsPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doGetImages(): Int {
-        val hillforts: ArrayList<HillfortModel>? = app.users.findAllHillforts()
+        val hillforts: List<HillfortModel>? = app.users.findAllHillforts()
         var totalImages = 0
         if (hillforts != null) {
             for (hillfort in hillforts) {

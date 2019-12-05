@@ -11,7 +11,7 @@ import org.wit.hillfortapp.views.BaseView
 
 class HillfortMapsPresenter(view: BaseView) : BasePresenter(view) {
 
-    fun doPopulateMap(map: GoogleMap, hillforts: ArrayList<HillfortModel>) {
+    fun doPopulateMap(map: GoogleMap, hillforts: List<HillfortModel>) {
         map.uiSettings.isZoomControlsEnabled = true
         hillforts.forEach {
             val loc = LatLng(it.location.lat, it.location.lng)

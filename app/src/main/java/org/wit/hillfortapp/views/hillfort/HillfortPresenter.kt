@@ -6,16 +6,20 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.Location
-import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.VIEW
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
@@ -60,8 +64,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
-    fun doClickNote(note: Note) {
-        view?.alert("${note.title}\n\n${note.content}")?.show()
+    fun doClickNote(noteModel: NoteModel) {
+        view?.alert("${noteModel.title}\n\n${noteModel.content}")?.show()
     }
 
     fun doAddOrSave(tempHillfort: HillfortModel) {
@@ -69,17 +73,22 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.description = tempHillfort.description
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
+        hillfort.userID = app.activeUser.id
+        hillfort.id = Random().nextLong().toInt()
 
-        if (edit) {
-            hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
-            app.users.updateHillfort(
-                hillfort, app.activeUser
-            )
-        } else {
-            app.users.createHillfort(hillfort, app.activeUser)
+        doAsync {
+            if (edit) {
+                hillfort.notes =
+                    app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id)!!
+                app.users.updateHillfort(hillfort)
+            } else {
+                app.users.createHillfort(hillfort)
+            }
+            uiThread {
+                view?.finish()
+                view?.navigateTo(VIEW.LIST)
+            }
         }
-        view?.finish()
-        view?.navigateTo(VIEW.LIST)
     }
 
     fun doCancel() {
@@ -87,7 +96,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doDelete() {
-        app.users.deleteHillfort(hillfort, app.activeUser)
+        app.users.deleteHillfort(hillfort)
         view?.finish()
     }
 
@@ -128,11 +137,14 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         if (!edit) {
             view?.toast("Please create a hillfort before adding notes to it!")
         } else {
-            val newNote = Note()
+            val newNote = NoteModel()
             newNote.title = title
             newNote.content = content
-            app.users.createNote(app.activeUser, hillfort, newNote)
-            view?.showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
+            newNote.id = hillfort.notes.size + 1
+            newNote.hillfortID = hillfort.id
+            newNote.userID = app.activeUser.id
+            app.users.createNote(newNote)
+            view?.showNotes(app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id))
         }
     }
 

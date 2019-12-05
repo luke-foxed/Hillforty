@@ -22,7 +22,7 @@ class AccountPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doDeleteHillforts() {
-        app.users.deleteAllHillforts(app.activeUser)
+        app.users.deleteAllHillforts(app.activeUser.id)
     }
 }
 
