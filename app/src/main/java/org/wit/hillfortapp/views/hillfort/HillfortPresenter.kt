@@ -22,7 +22,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     private var hillfort = HillfortModel()
 
-    private var notes: List<NoteModel>? = ArrayList()
+    private var notes: MutableList<NoteModel>? = mutableListOf()
 
     private var edit = false
 
@@ -38,7 +38,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             edit = true
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
             doAsync {
-                notes = app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id)
+                notes = app.users.findOneUserHillfortNotes(
+                    app.activeUser.id,
+                    hillfort.id
+                ) as MutableList<NoteModel>?
                 uiThread {
                     view.showHillfort(hillfort)
                     view.showNotes(notes)
@@ -156,8 +159,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             newNote.userID = app.activeUser.id
             doAsync {
                 app.users.createNote(newNote)
-                notes?.toMutableList()?.add(newNote)
-                view?.showNotes(notes)
+                notes?.add(newNote)
+                uiThread {
+                    view?.showNotes(notes)
+                }
             }
         }
     }
