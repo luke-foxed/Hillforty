@@ -8,6 +8,7 @@ import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.BaseView
+import kotlin.random.Random
 
 class SignUpView : BaseView(), AnkoLogger {
 
@@ -42,6 +43,7 @@ class SignUpView : BaseView(), AnkoLogger {
             user.username = usernameText
             user.email = emailText
             user.password = password1Text
+            user.id = Random.nextInt()
             presenter.doSignup(user)
             toast("Account created!")
         }
