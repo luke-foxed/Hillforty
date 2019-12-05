@@ -5,7 +5,10 @@ import android.content.Intent
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import org.jetbrains.anko.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
@@ -164,6 +167,12 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                     view?.showNotes(notes)
                 }
             }
+        }
+    }
+
+    fun doDeleteNote(noteModel: NoteModel) {
+        doAsync {
+            app.users.deleteNote(noteModel)
         }
     }
 

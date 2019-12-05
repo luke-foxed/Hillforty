@@ -26,6 +26,7 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
@@ -248,7 +249,7 @@ class HillfortView : BaseView(),
         }
     }
 
-    override fun showNotes(notes: List<NoteModel>?) {
+    override fun showNotes(notes: MutableList<NoteModel>?) {
         val layoutManager = LinearLayoutManager(this)
         val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
         recyclerNotes.layoutManager = layoutManager
@@ -262,7 +263,7 @@ class HillfortView : BaseView(),
                     val adapter =
                         HillfortNotesAdapter(notes, this@HillfortView)
                     adapter.removeAt(viewHolder.adapterPosition)
-
+                    presenter.doDeleteNote(notes[viewHolder.adapterPosition])
                     (recyclerNotes.adapter as HillfortNotesAdapter).notifyDataSetChanged()
                 }
             }

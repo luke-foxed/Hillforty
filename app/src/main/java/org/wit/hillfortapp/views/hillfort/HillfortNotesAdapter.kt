@@ -12,13 +12,13 @@ interface NoteListener {
     fun onNoteClick(noteModel: NoteModel)
 }
 
-class HillfortNotesAdapter constructor(private var notes: List<NoteModel>,
+class HillfortNotesAdapter constructor(private var notes: MutableList<NoteModel>,
                                        private val listener: NoteListener
 ) : RecyclerView.Adapter<HillfortNotesAdapter.MainHolder>() {
 
 
     fun removeAt(position: Int) {
-        notes.toMutableList().removeAt(position)
+        notes.removeAt(position)
         notifyItemRemoved(position)
     }
 
