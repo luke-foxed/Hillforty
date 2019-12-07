@@ -13,7 +13,7 @@ class LoginView : BaseView(), AnkoLogger {
 
     private lateinit var presenter: LoginPresenter
 
-    private var username: EditText? = null
+    private var email: EditText? = null
     private var password: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,13 +22,13 @@ class LoginView : BaseView(), AnkoLogger {
 
         presenter = initPresenter(LoginPresenter(this)) as LoginPresenter
 
-        username = findViewById(R.id.loginUsernameInput)
+        email = findViewById(R.id.loginEmailInput)
         password = findViewById(R.id.loginPasswordInput)
 
         val signUpButton = findViewById<Button>(R.id.loginSignUpButton)
         signUpButton.setOnClickListener {
             navigateTo(VIEW.SIGNUP)
-            username!!.text.clear()
+            email!!.text.clear()
             password!!.text.clear()
         }
 
@@ -38,7 +38,7 @@ class LoginView : BaseView(), AnkoLogger {
 
     private fun login() {
 
-        val usernameText = username!!.text.toString()
+        val usernameText = email!!.text.toString()
         val passwordText = password!!.text.toString()
 
         if (listOf(
@@ -49,7 +49,7 @@ class LoginView : BaseView(), AnkoLogger {
             toast("Please fill out all fields")
         } else {
             presenter.doLogin(usernameText, passwordText)
-            username!!.text.clear()
+            email!!.text.clear()
             password!!.text.clear()
         }
     }

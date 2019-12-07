@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileOptions {
         sourceCompatibility = 1.8
@@ -57,6 +59,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'androidx.room:room-runtime:2.2.2'
     kapt 'androidx.room:room-compiler:2.2.2'
 }

@@ -16,8 +16,8 @@ interface UserDao {
     @Query("SELECT * FROM UserModel")
     fun findAllUsers(): List<UserModel>
 
-    @Query("select * from UserModel where username = :username AND password = :password")
-    fun findOneUser(username: String, password: String): UserModel
+    @Query("select * from UserModel where email = :email AND password = :password")
+    fun findOneUser(email: String, password: String): UserModel
 
     @Query("select * from UserModel where username = :username")
     fun findUsername(username: String): UserModel?
