@@ -16,18 +16,17 @@ class HillfortMapsPresenter(view: BaseView) : BasePresenter(view) {
         hillforts.forEach {
             val loc = LatLng(it.location.lat, it.location.lng)
             val options = MarkerOptions().title(it.name).position(loc)
-            map.addMarker(options).tag = it.id
+            map.addMarker(options).tag = it
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.location.zoom))
         }
     }
 
     fun doMarkerSelected(marker: Marker) {
-        val tag = marker.tag as Int
-        val hillfort = app.users.findOneHillfort(tag)
-        if (hillfort != null) view?.showHillfort(hillfort)
+        val hillfort = marker.tag as HillfortModel
+        view?.showHillfort(hillfort)
     }
 
     fun loadHillforts() {
-        view?.showHillforts(app.users.findAllHillforts()!!)
+        view?.showHillforts(app.hillforts.findAllHillforts()!!)
     }
 }

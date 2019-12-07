@@ -35,14 +35,14 @@ interface UserDao {
     @Query("SELECT * FROM HillfortModel")
     fun findAllHillforts(): List<HillfortModel>
 
-    @Query("SELECT * FROM HillfortModel WHERE userID=:userID")
-    fun findAllUserHillforts(userID: Int): List<HillfortModel>
+//    @Query("SELECT * FROM HillfortModel WHERE userID=:userID")
+//    fun findAllUserHillforts(userID: Int): List<HillfortModel>
 
     @Query("select * from HillfortModel where ID = :id")
     fun findHillfortByID(id: Int): HillfortModel
 
-    @Query("select * from HillfortModel where ID = :hillfortID AND userID =:userID")
-    fun findOneUserHillfort(hillfortID: Int, userID: Int): HillfortModel
+//    @Query("select * from HillfortModel where ID = :hillfortID AND userID =:userID")
+//    fun findOneUserHillfort(hillfortID: Int, userID: Int): HillfortModel
 
     @Update
     fun updateHillfort(hillfort: HillfortModel)
@@ -50,15 +50,15 @@ interface UserDao {
     @Delete
     fun deleteHillfort(hillfort: HillfortModel)
 
-    @Query("DELETE FROM HillfortModel WHERE userID=:userID")
-    fun deleteAllHillforts(userID:Int)
+//    @Query("DELETE FROM HillfortModel WHERE userID=:userID")
+//    fun deleteAllHillforts(userID:Int)
 
     /// NOTES QUERIES
-    @Query("SELECT * FROM NoteModel WHERE userID=:activeUserID AND hillfortID=:hillfortID")
-    fun findOneUserHillfortNotes(
-        activeUserID: Int,
-        hillfortID: Int
-    ): List<NoteModel>
+//    @Query("SELECT * FROM NoteModel WHERE userID=:activeUserID AND hillfortID=:hillfortID")
+//    fun findOneUserHillfortNotes(
+//        activeUserID: Int,
+//        hillfortID: Int
+//    ): List<NoteModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createUserNote(note:NoteModel)
@@ -74,6 +74,6 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun createImage(imageModel: ImageModel)
 
-    @Query("SELECT * FROM ImageModel WHERE id = :hillfortID AND userID = :activeUserID")
-    fun findOneUserHillfortImages(activeUserID: Int, hillfortID: Int):List<ImageModel>
+//    @Query("SELECT * FROM ImageModel WHERE id = :hillfortID AND userID = :activeUserID")
+//    fun findOneUserHillfortImages(activeUserID: Int, hillfortID: Int):List<ImageModel>
 }

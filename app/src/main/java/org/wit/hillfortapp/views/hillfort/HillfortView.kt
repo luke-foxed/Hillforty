@@ -102,7 +102,7 @@ class HillfortView : BaseView(),
                 ) {
                     toast("Please fill out all fields!")
                 } else {
-                    presenter.doAddNote(noteTitle.text.toString(), noteContent.text.toString())
+//                    presenter.doAddNote(noteTitle.text.toString(), noteContent.text.toString())
                     dialog.dismiss()
                 }
             }
@@ -253,7 +253,7 @@ class HillfortView : BaseView(),
     override fun showNotes(notes: MutableList<NoteModel>?) {
         val layoutManager = LinearLayoutManager(this)
         val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
-        recyclerNotes.layoutManager = layoutManager
+        recyclerNotes.layoutManager = layoutManager as RecyclerView.LayoutManager?
         if (notes != null) {
             recyclerNotes.adapter =
                 HillfortNotesAdapter(notes, this)
@@ -264,7 +264,7 @@ class HillfortView : BaseView(),
                     val adapter =
                         HillfortNotesAdapter(notes, this@HillfortView)
                     adapter.removeAt(viewHolder.adapterPosition)
-                    presenter.doDeleteNote(notes[viewHolder.adapterPosition])
+//                    presenter.doDeleteNote(notes[viewHolder.adapterPosition])
                     (recyclerNotes.adapter as HillfortNotesAdapter).notifyDataSetChanged()
                 }
             }

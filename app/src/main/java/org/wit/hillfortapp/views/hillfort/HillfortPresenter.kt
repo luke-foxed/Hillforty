@@ -40,15 +40,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
             doAsync {
 
-                notes = app.users.findOneUserHillfortNotes(
-                    app.activeUser.id,
-                    hillfort.id
-                ) as MutableList<NoteModel>?
-
-                images = app.users.findOneUserHillfortImages(
-                    app.activeUser.id,
-                    hillfort.id
-                ) as MutableList<ImageModel>?
+                notes = hillfort.notes as MutableList<NoteModel>
+                images = hillfort.images as MutableList<ImageModel>
 
                 uiThread {
                     view.info("USER IMAGES")
@@ -60,7 +53,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             }
 
         } else {
-            hillfort.id = Random().nextInt()
             if (checkLocationPermissions(view)) {
                 doSetCurrentLocation()
             }
@@ -95,19 +87,14 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.description = tempHillfort.description
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
-        hillfort.userID = app.activeUser.id
-        if(!edit) {
-            hillfort.id = Random().nextInt()
-        }
-
 
         doAsync {
             if (edit) {
                 hillfort.notes = notes!!
                 hillfort.images = images!!
-                app.users.updateHillfort(hillfort)
+                app.hillforts.updateHillfort(hillfort)
             } else {
-                app.users.createHillfort(hillfort)
+                app.hillforts.createHillfort(hillfort)
             }
             uiThread {
                 view?.finish()
@@ -122,7 +109,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     fun doDelete() {
         doAsync {
-            app.users.deleteHillfort(hillfort)
+            app.hillforts.deleteHillfort(hillfort)
             uiThread {
                 view?.finish()
             }
@@ -130,18 +117,20 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doNext() {
-        val index = app.activeUser.hillforts.indexOf(hillfort)
+        val hillforts = app.hillforts.findAllHillforts()
+        val index = hillforts?.indexOf(hillfort)
         try {
-            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", app.activeUser.hillforts[index + 1])
+            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", hillforts?.get(index!!.plus(1)))
         } catch (e: IndexOutOfBoundsException) {
             view?.toast("Next Hillfort is Empty!")
         }
     }
 
     fun doPrevious() {
-        val index = app.activeUser.hillforts.indexOf(hillfort)
+        val hillforts = app.hillforts.findAllHillforts()
+        val index = hillforts?.indexOf(hillfort)
         try {
-            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", app.activeUser.hillforts[index - 1])
+            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", hillforts?.get(index!!.minus(1)))
         } catch (e: IndexOutOfBoundsException) {
             view?.toast("Previous Hillfort is Empty!")
         }
@@ -162,31 +151,30 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         )
     }
 
-    fun doAddNote(title: String, content: String) {
-        if (!edit) {
-            view?.toast("Please create a hillfort before adding notes to it!")
-        } else {
-            val newNote = NoteModel()
-            newNote.title = title
-            newNote.content = content
-            newNote.id = notes?.size!!.plus(1)
-            newNote.hillfortID = hillfort.id
-            newNote.userID = app.activeUser.id
-            doAsync {
-                app.users.createNote(newNote)
-                notes?.add(newNote)
-                uiThread {
-                    view?.showNotes(notes)
-                }
-            }
-        }
-    }
+//    fun doAddNote(title: String, content: String) {
+//        if (!edit) {
+//            view?.toast("Please create a hillfort before adding notes to it!")
+//        } else {
+//            val newNote = NoteModel()
+//            newNote.title = title
+//            newNote.content = content
+//            newNote.id = notes?.size!!.plus(1)
+//            newNote.hillfortID = hillfort.id
+//            doAsync {
+//                app.users.createNote(newNote)
+//                notes?.add(newNote)
+//                uiThread {
+//                    view?.showNotes(notes)
+//                }
+//            }
+//        }
+//    }
 
-    fun doDeleteNote(noteModel: NoteModel) {
-        doAsync {
-            app.users.deleteNote(noteModel)
-        }
-    }
+//    fun doDeleteNote(noteModel: NoteModel) {
+//        doAsync {
+//            app.users.deleteNote(noteModel)
+//        }
+//    }
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
@@ -202,8 +190,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                         images?.clear()
                         while (counter < mClipData!!.itemCount) {
                             val newImage = ImageModel()
-                            newImage.hillfortID = hillfort.id
-                            newImage.userID = app.activeUser.id
+//                            newImage.hillfortID = hillfort.id
                             newImage.image = mClipData.getItemAt(counter).uri.toString()
                             newImage.id = Random().nextInt()
                             images?.add(newImage)
@@ -213,12 +200,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                     // else add single image
                 } else {
                     val newImage = ImageModel()
-                    newImage.hillfortID = hillfort.id
-                    newImage.userID = app.activeUser.id
+//                    newImage.hillfortID = hillfort.id
                     newImage.image = data.data.toString()
                     newImage.id = Random().nextInt()
                     doAsync {
-                        app.users.createImage(newImage)
+//                        app.users.createImage(newImage)
                     }
                     images?.add(newImage)
                 }

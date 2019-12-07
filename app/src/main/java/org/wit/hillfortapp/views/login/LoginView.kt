@@ -49,8 +49,8 @@ class LoginView : BaseView(), AnkoLogger {
             toast("Please fill out all fields")
         } else {
             presenter.doLogin(usernameText, passwordText)
-            email!!.text.clear()
-            password!!.text.clear()
+            //email!!.text.clear()
+            //password!!.text.clear()
         }
     }
 }

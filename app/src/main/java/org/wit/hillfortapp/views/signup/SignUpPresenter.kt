@@ -16,7 +16,7 @@ class SignUpPresenter(view: BaseView) : BasePresenter(view) {
         auth.createUserWithEmailAndPassword(user.email, user.password)
             .addOnCompleteListener(view!!) { task ->
                 if (task.isSuccessful) {
-                    view?.navigateTo(VIEW.LIST)
+                    view?.navigateTo(VIEW.LOGIN)
                 } else {
                     view?.toast("Sign Up Failed: ${task.exception?.message}")
                 }
@@ -32,7 +32,7 @@ class SignUpPresenter(view: BaseView) : BasePresenter(view) {
     fun doFindUsername(username: String): Boolean {
         var foundUsername = false
         doAsync {
-            foundUsername = app.users.findUsername(username)
+//            foundUsername = app.users.findUsername(username)
         }
         return foundUsername
     }

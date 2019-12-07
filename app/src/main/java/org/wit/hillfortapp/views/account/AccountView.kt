@@ -47,15 +47,15 @@ class AccountView : BaseView(), AnkoLogger {
                         .contains("") -> toast("Please fill out all fields")
                     !isEmailValid(emailField?.text.toString()) -> toast("Please enter a valid email")
                     else -> {
-                        val editedUser = UserModel(
-                            app.activeUser.id,
-                            usernameField?.text.toString(),
-                            emailField?.text.toString(),
-                            passwordField?.text.toString(),
-                            app.activeUser.hillforts
-                        )
-                        presenter.doUpdate(editedUser)
-                        dialog.dismiss()
+//                        val editedUser = UserModel(
+//                            app.activeUser.id,
+//                            usernameField?.text.toString(),
+//                            emailField?.text.toString(),
+//                            passwordField?.text.toString(),
+//                            app.activeUser.hillforts
+//                        )
+//                        presenter.doUpdate(editedUser)
+//                        dialog.dismiss()
                     }
                 }
             }

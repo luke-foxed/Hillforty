@@ -91,7 +91,7 @@ open class MainView : AppCompatActivity(), AnkoLogger {
                 }
 
                 R.id.nav_logout -> {
-                    app.activeUser = UserModel()
+//                    app.activeUser = UserModel()
                     startActivity(Intent(this@MainView, LoginView::class.java))
                 }
             }

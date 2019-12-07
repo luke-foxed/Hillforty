@@ -21,9 +21,11 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
 
     fun loadHillforts() {
         doAsync {
-            val hillforts = app.users.findAllUserHillforts(app.activeUser.id)
+            val hillforts = app.hillforts.findAllHillforts()
             uiThread {
-                view?.showHillforts(hillforts)
+                if (hillforts != null) {
+                    view?.showHillforts(hillforts)
+                }
             }
         }
     }

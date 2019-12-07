@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
 data class HillfortModel(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    var userID: Int = 0,
+    var fbId: String = "",
     var name: String = "",
     var description: String = "",
     var visited: Boolean = false,
@@ -33,7 +33,6 @@ data class Location(var lat: Double = 0.0,
 data class NoteModel(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    var userID: Int = 0,
     var hillfortID: Int = 0,
     var title: String = "",
     var content: String = ""
@@ -45,7 +44,6 @@ data class NoteModel(
 data class ImageModel(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    var userID: Int = 0,
     var hillfortID: Int = 0,
     var image: String = ""
 ): Parcelable
