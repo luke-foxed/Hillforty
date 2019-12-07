@@ -1,6 +1,7 @@
 package org.wit.hillfortapp.models.rooms
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import org.wit.hillfortapp.models.*
 
@@ -77,7 +78,11 @@ class UserRoomsStore(val context: Context) : UserStore {
         return dao.deleteAllHillforts(activeUserID)
     }
 
-    ////
+    /*
+    -------
+    Note Functionality
+    -------
+    */
 
     override fun findOneUserHillfortNotes(
         activeUserID: Int,
@@ -99,5 +104,19 @@ class UserRoomsStore(val context: Context) : UserStore {
 
     override fun deleteNote(noteModel:NoteModel) {
         dao.deleteUserNote(noteModel)
+    }
+
+    /*
+    -------
+    Image Functionality
+    -------
+    */
+
+    override fun createImage(imageModel: ImageModel) {
+        dao.createImage(imageModel)
+    }
+
+    override fun findOneUserHillfortImages(activeUserID: Int, hillfortID: Int): List<ImageModel> {
+        return dao.findOneUserHillfortImages(activeUserID, hillfortID)
     }
 }

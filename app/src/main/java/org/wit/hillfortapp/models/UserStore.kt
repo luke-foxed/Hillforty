@@ -26,4 +26,8 @@ interface UserStore {
     fun createNote(noteModel: NoteModel)
     fun deleteNote(noteModel: NoteModel)
 
+    // Image functionality
+    fun findOneUserHillfortImages(activeUserID: Int, hillfortID: Int): List<ImageModel>
+    fun createImage(imageModel: ImageModel)
+
 }

@@ -5,27 +5,25 @@ import android.content.Intent
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
+import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.VIEW
 import java.util.*
-import kotlin.collections.ArrayList
 
 class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     private var hillfort = HillfortModel()
 
     private var notes: MutableList<NoteModel>? = mutableListOf()
+    private var images: MutableList<ImageModel>? = mutableListOf()
 
     private var edit = false
 
@@ -41,18 +39,28 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             edit = true
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
             doAsync {
+
                 notes = app.users.findOneUserHillfortNotes(
                     app.activeUser.id,
                     hillfort.id
                 ) as MutableList<NoteModel>?
+
+                images = app.users.findOneUserHillfortImages(
+                    app.activeUser.id,
+                    hillfort.id
+                ) as MutableList<ImageModel>?
+
                 uiThread {
+                    view.info("USER IMAGES")
+                    view.info(images)
                     view.showHillfort(hillfort)
                     view.showNotes(notes)
+                    view.showImages(images)
                 }
             }
 
-
         } else {
+            hillfort.id = Random().nextInt()
             if (checkLocationPermissions(view)) {
                 doSetCurrentLocation()
             }
@@ -88,11 +96,15 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
         hillfort.userID = app.activeUser.id
-        hillfort.id = Random().nextInt()
+        if(!edit) {
+            hillfort.id = Random().nextInt()
+        }
+
 
         doAsync {
             if (edit) {
                 hillfort.notes = notes!!
+                hillfort.images = images!!
                 app.users.updateHillfort(hillfort)
             } else {
                 app.users.createHillfort(hillfort)
@@ -179,7 +191,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
             IMAGE_REQUEST -> {
-                val imageArray = ArrayList<String>()
 
                 // if multiple images selected
                 if (data.clipData != null) {
@@ -188,16 +199,32 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                     } else {
                         val mClipData = data.clipData
                         var counter = 0
+                        images?.clear()
                         while (counter < mClipData!!.itemCount) {
-                            imageArray.add(mClipData.getItemAt(counter).uri.toString())
+                            val newImage = ImageModel()
+                            newImage.hillfortID = hillfort.id
+                            newImage.userID = app.activeUser.id
+                            newImage.image = mClipData.getItemAt(counter).uri.toString()
+                            newImage.id = Random().nextInt()
+                            images?.add(newImage)
                             counter++
                         }
                     }
+                    // else add single image
                 } else {
-                    imageArray.add(data.data.toString())
+                    val newImage = ImageModel()
+                    newImage.hillfortID = hillfort.id
+                    newImage.userID = app.activeUser.id
+                    newImage.image = data.data.toString()
+                    newImage.id = Random().nextInt()
+                    doAsync {
+                        app.users.createImage(newImage)
+                    }
+                    images?.add(newImage)
                 }
-                hillfort.images = imageArray
-                view?.showImages(imageArray)
+
+                hillfort.images = images!!
+                view?.showImages(images)
             }
             LOCATION_REQUEST -> {
                 location = data.extras?.getParcelable("location")!!

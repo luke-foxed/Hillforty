@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.wit.hillfortapp.models.HillfortModel
+import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.NoteModel
 
@@ -37,21 +38,20 @@ class Convertor {
 
 
     @TypeConverter
-    fun saveImages(images: List<String>?): String? {
+    fun saveImages(images: List<ImageModel>?): String? {
         return Gson().toJson(images)
     }
 
     @TypeConverter
-    fun restoreImages(images: String?): List<String>? {
-        return Gson().fromJson(
-            images,
-            object : TypeToken<List<String>?>() {}.type
-        )
+    fun restoreImages(images: String?): List<ImageModel>? {
+        val type = object : TypeToken<List<ImageModel>>() {}.type
+        return Gson().fromJson(images, type)
     }
 
     @TypeConverter
     fun saveNotes(notes: List<NoteModel>?): String? {
-        return Gson().toJson(notes)
+        val type = object : TypeToken<List<NoteModel>>() {}.type
+        return Gson().toJson(notes, type)
     }
 
     @TypeConverter

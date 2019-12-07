@@ -20,7 +20,9 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
                     view?.navigateTo(VIEW.MAIN, 0, "user", user)
                 }
             } catch (e: Exception) {
-                view?.toast("No user found!")
+                uiThread {
+                    view?.toast("No user found!")
+                }
             }
         }
     }

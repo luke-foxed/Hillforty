@@ -1,7 +1,9 @@
 package org.wit.hillfortapp.models
 
 import android.os.Parcelable
+import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
 
@@ -13,11 +15,11 @@ data class HillfortModel(
     var userID: Int = 0,
     var name: String = "",
     var description: String = "",
-    var location: Location = Location(),
-    var images: List<String> = ArrayList(),
-    var notes: List<NoteModel> = ArrayList(),
     var visited: Boolean = false,
-    var dateVisited: String = ""
+    var dateVisited: String = "",
+    @Embedded var location: Location = Location(),
+    var images: List<ImageModel> = ArrayList(),
+    var notes: List<NoteModel> = ArrayList()
 
 ) : Parcelable
 
@@ -36,3 +38,14 @@ data class NoteModel(
     var title: String = "",
     var content: String = ""
 ) : Parcelable
+
+
+@Parcelize
+@Entity
+data class ImageModel(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
+    var userID: Int = 0,
+    var hillfortID: Int = 0,
+    var image: String = ""
+): Parcelable

@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.models.HillfortModel
+import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.editlocation.EditLocationView
@@ -73,7 +74,7 @@ abstract class BaseView : MainView(), AnkoLogger {
     open fun showHillfort(hillfort: HillfortModel) {}
     open fun showHillforts(hillforts: List<HillfortModel>) {}
     open fun showNotes(notes: MutableList<NoteModel>?) {}
-    open fun showImages(images: List<String>?) {}
+    open fun showImages(images: MutableList<ImageModel>?) {}
     open fun showUpdatedMap(latLng: LatLng) {}
     open fun showAccount(user: UserModel) {}
     open fun showProgress() {}

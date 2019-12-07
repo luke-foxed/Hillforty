@@ -2,6 +2,7 @@ package org.wit.hillfortapp.models.rooms
 
 import androidx.room.*
 import org.wit.hillfortapp.models.HillfortModel
+import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.models.UserModel
 
@@ -52,7 +53,7 @@ interface UserDao {
     @Query("DELETE FROM HillfortModel WHERE userID=:userID")
     fun deleteAllHillforts(userID:Int)
 
-    /// NOTES
+    /// NOTES QUERIES
     @Query("SELECT * FROM NoteModel WHERE userID=:activeUserID AND hillfortID=:hillfortID")
     fun findOneUserHillfortNotes(
         activeUserID: Int,
@@ -68,9 +69,11 @@ interface UserDao {
     @Delete
     fun deleteUserNote(note:NoteModel)
 
-//    override fun createNote(activeUser: UserModel, hillfort: HillfortModel, note: Note) {
-//        val foundHillfort = findOneUserHillfort(hillfort.id, activeUser)
-//        val index = activeUser.hillforts.indexOf(foundHillfort)
-//        note.id = generateRandomId().toInt()
-//        activeUser.hillforts[index].notes.add(note)
+    /// IMAGES QUERIES
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun createImage(imageModel: ImageModel)
+
+    @Query("SELECT * FROM ImageModel WHERE id = :hillfortID AND userID = :activeUserID")
+    fun findOneUserHillfortImages(activeUserID: Int, hillfortID: Int):List<ImageModel>
 }

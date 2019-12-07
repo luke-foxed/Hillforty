@@ -45,7 +45,9 @@ class HillfortListAdapter constructor(private var hillforts: List<HillfortModel>
                 itemView.hillfortRecycleItemImageIcon.setImageBitmap(
                     readImageFromPath(
                         itemView.context,
-                        hillfort.images[0]
+                        hillfort.images[0].image
+
+                    // NEED TO REVISIT
                     )
                 )
             }

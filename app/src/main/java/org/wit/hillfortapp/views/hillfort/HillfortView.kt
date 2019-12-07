@@ -30,6 +30,7 @@ import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
+import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.Location
 import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.views.BaseView
@@ -273,7 +274,8 @@ class HillfortView : BaseView(),
         }
     }
 
-     override fun showImages(images: List<String>?) {
+
+     override fun showImages(images: MutableList<ImageModel>?) {
         val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dotsIndicator)
         if (images != null) {
