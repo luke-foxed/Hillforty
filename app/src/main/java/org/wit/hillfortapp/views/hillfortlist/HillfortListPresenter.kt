@@ -18,7 +18,7 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun loadHillforts() {
-        view?.showHillforts(app.activeUser.hillforts)
+//        view?.showHillforts(app.activeUser.hillforts)
     }
 
     // TODO --> Refactor 'show all hillforts map' to contain only active user hillforts on map

@@ -71,12 +71,12 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.dateVisited = tempHillfort.dateVisited
 
         if (edit) {
-            hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
-            app.users.updateHillfort(
-                hillfort, app.activeUser
+//            hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
+            app.hillforts.updateHillfort(
+                hillfort
             )
         } else {
-            app.users.createHillfort(hillfort, app.activeUser)
+            app.hillforts.createHillfort(hillfort)
         }
         view?.finish()
         view?.navigateTo(VIEW.LIST)
@@ -87,7 +87,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doDelete() {
-        app.users.deleteHillfort(hillfort, app.activeUser)
+        app.hillforts.deleteHillfort(hillfort)
         view?.finish()
     }
 
@@ -131,8 +131,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             val newNote = Note()
             newNote.title = title
             newNote.content = content
-            app.users.createNote(app.activeUser, hillfort, newNote)
-            view?.showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
+//            app.users.createNote(app.activeUser, hillfort, newNote)
+//            view?.showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
         }
     }
 

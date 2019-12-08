@@ -207,8 +207,8 @@ class HillfortView : BaseView(),
         hillfortDateVisited.setText(hillfort.dateVisited)
 
         // pull from model if contents have been updates
-        showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
-        showImages(app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images)
+//        showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
+//        showImages(app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images)
 
         val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
         hillfortMapView.getMapAsync {

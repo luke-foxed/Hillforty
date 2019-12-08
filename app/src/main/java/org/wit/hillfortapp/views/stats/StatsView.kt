@@ -19,11 +19,11 @@ class StatsView : BaseView(), AnkoLogger {
         presenter = StatsPresenter(this)
 
         // set stats
-        statsUsersNumber.text = presenter.doGetUsers().toString()
+//        statsUsersNumber.text = presenter.doGetUsers().toString()
         statsHillfortsNumber.text = presenter.doGetHillforts().toString()
         statsImagesNumber.text = presenter.doGetImages().toString()
         statsVisitedNumber.text = presenter.doGetVisits().toString()
-        statsNotesNumber.text = presenter.doGetNotes().toString()
+//        statsNotesNumber.text = presenter.doGetNotes().toString()
         statsTopUser.text = presenter.doGetMostActiveUser().toUpperCase()
     }
 }

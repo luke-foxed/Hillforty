@@ -66,10 +66,10 @@ class SignUpView : BaseView(), AnkoLogger {
                 hasErrors = true
             }
 
-            presenter.doFindUsername(usernameText) -> {
-                toast("This username already exists")
-                hasErrors = true
-            }
+//            presenter.doFindUsername(usernameText) -> {
+//                toast("This username already exists")
+//                hasErrors = true
+//            }
 
             !isEmailValid(emailText) -> {
                 toast("Please enter a valid email")

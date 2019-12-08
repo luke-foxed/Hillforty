@@ -12,17 +12,17 @@ class AccountPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doUpdate(user: UserModel) {
-        app.users.update(user)
+//        app.users.update(user)
         view?.showAccount(user)
     }
 
     fun doDelete() {
-        app.users.deleteUser(app.activeUser)
+//        app.users.deleteUser(app.activeUser)
         view?.navigateTo(VIEW.LOGIN)
     }
 
     fun doDeleteHillforts() {
-        app.users.deleteAllHillforts(app.activeUser)
+//        app.users.deleteAllHillforts(app.activeUser)
     }
 }
 

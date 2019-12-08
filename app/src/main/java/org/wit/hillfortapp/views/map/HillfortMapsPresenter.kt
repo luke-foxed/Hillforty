@@ -23,11 +23,11 @@ class HillfortMapsPresenter(view: BaseView) : BasePresenter(view) {
 
     fun doMarkerSelected(marker: Marker) {
         val tag = marker.tag as Int
-        val hillfort = app.users.findOneHillfort(tag)
+        val hillfort = app.hillforts.findOneHillfort(tag)
         if (hillfort != null) view?.showHillfort(hillfort)
     }
 
     fun loadHillforts() {
-        view?.showHillforts(app.users.findAllHillforts()!!)
+        view?.showHillforts(app.hillforts.findAllHillforts()!!)
     }
 }
