@@ -1,13 +1,16 @@
 package org.wit.hillfortapp.views.login
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.VIEW
+import org.wit.hillfortapp.views.hillfortlist.HillfortListPresenter
 
 class LoginView : BaseView(), AnkoLogger {
 
@@ -24,6 +27,7 @@ class LoginView : BaseView(), AnkoLogger {
 
         email = findViewById(R.id.loginEmailInput)
         password = findViewById(R.id.loginPasswordInput)
+        progressBar.visibility = View.GONE
 
         val signUpButton = findViewById<Button>(R.id.loginSignUpButton)
         signUpButton.setOnClickListener {
@@ -52,5 +56,13 @@ class LoginView : BaseView(), AnkoLogger {
             //email!!.text.clear()
             //password!!.text.clear()
         }
+    }
+
+    override fun hideProgress() {
+        progressBar.visibility = View.GONE
+    }
+
+    override fun showProgress() {
+        progressBar.visibility = View.VISIBLE
     }
 }

@@ -40,22 +40,21 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
 //    }
 
     fun doLogin(email: String, password: String) {
+        view?.showProgress()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
             if (task.isSuccessful) {
                 view?.info(fireStore)
                 if (fireStore != null) {
                     fireStore!!.fetchHillforts {
-                        view?.info("logging in")
-//                        view?.hideProgress()
+                        view?.hideProgress()
                         view?.navigateTo(VIEW.MAIN)
                     }
                 } else {
-                    view?.info("no DB")
-//                    view?.hideProgress()
+                    view?.hideProgress()
                     view?.navigateTo(VIEW.MAIN)
                 }
             } else {
-//                view?.hideProgress()
+                view?.hideProgress()
                 view?.toast("Sign Up Failed: ${task.exception?.message}")
             }
         }
