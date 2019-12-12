@@ -182,18 +182,18 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
                 // if multiple images selected
                 if (data.clipData != null) {
+                    images.clear()
                     if (data.clipData!!.itemCount > 4) {
                         view?.toast("Exceeded maximum of 4 images")
                     } else {
                         val mClipData = data.clipData
                         var counter = 0
-                        images?.clear()
                         while (counter < mClipData!!.itemCount) {
                             val newImage = ImageModel()
                             newImage.uri = mClipData.getItemAt(counter).uri.toString()
                             newImage.fbID = hillfort.fbId
                             newImage.id = Random().nextInt()
-                            images?.add(newImage)
+                            images.add(newImage)
                             counter++
                         }
                     }
@@ -203,10 +203,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                     newImage.uri = data.data.toString()
                     newImage.fbID = hillfort.fbId
                     newImage.id = Random().nextInt()
-                    images?.add(newImage)
+                    images.add(newImage)
                 }
 
-                hillfort.images = images!!
+                hillfort.images = images
                 view?.showImages(images)
             }
             LOCATION_REQUEST -> {
