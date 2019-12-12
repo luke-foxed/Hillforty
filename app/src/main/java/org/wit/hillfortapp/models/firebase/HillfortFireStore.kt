@@ -61,6 +61,17 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
     override fun deleteHillfort(hillfort: HillfortModel) {
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).removeValue()
         hillforts.remove(hillfort)
+
+        // remove images
+        val images = st.child(userId)
+        images.listAll().addOnSuccessListener {
+            it.items.forEach { item ->
+                item.delete()
+            }
+        }.addOnFailureListener {
+            info("Error deleting photos: $it")
+        }
+
     }
 
     override fun deleteAllHillforts(activeUserID: Int) {
@@ -72,7 +83,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             override fun onCancelled(dataSnapshot: DatabaseError) {
             }
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot!!.children.mapNotNullTo(hillforts) {
+                dataSnapshot.children.mapNotNullTo(hillforts) {
                     it.getValue<HillfortModel>(HillfortModel::class.java)
                 }
                 hillfortsReady()
@@ -102,12 +113,12 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 //            }
 //        }
 
-    fun updateImage(hillfort: HillfortModel) {
+    private fun updateImage(hillfort: HillfortModel) {
         hillfort.images.forEachIndexed {index, image ->
             val fileName = File(image.uri)
             val imageName = fileName.name
 
-            val imageRef = st.child(userId + '/' + imageName)
+            val imageRef = st.child("$userId/$imageName")
             val baos = ByteArrayOutputStream()
             val bitmap = readImageFromPath(context, image.uri)
 

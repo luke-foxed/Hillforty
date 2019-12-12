@@ -9,6 +9,7 @@ import org.wit.hillfortapp.models.firebase.HillfortFireStore
 class MainApp : Application(), AnkoLogger {
 
     lateinit var hillforts: HillfortStore
+    var activeUser: String = ""
 
     override fun onCreate() {
         super.onCreate()

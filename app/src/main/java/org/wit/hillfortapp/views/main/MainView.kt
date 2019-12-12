@@ -44,10 +44,12 @@ open class MainView : AppCompatActivity(), AnkoLogger {
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
 
-        if (intent.hasExtra("user")) {
-            val user: UserModel = intent.extras?.getParcelable("user")!!
-            mainActivityUsernameText.text = user.username
-        }
+//        if (intent.hasExtra("user")) {
+//            val user: UserModel = intent.extras?.getParcelable("user")!!
+//            mainActivityUsernameText.text = user.username
+//        }
+        val userName = app.activeUser.split('@')[0]
+        mainActivityUsernameText.text = userName
 
         mDrawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
