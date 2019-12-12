@@ -45,9 +45,15 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
             if (task.isSuccessful) {
                 view?.info(fireStore)
                 if (fireStore != null) {
-                    fireStore!!.fetchHillforts {
-                        view?.hideProgress()
-                        view?.navigateTo(VIEW.MAIN)
+                    doAsync {
+                        fireStore!!.fetchHillforts {
+                            view?.hideProgress()
+                            view?.navigateTo(VIEW.MAIN)
+                        }
+//                        uiThread {
+//                            view?.hideProgress()
+//                            view?.navigateTo(VIEW.MAIN)
+//                        }
                     }
                 } else {
                     view?.hideProgress()

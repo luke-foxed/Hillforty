@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.recycle_item_hillfort.view.*
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.models.HillfortModel
 
 interface HillfortListener {
@@ -42,14 +42,9 @@ class HillfortListAdapter constructor(private var hillforts: List<HillfortModel>
             itemView.hillfortRecycleItemLocation.text = location
             itemView.hillfortRecycleItemVisited.text = "Visited: ${hillfort.visited}"
             if(hillfort.images.size !=0) {
-                itemView.hillfortRecycleItemImageIcon.setImageBitmap(
-                    readImageFromPath(
-                        itemView.context,
-                        hillfort.images[0].image
+                Glide.with(itemView.context).load(hillfort.images[0].uri)
+                    .into(itemView.hillfortRecycleItemImageIcon)
 
-                    // NEED TO REVISIT
-                    )
-                )
             }
             else {
                 itemView.hillfortRecycleItemImageIcon.setImageResource(R.drawable.placeholder)

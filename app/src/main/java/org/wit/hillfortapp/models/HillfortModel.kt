@@ -18,7 +18,7 @@ data class HillfortModel(
     var visited: Boolean = false,
     var dateVisited: String = "",
     @Embedded var location: Location = Location(),
-    var images: List<ImageModel> = ArrayList(),
+    @Embedded var images: ArrayList<ImageModel> = ArrayList(),
     var notes: List<NoteModel> = ArrayList()
 
 ) : Parcelable
@@ -44,6 +44,6 @@ data class NoteModel(
 data class ImageModel(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    var hillfortID: Int = 0,
-    var image: String = ""
+    var fbID: String = "",
+    var uri: String = ""
 ): Parcelable

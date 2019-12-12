@@ -23,7 +23,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     private var hillfort = HillfortModel()
 
     private var notes: MutableList<NoteModel>? = mutableListOf()
-    private var images: MutableList<ImageModel>? = mutableListOf()
+    private var images: ArrayList<ImageModel> = arrayListOf()
 
     private var edit = false
 
@@ -41,7 +41,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             doAsync {
 
                 notes = hillfort.notes as MutableList<NoteModel>
-                images = hillfort.images as MutableList<ImageModel>
+                images = hillfort.images
 
                 uiThread {
                     view.info("USER IMAGES")
@@ -190,8 +190,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                         images?.clear()
                         while (counter < mClipData!!.itemCount) {
                             val newImage = ImageModel()
-//                            newImage.hillfortID = hillfort.id
-                            newImage.image = mClipData.getItemAt(counter).uri.toString()
+                            newImage.uri = mClipData.getItemAt(counter).uri.toString()
+                            newImage.fbID = hillfort.fbId
                             newImage.id = Random().nextInt()
                             images?.add(newImage)
                             counter++
@@ -200,12 +200,9 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                     // else add single image
                 } else {
                     val newImage = ImageModel()
-//                    newImage.hillfortID = hillfort.id
-                    newImage.image = data.data.toString()
+                    newImage.uri = data.data.toString()
+                    newImage.fbID = hillfort.fbId
                     newImage.id = Random().nextInt()
-                    doAsync {
-//                        app.users.createImage(newImage)
-                    }
                     images?.add(newImage)
                 }
 

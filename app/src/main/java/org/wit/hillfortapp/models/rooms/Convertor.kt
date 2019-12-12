@@ -38,13 +38,13 @@ class Convertor {
 
 
     @TypeConverter
-    fun saveImages(images: List<ImageModel>?): String? {
+    fun saveImages(images: ArrayList<ImageModel>?): String? {
         return Gson().toJson(images)
     }
 
     @TypeConverter
-    fun restoreImages(images: String?): List<ImageModel>? {
-        val type = object : TypeToken<List<ImageModel>>() {}.type
+    fun restoreImages(images: String?): ArrayList<ImageModel>? {
+        val type = object : TypeToken<ArrayList<ImageModel>>() {}.type
         return Gson().fromJson(images, type)
     }
 

@@ -26,7 +26,6 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
@@ -208,7 +207,7 @@ class HillfortView : BaseView(),
 
 //        pull from model if contents have been updates
 //        showNotes(app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id))
-//        showImages(app.users.findOneUserHillfort(hillfort.id, app.activeUser)?.images)
+          showImages(hillfort.images)
 
         val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
         hillfortMapView.getMapAsync {
@@ -275,7 +274,7 @@ class HillfortView : BaseView(),
     }
 
 
-     override fun showImages(images: MutableList<ImageModel>?) {
+     override fun showImages(images: ArrayList<ImageModel>) {
         val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
         val dotsIndicator = findViewById<DotsIndicator>(R.id.dotsIndicator)
         if (images != null) {
