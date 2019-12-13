@@ -73,7 +73,7 @@ abstract class BaseView : MainView(), AnkoLogger {
 
     open fun showHillfort(hillfort: HillfortModel) {}
     open fun showHillforts(hillforts: List<HillfortModel>) {}
-    open fun showNotes(notes: MutableList<NoteModel>?) {}
+    open fun showNotes(notes: ArrayList<NoteModel>?) {}
     open fun showImages(images: ArrayList<ImageModel>) {}
     open fun showUpdatedMap(latLng: LatLng) {}
     open fun showAccount(user: UserModel) {}

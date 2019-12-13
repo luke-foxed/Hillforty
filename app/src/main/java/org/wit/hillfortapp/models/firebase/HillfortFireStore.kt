@@ -96,23 +96,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         db.child("users").child(userId).child("hillforts").addListenerForSingleValueEvent(valueEventListener)
     }
 
-//    fun fetchHillforts() {
-//        userId = FirebaseAuth.getInstance().currentUser!!.uid
-//        db = FirebaseDatabase.getInstance().reference
-//            val strings: List<String> = mutableListOf(
-//                "why",
-//                "wont",
-//                "you",
-//               "work"
-//            )
-//            strings.forEach {
-//                val key = db.child("salads").push().key
-//                if (key != null) {
-//                    db.child("salads").child(key).setValue(it)
-//                }
-//            }
-//        }
-
     private fun updateImage(hillfort: HillfortModel) {
         hillfort.images.forEachIndexed {index, image ->
             val fileName = File(image.uri)

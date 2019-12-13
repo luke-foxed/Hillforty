@@ -12,7 +12,7 @@ interface NoteListener {
     fun onNoteClick(noteModel: NoteModel)
 }
 
-class HillfortNotesAdapter constructor(private var notes: MutableList<NoteModel>,
+class HillfortNotesAdapter constructor(private var notes: ArrayList<NoteModel>,
                                        private val listener: NoteListener
 ) : RecyclerView.Adapter<HillfortNotesAdapter.MainHolder>() {
 

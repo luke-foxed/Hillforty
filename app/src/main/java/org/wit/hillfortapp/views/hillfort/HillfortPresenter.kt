@@ -5,7 +5,10 @@ import android.content.Intent
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import org.jetbrains.anko.*
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
@@ -22,7 +25,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     private var hillfort = HillfortModel()
 
-    private var notes: MutableList<NoteModel>? = mutableListOf()
+    private var notes: ArrayList<NoteModel>? = arrayListOf()
     private var images: ArrayList<ImageModel> = arrayListOf()
 
     private var edit = false
@@ -40,15 +43,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
             doAsync {
 
-                notes = hillfort.notes as MutableList<NoteModel>
+                notes = hillfort.notes
                 images = hillfort.images
 
                 uiThread {
-                    view.info("USER IMAGES")
-                    view.info(images)
                     view.showHillfort(hillfort)
-                    view.showNotes(notes)
-                    view.showImages(images)
                 }
             }
 
@@ -87,11 +86,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.description = tempHillfort.description
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
+        hillfort.images = images
 
         doAsync {
             if (edit) {
                 hillfort.notes = notes!!
-                hillfort.images = images!!
                 app.hillforts.updateHillfort(hillfort)
             } else {
                 app.hillforts.createHillfort(hillfort)
@@ -151,30 +150,28 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         )
     }
 
-//    fun doAddNote(title: String, content: String) {
-//        if (!edit) {
-//            view?.toast("Please create a hillfort before adding notes to it!")
-//        } else {
-//            val newNote = NoteModel()
-//            newNote.title = title
-//            newNote.content = content
-//            newNote.id = notes?.size!!.plus(1)
-//            newNote.hillfortID = hillfort.id
-//            doAsync {
-//                app.users.createNote(newNote)
-//                notes?.add(newNote)
-//                uiThread {
-//                    view?.showNotes(notes)
-//                }
-//            }
-//        }
-//    }
+    fun doAddNote(title: String, content: String) {
+        if (!edit) {
+            view?.toast("Please create a hillfort before adding notes to it!")
+        } else {
+            val newNote = NoteModel()
+            newNote.title = title
+            newNote.content = content
+            newNote.id = notes?.size!!.plus(1)
+            newNote.fbId = hillfort.fbId
+            doAsync {
+                hillfort.notes.add(newNote)
+                uiThread {
+                    view?.showNotes(notes)
+                }
+            }
+        }
+    }
 
-//    fun doDeleteNote(noteModel: NoteModel) {
-//        doAsync {
-//            app.users.deleteNote(noteModel)
-//        }
-//    }
+    fun doDeleteNote(noteModel: NoteModel) {
+        hillfort.notes.remove(noteModel)
+        app.hillforts.updateHillfort(hillfort)
+    }
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {

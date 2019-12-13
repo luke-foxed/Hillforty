@@ -26,6 +26,7 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
@@ -101,7 +102,7 @@ class HillfortView : BaseView(),
                 ) {
                     toast("Please fill out all fields!")
                 } else {
-//                    presenter.doAddNote(noteTitle.text.toString(), noteContent.text.toString())
+                    presenter.doAddNote(noteTitle.text.toString(), noteContent.text.toString())
                     dialog.dismiss()
                 }
             }
@@ -205,9 +206,8 @@ class HillfortView : BaseView(),
         hillfortVisited.isChecked = hillfort.visited
         hillfortDateVisited.setText(hillfort.dateVisited)
 
-//        pull from model if contents have been updates
-//        showNotes(app.users.findOneUserHillfortNotes(app.activeUser.id, hillfort.id))
-          showImages(hillfort.images)
+        showNotes(hillfort.notes)
+        showImages(hillfort.images)
 
         val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
         hillfortMapView.getMapAsync {
@@ -249,10 +249,11 @@ class HillfortView : BaseView(),
         }
     }
 
-    override fun showNotes(notes: MutableList<NoteModel>?) {
+    override fun showNotes(notes: ArrayList<NoteModel>?) {
+
         val layoutManager = LinearLayoutManager(this)
         val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
-        recyclerNotes.layoutManager = layoutManager as RecyclerView.LayoutManager?
+        recyclerNotes.layoutManager = layoutManager
         if (notes != null) {
             recyclerNotes.adapter =
                 HillfortNotesAdapter(notes, this)
@@ -260,10 +261,8 @@ class HillfortView : BaseView(),
 
             val swipeHandler = object : HillfortNoteDeleteCallback(this) {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    val adapter =
-                        HillfortNotesAdapter(notes, this@HillfortView)
+                    val adapter = HillfortNotesAdapter(notes, this@HillfortView)
                     adapter.removeAt(viewHolder.adapterPosition)
-//                    presenter.doDeleteNote(notes[viewHolder.adapterPosition])
                     (recyclerNotes.adapter as HillfortNotesAdapter).notifyDataSetChanged()
                 }
             }
