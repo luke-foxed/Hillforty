@@ -105,9 +105,11 @@ class HillfortView : BaseView(),
 
                 isFabOpen = true
             }
-
         }
 
+        fabMoreDelete.setOnClickListener {
+            presenter.doDelete()
+        }
 
         hillfortSaveFAB.setOnClickListener {
             if (listOf(
