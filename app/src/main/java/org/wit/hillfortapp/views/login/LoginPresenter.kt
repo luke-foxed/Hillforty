@@ -29,6 +29,7 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
                 if (fireStore != null) {
                     doAsync {
                         fireStore!!.fetchHillforts {
+                            fireStore!!.fetchFavourites()
                             view?.hideProgress()
                             view?.navigateTo(VIEW.MAIN)
                         }

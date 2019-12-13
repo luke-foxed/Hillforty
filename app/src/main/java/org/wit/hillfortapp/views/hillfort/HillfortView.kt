@@ -1,5 +1,6 @@
 package org.wit.hillfortapp.views.hillfort
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -7,10 +8,8 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.WindowManager
+import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -24,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
+import kotlinx.android.synthetic.main.content_hillfort_fab.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -40,7 +40,9 @@ class HillfortView : BaseView(),
 
     private lateinit var presenter: HillfortPresenter
     private var location = Location()
+    private var isFabOpen = false
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -61,9 +63,51 @@ class HillfortView : BaseView(),
             showDatePickerDialog()
         }
 
-        hillfortCancelFAB.setOnClickListener {
-            finish()
+//        hillfortFavouriteFAB.setOnClickListener {
+//            presenter.doFavourite()
+//        }
+//
+//        hillfortCancelFAB.setOnClickListener {
+//            finish()
+//        }
+
+        hillfortMoreFAB.setOnClickListener {
+
+            val fabOpen = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_menu_open)
+            val fabClose = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_menu_close)
+
+            if (isFabOpen) {
+                fabTextFavourite.visibility = View.INVISIBLE
+                fabTextDelete.visibility = View.INVISIBLE
+                fabTextShare.visibility = View.INVISIBLE
+
+                fabMoreFavourite.startAnimation(fabClose)
+                fabMoreDelete.startAnimation(fabClose)
+                fabMoreShare.startAnimation(fabClose)
+
+                fabMoreFavourite.isClickable = false
+                fabMoreDelete.isClickable = false
+                fabMoreShare.isClickable = false
+
+                isFabOpen = false
+            } else {
+                fabTextFavourite.visibility = View.VISIBLE
+                fabTextDelete.visibility = View.VISIBLE
+                fabTextShare.visibility = View.VISIBLE
+
+                fabMoreFavourite.startAnimation(fabOpen)
+                fabMoreDelete.startAnimation(fabOpen)
+                fabMoreShare.startAnimation(fabOpen)
+
+                fabMoreFavourite.isClickable = true
+                fabMoreDelete.isClickable = true
+                fabMoreShare.isClickable = true
+
+                isFabOpen = true
+            }
+
         }
+
 
         hillfortSaveFAB.setOnClickListener {
             if (listOf(

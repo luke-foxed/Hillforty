@@ -17,6 +17,8 @@ import java.io.File
 class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     val hillforts = ArrayList<HillfortModel>()
+    private val favouriteHillforts = ArrayList<String>()
+
     lateinit var userId: String
     lateinit var db: DatabaseReference
     lateinit var st: StorageReference
@@ -31,10 +33,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     override fun createHillfort(hillfort: HillfortModel) {
         val key = db.child("users").child(userId).child("hillforts").push().key
-
-        info("USER ID --> $userId")
-        info("DATABASE --> $db")
-        info("KEY --> $key")
 
         key?.let {
             hillfort.fbId = key
@@ -72,29 +70,10 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         }.addOnFailureListener {
             info("Error deleting photos: $it")
         }
-
     }
 
     override fun deleteAllHillforts(activeUserID: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    fun fetchHillforts(hillfortsReady: () -> Unit) {
-        val valueEventListener = object : ValueEventListener {
-            override fun onCancelled(dataSnapshot: DatabaseError) {
-            }
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot.children.mapNotNullTo(hillforts) {
-                    it.getValue<HillfortModel>(HillfortModel::class.java)
-                }
-                hillfortsReady()
-            }
-        }
-        userId = FirebaseAuth.getInstance().currentUser!!.uid
-        db = FirebaseDatabase.getInstance().reference
-        st = FirebaseStorage.getInstance().reference
-        hillforts.clear()
-        db.child("users").child(userId).child("hillforts").addListenerForSingleValueEvent(valueEventListener)
     }
 
     private fun updateImage(hillfort: HillfortModel) {
@@ -121,5 +100,58 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                 }
             }
         }
+    }
+
+    override fun toggleFavourite(hillfort: HillfortModel) {
+        if (favouriteHillforts.contains(hillfort.fbId)) {
+            favouriteHillforts.remove(hillfort.fbId)
+            db.child("users").child(userId).child("favourites").child(hillfort.fbId).removeValue()
+        } else {
+            val key = db.child("users").child(userId).child("favourites").push()
+            key.let {
+                db.child("users").child(userId).child("favourites").child(hillfort.fbId)
+                    .setValue(hillfort.name)
+            }
+            favouriteHillforts.add(hillfort.fbId)
+        }
+    }
+
+    override fun findOneFavourite(hillfort: HillfortModel): Boolean {
+        return favouriteHillforts.contains(hillfort.fbId)
+    }
+
+    fun fetchHillforts(hillfortsReady: () -> Unit) {
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(dataSnapshot: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.mapNotNullTo(hillforts) {
+                    it.getValue<HillfortModel>(HillfortModel::class.java)
+                }
+                hillfortsReady()
+            }
+        }
+        userId = FirebaseAuth.getInstance().currentUser!!.uid
+        db = FirebaseDatabase.getInstance().reference
+        st = FirebaseStorage.getInstance().reference
+        hillforts.clear()
+        db.child("users").child(userId).child("hillforts")
+            .addListenerForSingleValueEvent(valueEventListener)
+    }
+
+    fun fetchFavourites() {
+        db.child("users").child(userId).child("favourites")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    info("Error fetching favourites: $error")
+                }
+
+                override fun onDataChange(favourites: DataSnapshot) {
+                    favourites.children.forEach {
+                        favouriteHillforts.add(it.key.toString())
+                    }
+                }
+            })
     }
 }

@@ -5,10 +5,12 @@ import android.content.Intent
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
+import org.wit.hillfortapp.R
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
@@ -29,6 +31,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     private var images: ArrayList<ImageModel> = arrayListOf()
 
     private var edit = false
+    private var isFavourited = false
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
@@ -39,17 +42,15 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     init {
         if (view.intent.hasExtra("hillfort_edit")) {
-            edit = true
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
-            doAsync {
+            notes = hillfort.notes
+            images = hillfort.images
 
-                notes = hillfort.notes
-                images = hillfort.images
+            view.showHillfort(hillfort)
 
-                uiThread {
-                    view.showHillfort(hillfort)
-                }
-            }
+            edit = true
+            isFavourited = app.hillforts.findOneFavourite(hillfort)
+
 
         } else {
             if (checkLocationPermissions(view)) {
@@ -79,6 +80,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     fun doClickNote(noteModel: NoteModel) {
         view?.alert("${noteModel.title}\n\n${noteModel.content}")?.show()
+    }
+
+    fun doFavourite() {
+        app.hillforts.toggleFavourite(hillfort)
+        view?.toast("Added to favourites!")
     }
 
     fun doAddOrSave(tempHillfort: HillfortModel) {
