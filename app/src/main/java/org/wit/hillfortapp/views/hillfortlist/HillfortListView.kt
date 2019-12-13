@@ -32,7 +32,7 @@ class HillfortListView : BaseView(),
         }
     }
 
-    override fun showHillforts(hillforts: ArrayList<HillfortModel>) {
+    override fun showHillforts(hillforts: List<HillfortModel>) {
         hillfortRecyclerView.adapter = HillfortListAdapter(hillforts, this)
         hillfortRecyclerView.adapter?.notifyDataSetChanged()
     }

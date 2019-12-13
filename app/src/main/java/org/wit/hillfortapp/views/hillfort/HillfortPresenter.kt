@@ -6,20 +6,28 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import org.jetbrains.anko.alert
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
+import org.jetbrains.anko.uiThread
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
 import org.wit.hillfortapp.models.HillfortModel
+import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.Location
-import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.VIEW
+import java.util.*
 
 class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     private var hillfort = HillfortModel()
+
+    private var notes: ArrayList<NoteModel>? = arrayListOf()
+    private var images: ArrayList<ImageModel> = arrayListOf()
+
     private var edit = false
 
     private val IMAGE_REQUEST = 1
@@ -33,7 +41,16 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         if (view.intent.hasExtra("hillfort_edit")) {
             edit = true
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
-            view.showHillfort(hillfort)
+            doAsync {
+
+                notes = hillfort.notes
+                images = hillfort.images
+
+                uiThread {
+                    view.showHillfort(hillfort)
+                }
+            }
+
         } else {
             if (checkLocationPermissions(view)) {
                 doSetCurrentLocation()
@@ -60,8 +77,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
-    fun doClickNote(note: Note) {
-        view?.alert("${note.title}\n\n${note.content}")?.show()
+    fun doClickNote(noteModel: NoteModel) {
+        view?.alert("${noteModel.title}\n\n${noteModel.content}")?.show()
     }
 
     fun doAddOrSave(tempHillfort: HillfortModel) {
@@ -69,17 +86,20 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.description = tempHillfort.description
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
+        hillfort.images = images
 
-        if (edit) {
-            hillfort.notes = app.users.findOneUserHillfortNotes(app.activeUser, hillfort)!!
-            app.users.updateHillfort(
-                hillfort, app.activeUser
-            )
-        } else {
-            app.users.createHillfort(hillfort, app.activeUser)
+        doAsync {
+            if (edit) {
+                hillfort.notes = notes!!
+                app.hillforts.updateHillfort(hillfort)
+            } else {
+                app.hillforts.createHillfort(hillfort)
+            }
+            uiThread {
+                view?.finish()
+                view?.navigateTo(VIEW.LIST)
+            }
         }
-        view?.finish()
-        view?.navigateTo(VIEW.LIST)
     }
 
     fun doCancel() {
@@ -87,23 +107,29 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doDelete() {
-        app.users.deleteHillfort(hillfort, app.activeUser)
-        view?.finish()
+        doAsync {
+            app.hillforts.deleteHillfort(hillfort)
+            uiThread {
+                view?.finish()
+            }
+        }
     }
 
     fun doNext() {
-        val index = app.activeUser.hillforts.indexOf(hillfort)
+        val hillforts = app.hillforts.findAllHillforts()
+        val index = hillforts?.indexOf(hillfort)
         try {
-            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", app.activeUser.hillforts[index + 1])
+            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", hillforts?.get(index!!.plus(1)))
         } catch (e: IndexOutOfBoundsException) {
             view?.toast("Next Hillfort is Empty!")
         }
     }
 
     fun doPrevious() {
-        val index = app.activeUser.hillforts.indexOf(hillfort)
+        val hillforts = app.hillforts.findAllHillforts()
+        val index = hillforts?.indexOf(hillfort)
         try {
-            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", app.activeUser.hillforts[index - 1])
+            view?.navigateTo(VIEW.HILLFORT, 0, "hillfort_edit", hillforts?.get(index!!.minus(1)))
         } catch (e: IndexOutOfBoundsException) {
             view?.toast("Previous Hillfort is Empty!")
         }
@@ -128,36 +154,57 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         if (!edit) {
             view?.toast("Please create a hillfort before adding notes to it!")
         } else {
-            val newNote = Note()
+            val newNote = NoteModel()
             newNote.title = title
             newNote.content = content
-            app.users.createNote(app.activeUser, hillfort, newNote)
-            view?.showNotes(app.users.findOneUserHillfortNotes(app.activeUser, hillfort))
+            newNote.id = notes?.size!!.plus(1)
+            newNote.fbId = hillfort.fbId
+            doAsync {
+                hillfort.notes.add(newNote)
+                uiThread {
+                    view?.showNotes(notes)
+                }
+            }
         }
+    }
+
+    fun doDeleteNote(noteModel: NoteModel) {
+        hillfort.notes.remove(noteModel)
+        app.hillforts.updateHillfort(hillfort)
     }
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
             IMAGE_REQUEST -> {
-                val imageArray = ArrayList<String>()
 
                 // if multiple images selected
                 if (data.clipData != null) {
+                    images.clear()
                     if (data.clipData!!.itemCount > 4) {
                         view?.toast("Exceeded maximum of 4 images")
                     } else {
                         val mClipData = data.clipData
                         var counter = 0
                         while (counter < mClipData!!.itemCount) {
-                            imageArray.add(mClipData.getItemAt(counter).uri.toString())
+                            val newImage = ImageModel()
+                            newImage.uri = mClipData.getItemAt(counter).uri.toString()
+                            newImage.fbID = hillfort.fbId
+                            newImage.id = Random().nextInt()
+                            images.add(newImage)
                             counter++
                         }
                     }
+                    // else add single image
                 } else {
-                    imageArray.add(data.data.toString())
+                    val newImage = ImageModel()
+                    newImage.uri = data.data.toString()
+                    newImage.fbID = hillfort.fbId
+                    newImage.id = Random().nextInt()
+                    images.add(newImage)
                 }
-                hillfort.images = imageArray
-                view?.showImages(imageArray)
+
+                hillfort.images = images
+                view?.showImages(images)
             }
             LOCATION_REQUEST -> {
                 location = data.extras?.getParcelable("location")!!

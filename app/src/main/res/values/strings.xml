@@ -28,7 +28,7 @@
     <string name="hillfortEditImageButton">Edit Images</string>
 
     <!--LOGIN ACTIVITY-->
-    <string name="loginUsernameField">Username…</string>
+    <string name="loginEmailField">Email…</string>
     <string name="loginPasswordField">Password…</string>
     <string name="loginDividerLabel">or…</string>
     <string name="loginButton">LOG IN</string>

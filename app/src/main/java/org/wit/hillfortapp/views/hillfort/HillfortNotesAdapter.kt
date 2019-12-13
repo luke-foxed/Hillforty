@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.recycle_item_note.view.*
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.models.Note
+import org.wit.hillfortapp.models.NoteModel
 
 interface NoteListener {
-    fun onNoteClick(note: Note)
+    fun onNoteClick(noteModel: NoteModel)
 }
 
-class HillfortNotesAdapter constructor(private var notes: ArrayList<Note>,
-                                   private val listener: NoteListener
+class HillfortNotesAdapter constructor(private var notes: ArrayList<NoteModel>,
+                                       private val listener: NoteListener
 ) : RecyclerView.Adapter<HillfortNotesAdapter.MainHolder>() {
 
 
@@ -41,17 +41,17 @@ class HillfortNotesAdapter constructor(private var notes: ArrayList<Note>,
 
     class MainHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(note: Note, listener: NoteListener) {
+        fun bind(noteModel: NoteModel, listener: NoteListener) {
 
-            if (note.content.length > 30) {
+            if (noteModel.content.length > 30) {
                 // only show part of string to prevent recycleview from resizing
-                itemView.noteContent.text = "${note.content.substring(0, 30)}..."
+                itemView.noteContent.text = "${noteModel.content.substring(0, 30)}..."
             } else {
-                itemView.noteContent.text = note.content
+                itemView.noteContent.text = noteModel.content
             }
 
-            itemView.noteTitle.text = note.title
-            itemView.setOnClickListener { listener.onNoteClick(note) }
+            itemView.noteTitle.text = noteModel.title
+            itemView.setOnClickListener { listener.onNoteClick(noteModel) }
         }
     }
 }

@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
-import org.wit.hillfortapp.helpers.readImageFromPath
+import com.bumptech.glide.Glide
+import org.wit.hillfortapp.models.ImageModel
 
 // credit: https://codinginflow.com/tutorials/android/picasso-image-slider
-class HillfortImageAdapter constructor(private var images: ArrayList<String>, val context: Context) :
+class HillfortImageAdapter(private var images: ArrayList<ImageModel>, val context: Context) :
     PagerAdapter() {
 
     override fun isViewFromObject(view: View, obj: Any): Boolean {
@@ -18,7 +19,7 @@ class HillfortImageAdapter constructor(private var images: ArrayList<String>, va
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(context)
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-        imageView.setImageBitmap(readImageFromPath(context, images[position]))
+        Glide.with(this.context).load(images[position].uri).into(imageView)
         container.addView(imageView)
         return imageView
     }
