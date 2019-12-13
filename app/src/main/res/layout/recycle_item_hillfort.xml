@@ -41,5 +41,13 @@
             android:layout_below="@id/hillfortRecycleItemLocation"
             android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon"/>
 
+        <RatingBar
+            android:id="@+id/hillfortRecycleItemRating"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hillfortRecycleItemVisited"
+            android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

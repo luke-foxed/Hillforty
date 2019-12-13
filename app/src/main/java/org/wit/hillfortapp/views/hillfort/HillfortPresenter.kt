@@ -87,6 +87,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
         hillfort.images = images
+        hillfort.rating = tempHillfort.rating
 
         doAsync {
             if (edit) {

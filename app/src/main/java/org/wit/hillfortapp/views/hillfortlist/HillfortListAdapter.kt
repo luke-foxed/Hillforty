@@ -41,6 +41,7 @@ class HillfortListAdapter constructor(private var hillforts: List<HillfortModel>
             itemView.hillfortRecycleItemName.text = hillfort.name
             itemView.hillfortRecycleItemLocation.text = location
             itemView.hillfortRecycleItemVisited.text = "Visited: ${hillfort.visited}"
+            itemView.hillfortRecycleItemRating.rating = hillfort.rating.toFloat()
             if(hillfort.images.size !=0) {
                 Glide.with(itemView.context).load(hillfort.images[0].uri)
                     .into(itemView.hillfortRecycleItemImageIcon)

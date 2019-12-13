@@ -76,6 +76,8 @@ class HillfortView : BaseView(),
                 tempHillfort.visited = hillfortVisited.isChecked
                 tempHillfort.dateVisited = hillfortDateVisited.text.toString().trim()
                 tempHillfort.location = location
+                tempHillfort.rating = hillfortRatingBar.rating.toInt()
+                info(hillfortRatingBar.rating)
 
                 presenter.doAddOrSave(tempHillfort)
             }
@@ -205,6 +207,8 @@ class HillfortView : BaseView(),
         hillfortDescription.setText(hillfort.description)
         hillfortVisited.isChecked = hillfort.visited
         hillfortDateVisited.setText(hillfort.dateVisited)
+        hillfortRatingBar.rating = hillfort.rating.toFloat()
+
 
         showNotes(hillfort.notes)
         showImages(hillfort.images)

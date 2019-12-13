@@ -23,6 +23,7 @@
     <string name="hillfortDescriptionField">Enter Description…</string>
     <string name="hillfortVisitedCheckbox">Is Visited</string>
     <string name="hillfortDateVisitedField">Enter Date Visited…</string>
+    <string name="hillfortRatingLabel">Rating: </string>
     <string name="hillfortEditLocationButton">Edit Location</string>
     <string name="hillfortAddNoteButton">Add Note</string>
     <string name="hillfortEditImageButton">Edit Images</string>
