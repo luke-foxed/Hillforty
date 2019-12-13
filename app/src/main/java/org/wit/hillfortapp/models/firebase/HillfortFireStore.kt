@@ -52,6 +52,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.images = hillfort.images
             foundHillfort.location = hillfort.location
             foundHillfort.notes = hillfort.notes
+            foundHillfort.rating = hillfort.rating
         }
 
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)

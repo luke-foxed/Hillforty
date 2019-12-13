@@ -103,10 +103,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
-    fun doCancel() {
-        view?.finish()
-    }
-
     fun doDelete() {
         doAsync {
             app.hillforts.deleteHillfort(hillfort)

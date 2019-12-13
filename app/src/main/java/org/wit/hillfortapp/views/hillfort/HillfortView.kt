@@ -61,7 +61,11 @@ class HillfortView : BaseView(),
             showDatePickerDialog()
         }
 
-        hillfortAddBtn.setOnClickListener {
+        hillfortCancelFAB.setOnClickListener {
+            finish()
+        }
+
+        hillfortSaveFAB.setOnClickListener {
             if (listOf(
                     hillfortName.text.toString(),
                     hillfortDescription.text.toString(),
@@ -142,7 +146,7 @@ class HillfortView : BaseView(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.popupCancel -> {
-                presenter.doCancel()
+                finish()
             }
 
             R.id.popupDelete -> {
@@ -209,7 +213,6 @@ class HillfortView : BaseView(),
         hillfortDateVisited.setText(hillfort.dateVisited)
         hillfortRatingBar.rating = hillfort.rating.toFloat()
 
-
         showNotes(hillfort.notes)
         showImages(hillfort.images)
 
@@ -217,8 +220,6 @@ class HillfortView : BaseView(),
         hillfortMapView.getMapAsync {
             setMapLocation(it, latLng)
         }
-
-        hillfortAddBtn.setBackgroundResource(R.drawable.ic_check_circle)
     }
 
     // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
