@@ -63,18 +63,19 @@ class HillfortView : BaseView(),
             showDatePickerDialog()
         }
 
-//        hillfortFavouriteFAB.setOnClickListener {
-//            presenter.doFavourite()
-//        }
 //
 //        hillfortCancelFAB.setOnClickListener {
 //            finish()
 //        }
 
-        hillfortMoreFAB.setOnClickListener {
+        fabMore.setOnClickListener {
 
             val fabOpen = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_menu_open)
             val fabClose = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_menu_close)
+            val fabClockwise =
+                AnimationUtils.loadAnimation(applicationContext, R.anim.fab_rotate_clockwise)
+            val fabAntiClockwise =
+                AnimationUtils.loadAnimation(applicationContext, R.anim.fab_rotate_anticlockwise)
 
             if (isFabOpen) {
                 fabTextFavourite.visibility = View.INVISIBLE
@@ -84,6 +85,7 @@ class HillfortView : BaseView(),
                 fabMoreFavourite.startAnimation(fabClose)
                 fabMoreDelete.startAnimation(fabClose)
                 fabMoreShare.startAnimation(fabClose)
+                fabMore.startAnimation(fabAntiClockwise)
 
                 fabMoreFavourite.isClickable = false
                 fabMoreDelete.isClickable = false
@@ -98,6 +100,7 @@ class HillfortView : BaseView(),
                 fabMoreFavourite.startAnimation(fabOpen)
                 fabMoreDelete.startAnimation(fabOpen)
                 fabMoreShare.startAnimation(fabOpen)
+                fabMore.startAnimation(fabClockwise)
 
                 fabMoreFavourite.isClickable = true
                 fabMoreDelete.isClickable = true
@@ -105,6 +108,10 @@ class HillfortView : BaseView(),
 
                 isFabOpen = true
             }
+        }
+
+        fabMoreFavourite.setOnClickListener {
+            presenter.doFavourite()
         }
 
         fabMoreDelete.setOnClickListener {

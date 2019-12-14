@@ -51,10 +51,9 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.location = hillfort.location
             foundHillfort.notes = hillfort.notes
             foundHillfort.rating = hillfort.rating
+            foundHillfort.isFavourite = hillfort.isFavourite
         }
-
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
-
     }
 
     override fun deleteHillfort(hillfort: HillfortModel) {
@@ -70,6 +69,9 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         }.addOnFailureListener {
             info("Error deleting photos: $it")
         }
+
+        // remove from user favourites
+        db.child("users").child(userId).child("favourites").child(hillfort.fbId).removeValue()
     }
 
     override fun deleteAllHillforts(activeUserID: Int) {
@@ -103,8 +105,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
     }
 
     override fun toggleFavourite(hillfort: HillfortModel) {
-        if (favouriteHillforts.contains(hillfort.fbId)) {
-            favouriteHillforts.remove(hillfort.fbId)
+        if (!hillfort.isFavourite) {
             db.child("users").child(userId).child("favourites").child(hillfort.fbId).removeValue()
         } else {
             val key = db.child("users").child(userId).child("favourites").push()
@@ -112,7 +113,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                 db.child("users").child(userId).child("favourites").child(hillfort.fbId)
                     .setValue(hillfort.name)
             }
-            favouriteHillforts.add(hillfort.fbId)
         }
     }
 
@@ -142,7 +142,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     fun fetchFavourites() {
         db.child("users").child(userId).child("favourites")
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     info("Error fetching favourites: $error")
                 }

@@ -18,6 +18,7 @@ data class HillfortModel(
     var visited: Boolean = false,
     var dateVisited: String = "",
     var rating: Int = 0,
+    var isFavourite: Boolean = false,
     @Embedded var location: Location = Location(),
     @Embedded var images: ArrayList<ImageModel> = ArrayList(),
     @Embedded var notes: ArrayList<NoteModel> = ArrayList()

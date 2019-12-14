@@ -5,12 +5,10 @@ import android.content.Intent
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
-import org.wit.hillfortapp.R
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
 import org.wit.hillfortapp.helpers.showImagePicker
@@ -83,8 +81,14 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doFavourite() {
+        hillfort.isFavourite = !hillfort.isFavourite
+        app.hillforts.updateHillfort(hillfort)
         app.hillforts.toggleFavourite(hillfort)
-        view?.toast("Added to favourites!")
+        if (hillfort.isFavourite) {
+            view?.toast("Added to Favourites - Don't forget to Save!")
+        } else {
+            view?.toast("Removed from Favourites - Don't forget to Save!")
+        }
     }
 
     fun doAddOrSave(tempHillfort: HillfortModel) {
