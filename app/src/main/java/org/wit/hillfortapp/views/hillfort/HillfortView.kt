@@ -110,6 +110,10 @@ class HillfortView : BaseView(),
             presenter.doFavourite()
         }
 
+        fabMoreShare.setOnClickListener {
+            presenter.doShare()
+        }
+
         fabMoreDelete.setOnClickListener {
             presenter.doDelete()
         }

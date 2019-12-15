@@ -91,6 +91,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
+    fun doShare() {
+        view?.createShareIntent(hillfort)
+    }
+
     fun doAddOrSave(tempHillfort: HillfortModel) {
         hillfort.name = tempHillfort.name
         hillfort.description = tempHillfort.description
@@ -179,6 +183,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.notes.remove(noteModel)
         app.hillforts.updateHillfort(hillfort)
     }
+
+
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
