@@ -49,6 +49,8 @@ class HillfortView : BaseView(),
         content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        val imageViewPager = findViewById<ViewPager>(R.id.viewPager)
+        imageViewPager.setBackgroundResource(R.drawable.placeholder)
 
         presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
 

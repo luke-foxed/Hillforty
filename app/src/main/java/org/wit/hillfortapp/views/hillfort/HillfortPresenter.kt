@@ -189,10 +189,9 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
             IMAGE_REQUEST -> {
-
+                images.clear()
                 // if multiple images selected
                 if (data.clipData != null) {
-                    images.clear()
                     if (data.clipData!!.itemCount > 4) {
                         view?.toast("Exceeded maximum of 4 images")
                     } else {

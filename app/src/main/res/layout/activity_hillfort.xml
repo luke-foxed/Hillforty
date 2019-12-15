@@ -20,7 +20,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".views.hillfort.HillfortView">
 
-
         <LinearLayout
             android:id="@+id/hillfortLayout"
             android:layout_width="match_parent"

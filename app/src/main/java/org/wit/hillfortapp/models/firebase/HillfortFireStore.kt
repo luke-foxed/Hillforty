@@ -11,7 +11,6 @@ import org.jetbrains.anko.info
 import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.HillfortStore
-import org.wit.hillfortapp.models.ImageModel
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -71,6 +70,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         }
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
         updateImage(hillfort)
+        hillforts[hillforts.indexOf(hillfort)] = hillfort
     }
 
     override fun deleteHillfort(hillfort: HillfortModel) {
@@ -95,12 +95,9 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun updateImage(hillfort: HillfortModel): ArrayList<ImageModel> {
+    private fun updateImage(hillfort: HillfortModel) {
 
-        val convertedImages: ArrayList<ImageModel> = arrayListOf()
-
-
-        hillfort.images.forEachIndexed { index, image ->
+        hillfort.images.forEach { image ->
             val fileName = File(image.uri)
             val imageName = fileName.name
             val imageRef = st.child("$userId/$imageName")
@@ -122,10 +119,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                 }
             }
         }
-
-        return convertedImages
     }
-
 
     override fun toggleFavourite(hillfort: HillfortModel) {
         if (!hillfort.isFavourite) {
