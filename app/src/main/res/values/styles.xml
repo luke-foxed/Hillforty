@@ -19,5 +19,10 @@
         <item name="android:listDivider">@android:color/darker_gray</item>
     </style>
 
+    <style name="PopupMenuStyle" parent="Theme.AppCompat.Light">
+        <item name="android:popupBackground">@android:color/white</item>
+        <item name="android:popupElevation">14dp</item>
+    </style>
+
 
 </resources>

@@ -82,9 +82,24 @@ class HillfortListView : BaseView(),
         when (item.itemId) {
             R.id.sortByFavourite -> {
                 presenter.doSortFavourite()
+                item.isChecked = true
             }
+
+            R.id.sortByRating -> {
+                presenter.doSortByRating()
+                item.isChecked = true
+            }
+
             R.id.resetView -> {
                 presenter.loadHillforts()
+            }
+
+            R.id.sortAscending -> {
+                presenter.doAscendingOrder()
+            }
+
+            R.id.sortDescending -> {
+                presenter.doDescendingOrder()
             }
         }
         return super.onOptionsItemSelected(item)

@@ -177,4 +177,11 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         }
         return favourites
     }
+
+    override fun sortByRating(): List<HillfortModel>? {
+        val sortedByRatings =
+            hillforts.sortedWith(compareBy { it.rating }).asReversed()
+        info(sortedByRatings)
+        return sortedByRatings
+    }
 }

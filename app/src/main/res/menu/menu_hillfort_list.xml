@@ -19,8 +19,26 @@
             android:title="@string/filterMenuSortFavourite" />
 
         <item
+            android:id="@+id/sortByRating"
+            android:title="@string/filterMenuSortRating" />
+
+        <item
             android:id="@+id/resetView"
             android:title="@string/filterMenuResetFilter" />
-
     </group>
+
+    <group
+        android:id="@+id/filterOrder"
+        android:checkableBehavior="single"
+        app:showAsAction="always">
+
+        <item
+            android:id="@+id/sortAscending"
+            android:title="Ascending" />
+
+        <item
+            android:id="@+id/sortDescending"
+            android:title="Descending" />
+    </group>
+
 </menu>

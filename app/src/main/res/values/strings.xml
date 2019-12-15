@@ -78,6 +78,7 @@
 
     <!--HILLFORT LIST DIALOG-->
     <string name="filterMenuSortFavourite">Sort by Favourites</string>
+    <string name="filterMenuSortRating">Sort by Rating</string>
     <string name="filterMenuResetFilter">Reset Filters</string>
 
 </resources>
