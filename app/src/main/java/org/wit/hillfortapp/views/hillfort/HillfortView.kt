@@ -233,27 +233,6 @@ class HillfortView : BaseView(),
         presenter.doClickNote(noteModel)
     }
 
-    // hillfortMapView methods
-    public override fun onResume() {
-        hillfortMapView.onResume()
-        super.onResume()
-    }
-
-    public override fun onPause() {
-        super.onPause()
-        hillfortMapView.onPause()
-    }
-
-    public override fun onDestroy() {
-        super.onDestroy()
-        hillfortMapView.onDestroy()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        hillfortMapView.onLowMemory()
-    }
-
     override fun showHillfort(hillfort: HillfortModel) {
         hillfortName.setText(hillfort.name)
         hillfortDescription.setText(hillfort.description)
@@ -345,5 +324,26 @@ class HillfortView : BaseView(),
         hillfortMapView.getMapAsync {
             setMapLocation(it, latLng)
         }
+    }
+
+    // hillfortMapView  override methods
+    public override fun onResume() {
+        hillfortMapView.onResume()
+        super.onResume()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        hillfortMapView.onPause()
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        hillfortMapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        hillfortMapView.onLowMemory()
     }
 }

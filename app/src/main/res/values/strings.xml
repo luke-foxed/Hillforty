@@ -76,5 +76,9 @@
     </string>
     <string name="aboutGitHubURL">https://github.com/Foxyf76/Hillfort-App/</string>
 
+    <!--HILLFORT LIST DIALOG-->
+    <string name="filterMenuSortFavourite">Sort by Favourites</string>
+    <string name="filterMenuResetFilter">Reset Filters</string>
+
 </resources>
 

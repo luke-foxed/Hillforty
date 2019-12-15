@@ -32,6 +32,11 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
+    fun doSortFavourite() {
+        val favourites = app.hillforts.findAllFavourites()
+        view?.showHillforts(favourites as List<HillfortModel>)
+    }
+
     // TODO --> Refactor 'show all hillforts map' to contain only active user hillforts on map
 
 }

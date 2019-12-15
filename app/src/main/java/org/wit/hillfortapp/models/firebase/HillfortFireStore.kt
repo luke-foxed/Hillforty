@@ -17,7 +17,7 @@ import java.io.File
 class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     val hillforts = ArrayList<HillfortModel>()
-    private val favouriteHillforts = ArrayList<String>()
+    val favouriteHillforts = ArrayList<String>()
 
     lateinit var userId: String
     lateinit var db: DatabaseReference
@@ -153,5 +153,15 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                     }
                 }
             })
+    }
+
+    override fun findAllFavourites(): ArrayList<HillfortModel>? {
+        val favourites = ArrayList<HillfortModel>()
+        hillforts.forEach {
+            if (it.isFavourite) {
+                favourites.add(it)
+            }
+        }
+        return favourites
     }
 }
