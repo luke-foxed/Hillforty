@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
 import org.jetbrains.anko.AnkoLogger
+import org.wit.hillfortapp.helpers.constructEmailTemplate
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.NoteModel
@@ -48,6 +49,15 @@ abstract class BaseView : MainView(), AnkoLogger {
     fun initPresenter(presenter: BasePresenter): BasePresenter {
         basePresenter = presenter
         return presenter
+    }
+
+    fun createShareIntent(value: Parcelable?) {
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Hillforty")
+        val shareMessage = constructEmailTemplate(value as HillfortModel)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+        startActivity(Intent.createChooser(shareIntent, "Choose an Application"))
     }
 
     override fun onDestroy() {

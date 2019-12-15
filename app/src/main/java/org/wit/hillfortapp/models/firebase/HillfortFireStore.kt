@@ -31,6 +31,19 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         return hillforts.find { p -> p.id == hillfortID }
     }
 
+    override fun findHillfortsByName(name: String): ArrayList<HillfortModel>? {
+        val foundHillforts: ArrayList<HillfortModel>? = arrayListOf()
+        hillforts.forEach {
+            if (it.name.toLowerCase().contains(name.toLowerCase())) {
+                info("FOUND $name")
+                foundHillforts?.add(it)
+            }
+        }
+        info("RETURNING HILLFORTS:")
+        info(foundHillforts)
+        return foundHillforts
+    }
+
     override fun createHillfort(hillfort: HillfortModel) {
         val key = db.child("users").child(userId).child("hillforts").push().key
 
@@ -49,11 +62,15 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.description = hillfort.description
             foundHillfort.images = hillfort.images
             foundHillfort.location = hillfort.location
+            foundHillfort.dateVisited = hillfort.dateVisited
+            foundHillfort.visited = hillfort.visited
             foundHillfort.notes = hillfort.notes
             foundHillfort.rating = hillfort.rating
             foundHillfort.isFavourite = hillfort.isFavourite
         }
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
+        updateImage(hillfort)
+        hillforts[hillforts.indexOf(hillfort)] = hillfort
     }
 
     override fun deleteHillfort(hillfort: HillfortModel) {
@@ -79,10 +96,10 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
     }
 
     private fun updateImage(hillfort: HillfortModel) {
-        hillfort.images.forEachIndexed {index, image ->
+
+        hillfort.images.forEach { image ->
             val fileName = File(image.uri)
             val imageName = fileName.name
-
             val imageRef = st.child("$userId/$imageName")
             val baos = ByteArrayOutputStream()
             val bitmap = readImageFromPath(context, image.uri)
@@ -91,11 +108,11 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val data = baos.toByteArray()
                 val uploadTask = imageRef.putBytes(data)
-                uploadTask.addOnFailureListener {failure ->
+                uploadTask.addOnFailureListener { failure ->
                     println(failure.message)
                 }.addOnSuccessListener { taskSnapshot ->
-                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {uri ->
-                        hillfort.images[index].uri = uri.toString()
+                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
+                        image.uri = uri.toString()
                         db.child("users").child(userId).child("hillforts").child(hillfort.fbId)
                             .setValue(hillfort)
                     }
@@ -155,13 +172,15 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             })
     }
 
-    override fun findAllFavourites(): ArrayList<HillfortModel>? {
-        val favourites = ArrayList<HillfortModel>()
-        hillforts.forEach {
-            if (it.isFavourite) {
-                favourites.add(it)
-            }
-        }
-        return favourites
+    override fun sortedByFavourite(): List<HillfortModel>? {
+        return hillforts.sortedWith(compareBy { it.isFavourite }).asReversed()
+    }
+
+    override fun sortByRating(): List<HillfortModel>? {
+        return hillforts.sortedWith(compareBy { it.rating }).asReversed()
+    }
+
+    override fun sortByVisit(): List<HillfortModel>? {
+        return hillforts.sortedWith(compareBy { it.visited }).asReversed()
     }
 }

@@ -12,6 +12,8 @@ import org.wit.hillfortapp.views.hillfort.HillfortView
 
 class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
 
+    private var currentHillforts: List<HillfortModel> = arrayListOf()
+
     fun doAddHillfort() {
         view?.startActivityForResult<HillfortView>(0)
     }
@@ -26,6 +28,7 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
             view?.info(hillforts)
             uiThread {
                 if (hillforts != null) {
+                    currentHillforts = hillforts
                     view?.showHillforts(hillforts)
                 }
             }
@@ -33,8 +36,44 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doSortFavourite() {
-        val favourites = app.hillforts.findAllFavourites()
-        view?.showHillforts(favourites as List<HillfortModel>)
+        val favourites = app.hillforts.sortedByFavourite()
+        if (favourites != null) {
+            currentHillforts = favourites
+            view?.showHillforts(favourites)
+        }
+    }
+
+    fun doSearch(query: String) {
+        val foundHillforts = app.hillforts.findHillfortsByName(query)
+        view?.info(foundHillforts)
+        if (foundHillforts != null) {
+            currentHillforts = foundHillforts
+            view?.showHillforts(foundHillforts)
+        }
+    }
+
+    fun doSortByRating() {
+        val ratedHillforts = app.hillforts.sortByRating()
+        if (ratedHillforts != null) {
+            currentHillforts = ratedHillforts
+            view?.showHillforts(ratedHillforts)
+        }
+    }
+
+    fun doSortByVisit() {
+        val visitedHillforts = app.hillforts.sortByVisit()
+        if (visitedHillforts != null) {
+            currentHillforts = visitedHillforts
+            view?.showHillforts(visitedHillforts)
+        }
+    }
+
+    fun doAscendingOrder() {
+        view?.showHillforts(currentHillforts)
+    }
+
+    fun doDescendingOrder() {
+        view?.showHillforts(currentHillforts.asReversed())
     }
 
     // TODO --> Refactor 'show all hillforts map' to contain only active user hillforts on map
