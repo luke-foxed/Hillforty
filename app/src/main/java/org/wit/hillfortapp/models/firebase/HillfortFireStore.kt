@@ -62,6 +62,8 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.description = hillfort.description
             foundHillfort.images = hillfort.images
             foundHillfort.location = hillfort.location
+            foundHillfort.dateVisited = hillfort.dateVisited
+            foundHillfort.visited = hillfort.visited
             foundHillfort.notes = hillfort.notes
             foundHillfort.rating = hillfort.rating
             foundHillfort.isFavourite = hillfort.isFavourite
@@ -168,20 +170,15 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             })
     }
 
-    override fun findAllFavourites(): ArrayList<HillfortModel>? {
-        val favourites = ArrayList<HillfortModel>()
-        hillforts.forEach {
-            if (it.isFavourite) {
-                favourites.add(it)
-            }
-        }
-        return favourites
+    override fun sortedByFavourite(): List<HillfortModel>? {
+        return hillforts.sortedWith(compareBy { it.isFavourite }).asReversed()
     }
 
     override fun sortByRating(): List<HillfortModel>? {
-        val sortedByRatings =
-            hillforts.sortedWith(compareBy { it.rating }).asReversed()
-        info(sortedByRatings)
-        return sortedByRatings
+        return hillforts.sortedWith(compareBy { it.rating }).asReversed()
+    }
+
+    override fun sortByVisit(): List<HillfortModel>? {
+        return hillforts.sortedWith(compareBy { it.visited }).asReversed()
     }
 }

@@ -9,12 +9,10 @@ import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.VIEW
 import org.wit.hillfortapp.views.hillfort.HillfortView
-import java.util.*
-import kotlin.collections.ArrayList
 
 class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
 
-    private var currentHillforts: ArrayList<HillfortModel> = arrayListOf()
+    private var currentHillforts: List<HillfortModel> = arrayListOf()
 
     fun doAddHillfort() {
         view?.startActivityForResult<HillfortView>(0)
@@ -30,7 +28,7 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
             view?.info(hillforts)
             uiThread {
                 if (hillforts != null) {
-                    currentHillforts = hillforts as ArrayList<HillfortModel>
+                    currentHillforts = hillforts
                     view?.showHillforts(hillforts)
                 }
             }
@@ -38,10 +36,10 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doSortFavourite() {
-        val favourites = app.hillforts.findAllFavourites()
+        val favourites = app.hillforts.sortedByFavourite()
         if (favourites != null) {
             currentHillforts = favourites
-            view?.showHillforts(favourites as List<HillfortModel>)
+            view?.showHillforts(favourites)
         }
     }
 
@@ -50,14 +48,23 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
         view?.info(foundHillforts)
         if (foundHillforts != null) {
             currentHillforts = foundHillforts
-            view?.showHillforts(foundHillforts as List<HillfortModel>)
+            view?.showHillforts(foundHillforts)
         }
     }
 
     fun doSortByRating() {
         val ratedHillforts = app.hillforts.sortByRating()
         if (ratedHillforts != null) {
+            currentHillforts = ratedHillforts
             view?.showHillforts(ratedHillforts)
+        }
+    }
+
+    fun doSortByVisit() {
+        val visitedHillforts = app.hillforts.sortByVisit()
+        if (visitedHillforts != null) {
+            currentHillforts = visitedHillforts
+            view?.showHillforts(visitedHillforts)
         }
     }
 

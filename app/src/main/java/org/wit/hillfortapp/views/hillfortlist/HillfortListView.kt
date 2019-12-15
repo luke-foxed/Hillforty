@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
@@ -17,6 +18,7 @@ class HillfortListView : BaseView(),
     HillfortListener {
 
     private lateinit var presenter: HillfortListPresenter
+    private lateinit var ascendingItem: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +44,9 @@ class HillfortListView : BaseView(),
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_hillfort_list, menu)
         toolbar.overflowIcon = getDrawable(R.drawable.ic_filter)
+        ascendingItem = menu!!.findItem(R.id.sortAscending)
 
-        val item = menu!!.findItem(R.id.action_search)
+        val item = menu.findItem(R.id.action_search)
         val searchView: SearchView = item.actionView as SearchView
 
         searchView.isSubmitButtonEnabled = true
@@ -83,11 +86,19 @@ class HillfortListView : BaseView(),
             R.id.sortByFavourite -> {
                 presenter.doSortFavourite()
                 item.isChecked = true
+                ascendingItem.isChecked = true
             }
 
             R.id.sortByRating -> {
                 presenter.doSortByRating()
                 item.isChecked = true
+                ascendingItem.isChecked = true
+            }
+
+            R.id.sortByVisited -> {
+                presenter.doSortByVisit()
+                item.isChecked = true
+                ascendingItem.isChecked = true
             }
 
             R.id.resetView -> {
@@ -96,10 +107,12 @@ class HillfortListView : BaseView(),
 
             R.id.sortAscending -> {
                 presenter.doAscendingOrder()
+                item.isChecked = true
             }
 
             R.id.sortDescending -> {
                 presenter.doDescendingOrder()
+                item.isChecked = true
             }
         }
         return super.onOptionsItemSelected(item)

@@ -11,7 +11,8 @@ interface HillfortStore {
     fun deleteAllHillforts(activeUserID: Int)
     fun toggleFavourite(hillfort: HillfortModel)
     fun findOneFavourite(hillfort: HillfortModel): Boolean
-    fun findAllFavourites(): ArrayList<HillfortModel>?
+    fun sortedByFavourite(): List<HillfortModel>?
     fun sortByRating(): List<HillfortModel>?
+    fun sortByVisit(): List<HillfortModel>?
 
 }
