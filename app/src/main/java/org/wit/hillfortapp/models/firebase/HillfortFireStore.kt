@@ -11,6 +11,7 @@ import org.jetbrains.anko.info
 import org.wit.hillfortapp.helpers.readImageFromPath
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.HillfortStore
+import org.wit.hillfortapp.models.ImageModel
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -69,6 +70,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.isFavourite = hillfort.isFavourite
         }
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
+        updateImage(hillfort)
     }
 
     override fun deleteHillfort(hillfort: HillfortModel) {
@@ -93,11 +95,14 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun updateImage(hillfort: HillfortModel) {
-        hillfort.images.forEachIndexed {index, image ->
+    private fun updateImage(hillfort: HillfortModel): ArrayList<ImageModel> {
+
+        val convertedImages: ArrayList<ImageModel> = arrayListOf()
+
+
+        hillfort.images.forEachIndexed { index, image ->
             val fileName = File(image.uri)
             val imageName = fileName.name
-
             val imageRef = st.child("$userId/$imageName")
             val baos = ByteArrayOutputStream()
             val bitmap = readImageFromPath(context, image.uri)
@@ -106,18 +111,21 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val data = baos.toByteArray()
                 val uploadTask = imageRef.putBytes(data)
-                uploadTask.addOnFailureListener {failure ->
+                uploadTask.addOnFailureListener { failure ->
                     println(failure.message)
                 }.addOnSuccessListener { taskSnapshot ->
-                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {uri ->
-                        hillfort.images[index].uri = uri.toString()
+                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
+                        image.uri = uri.toString()
                         db.child("users").child(userId).child("hillforts").child(hillfort.fbId)
                             .setValue(hillfort)
                     }
                 }
             }
         }
+
+        return convertedImages
     }
+
 
     override fun toggleFavourite(hillfort: HillfortModel) {
         if (!hillfort.isFavourite) {
