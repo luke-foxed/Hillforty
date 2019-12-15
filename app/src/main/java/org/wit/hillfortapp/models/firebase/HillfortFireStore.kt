@@ -17,6 +17,8 @@ import java.io.File
 class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     val hillforts = ArrayList<HillfortModel>()
+    val favouriteHillforts = ArrayList<String>()
+
     lateinit var userId: String
     lateinit var db: DatabaseReference
     lateinit var st: StorageReference
@@ -31,10 +33,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     override fun createHillfort(hillfort: HillfortModel) {
         val key = db.child("users").child(userId).child("hillforts").push().key
-
-        info("USER ID --> $userId")
-        info("DATABASE --> $db")
-        info("KEY --> $key")
 
         key?.let {
             hillfort.fbId = key
@@ -52,10 +50,10 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             foundHillfort.images = hillfort.images
             foundHillfort.location = hillfort.location
             foundHillfort.notes = hillfort.notes
+            foundHillfort.rating = hillfort.rating
+            foundHillfort.isFavourite = hillfort.isFavourite
         }
-
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).setValue(hillfort)
-
     }
 
     override fun deleteHillfort(hillfort: HillfortModel) {
@@ -72,28 +70,12 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             info("Error deleting photos: $it")
         }
 
+        // remove from user favourites
+        db.child("users").child(userId).child("favourites").child(hillfort.fbId).removeValue()
     }
 
     override fun deleteAllHillforts(activeUserID: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    fun fetchHillforts(hillfortsReady: () -> Unit) {
-        val valueEventListener = object : ValueEventListener {
-            override fun onCancelled(dataSnapshot: DatabaseError) {
-            }
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                dataSnapshot.children.mapNotNullTo(hillforts) {
-                    it.getValue<HillfortModel>(HillfortModel::class.java)
-                }
-                hillfortsReady()
-            }
-        }
-        userId = FirebaseAuth.getInstance().currentUser!!.uid
-        db = FirebaseDatabase.getInstance().reference
-        st = FirebaseStorage.getInstance().reference
-        hillforts.clear()
-        db.child("users").child(userId).child("hillforts").addListenerForSingleValueEvent(valueEventListener)
     }
 
     private fun updateImage(hillfort: HillfortModel) {
@@ -120,5 +102,66 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                 }
             }
         }
+    }
+
+    override fun toggleFavourite(hillfort: HillfortModel) {
+        if (!hillfort.isFavourite) {
+            db.child("users").child(userId).child("favourites").child(hillfort.fbId).removeValue()
+        } else {
+            val key = db.child("users").child(userId).child("favourites").push()
+            key.let {
+                db.child("users").child(userId).child("favourites").child(hillfort.fbId)
+                    .setValue(hillfort.name)
+            }
+        }
+    }
+
+    override fun findOneFavourite(hillfort: HillfortModel): Boolean {
+        return favouriteHillforts.contains(hillfort.fbId)
+    }
+
+    fun fetchHillforts(hillfortsReady: () -> Unit) {
+        val valueEventListener = object : ValueEventListener {
+            override fun onCancelled(dataSnapshot: DatabaseError) {
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                dataSnapshot.children.mapNotNullTo(hillforts) {
+                    it.getValue<HillfortModel>(HillfortModel::class.java)
+                }
+                hillfortsReady()
+            }
+        }
+        userId = FirebaseAuth.getInstance().currentUser!!.uid
+        db = FirebaseDatabase.getInstance().reference
+        st = FirebaseStorage.getInstance().reference
+        hillforts.clear()
+        db.child("users").child(userId).child("hillforts")
+            .addListenerForSingleValueEvent(valueEventListener)
+    }
+
+    fun fetchFavourites() {
+        db.child("users").child(userId).child("favourites")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    info("Error fetching favourites: $error")
+                }
+
+                override fun onDataChange(favourites: DataSnapshot) {
+                    favourites.children.forEach {
+                        favouriteHillforts.add(it.key.toString())
+                    }
+                }
+            })
+    }
+
+    override fun findAllFavourites(): ArrayList<HillfortModel>? {
+        val favourites = ArrayList<HillfortModel>()
+        hillforts.forEach {
+            if (it.isFavourite) {
+                favourites.add(it)
+            }
+        }
+        return favourites
     }
 }

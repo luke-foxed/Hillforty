@@ -23,6 +23,7 @@
     <string name="hillfortDescriptionField">Enter Description…</string>
     <string name="hillfortVisitedCheckbox">Is Visited</string>
     <string name="hillfortDateVisitedField">Enter Date Visited…</string>
+    <string name="hillfortRatingLabel">Rating: </string>
     <string name="hillfortEditLocationButton">Edit Location</string>
     <string name="hillfortAddNoteButton">Add Note</string>
     <string name="hillfortEditImageButton">Edit Images</string>
@@ -74,6 +75,10 @@
         \n\nThe repo for this project can be found here:"
     </string>
     <string name="aboutGitHubURL">https://github.com/Foxyf76/Hillfort-App/</string>
+
+    <!--HILLFORT LIST DIALOG-->
+    <string name="filterMenuSortFavourite">Sort by Favourites</string>
+    <string name="filterMenuResetFilter">Reset Filters</string>
 
 </resources>
 

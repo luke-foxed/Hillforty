@@ -3,10 +3,10 @@ package org.wit.hillfortapp.views.hillfortlist
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.drawer_main.*
-import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.views.BaseView
@@ -38,7 +38,8 @@ class HillfortListView : BaseView(),
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_blank, menu)
+        menuInflater.inflate(R.menu.menu_hillfort_list, menu)
+        toolbar.overflowIcon = getDrawable(R.drawable.ic_filter)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -49,6 +50,18 @@ class HillfortListView : BaseView(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         presenter.loadHillforts()
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.sortByFavourite -> {
+                presenter.doSortFavourite()
+            }
+            R.id.resetView -> {
+                presenter.loadHillforts()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

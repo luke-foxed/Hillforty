@@ -1,5 +1,6 @@
 package org.wit.hillfortapp.views.hillfort
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -7,10 +8,8 @@ import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.WindowManager
+import android.view.*
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -24,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
 import kotlinx.android.synthetic.main.activity_hillfort.*
+import kotlinx.android.synthetic.main.content_hillfort_fab.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -40,7 +40,9 @@ class HillfortView : BaseView(),
 
     private lateinit var presenter: HillfortPresenter
     private var location = Location()
+    private var isFabOpen = false
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -61,7 +63,58 @@ class HillfortView : BaseView(),
             showDatePickerDialog()
         }
 
-        hillfortAddBtn.setOnClickListener {
+        // Source: https://medium.com/@shubham_nikam/easy-way-to-add-minimal-expandable-floating-action-button-fab-menu-dd8e6e011f52
+        fabMore.setOnClickListener {
+
+            val fabOpen = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_menu_open)
+            val fabClose = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_menu_close)
+            val fabClockwise =
+                AnimationUtils.loadAnimation(applicationContext, R.anim.fab_rotate_clockwise)
+            val fabAntiClockwise =
+                AnimationUtils.loadAnimation(applicationContext, R.anim.fab_rotate_anticlockwise)
+
+            if (isFabOpen) {
+                fabTextFavourite.visibility = View.INVISIBLE
+                fabTextDelete.visibility = View.INVISIBLE
+                fabTextShare.visibility = View.INVISIBLE
+
+                fabMoreFavourite.startAnimation(fabClose)
+                fabMoreDelete.startAnimation(fabClose)
+                fabMoreShare.startAnimation(fabClose)
+                fabMore.startAnimation(fabAntiClockwise)
+
+                fabMoreFavourite.isClickable = false
+                fabMoreDelete.isClickable = false
+                fabMoreShare.isClickable = false
+
+                isFabOpen = false
+            } else {
+                fabTextFavourite.visibility = View.VISIBLE
+                fabTextDelete.visibility = View.VISIBLE
+                fabTextShare.visibility = View.VISIBLE
+
+                fabMoreFavourite.startAnimation(fabOpen)
+                fabMoreDelete.startAnimation(fabOpen)
+                fabMoreShare.startAnimation(fabOpen)
+                fabMore.startAnimation(fabClockwise)
+
+                fabMoreFavourite.isClickable = true
+                fabMoreDelete.isClickable = true
+                fabMoreShare.isClickable = true
+
+                isFabOpen = true
+            }
+        }
+
+        fabMoreFavourite.setOnClickListener {
+            presenter.doFavourite()
+        }
+
+        fabMoreDelete.setOnClickListener {
+            presenter.doDelete()
+        }
+
+        hillfortSaveFAB.setOnClickListener {
             if (listOf(
                     hillfortName.text.toString(),
                     hillfortDescription.text.toString(),
@@ -76,6 +129,7 @@ class HillfortView : BaseView(),
                 tempHillfort.visited = hillfortVisited.isChecked
                 tempHillfort.dateVisited = hillfortDateVisited.text.toString().trim()
                 tempHillfort.location = location
+                tempHillfort.rating = hillfortRatingBar.rating.toInt()
 
                 presenter.doAddOrSave(tempHillfort)
             }
@@ -140,7 +194,7 @@ class HillfortView : BaseView(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.popupCancel -> {
-                presenter.doCancel()
+                finish()
             }
 
             R.id.popupDelete -> {
@@ -179,32 +233,12 @@ class HillfortView : BaseView(),
         presenter.doClickNote(noteModel)
     }
 
-    // hillfortMapView methods
-    public override fun onResume() {
-        hillfortMapView.onResume()
-        super.onResume()
-    }
-
-    public override fun onPause() {
-        super.onPause()
-        hillfortMapView.onPause()
-    }
-
-    public override fun onDestroy() {
-        super.onDestroy()
-        hillfortMapView.onDestroy()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        hillfortMapView.onLowMemory()
-    }
-
     override fun showHillfort(hillfort: HillfortModel) {
         hillfortName.setText(hillfort.name)
         hillfortDescription.setText(hillfort.description)
         hillfortVisited.isChecked = hillfort.visited
         hillfortDateVisited.setText(hillfort.dateVisited)
+        hillfortRatingBar.rating = hillfort.rating.toFloat()
 
         showNotes(hillfort.notes)
         showImages(hillfort.images)
@@ -213,8 +247,6 @@ class HillfortView : BaseView(),
         hillfortMapView.getMapAsync {
             setMapLocation(it, latLng)
         }
-
-        hillfortAddBtn.setBackgroundResource(R.drawable.ic_check_circle)
     }
 
     // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
@@ -292,5 +324,26 @@ class HillfortView : BaseView(),
         hillfortMapView.getMapAsync {
             setMapLocation(it, latLng)
         }
+    }
+
+    // hillfortMapView  override methods
+    public override fun onResume() {
+        hillfortMapView.onResume()
+        super.onResume()
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        hillfortMapView.onPause()
+    }
+
+    public override fun onDestroy() {
+        super.onDestroy()
+        hillfortMapView.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        hillfortMapView.onLowMemory()
     }
 }

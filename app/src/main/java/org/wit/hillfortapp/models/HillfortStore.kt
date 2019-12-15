@@ -8,5 +8,10 @@ interface HillfortStore {
     fun updateHillfort(hillfort: HillfortModel)
     fun deleteHillfort(hillfort: HillfortModel)
     fun deleteAllHillforts(activeUserID: Int)
+    fun toggleFavourite(hillfort: HillfortModel)
+
+    // favourites
+    fun findOneFavourite(hillfort: HillfortModel): Boolean
+    fun findAllFavourites(): ArrayList<HillfortModel>?
 
 }

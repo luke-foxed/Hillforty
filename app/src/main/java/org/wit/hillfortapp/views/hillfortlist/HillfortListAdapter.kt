@@ -38,13 +38,21 @@ class HillfortListAdapter constructor(private var hillforts: List<HillfortModel>
 
         fun bind(hillfort: HillfortModel, listener: HillfortListener) {
             val location = "LAT: ${hillfort.location.lat} | LNG: ${hillfort.location.lng}"
+            val isVisited = if (hillfort.visited) "Yes" else "No"
+
             itemView.hillfortRecycleItemName.text = hillfort.name
             itemView.hillfortRecycleItemLocation.text = location
-            itemView.hillfortRecycleItemVisited.text = "Visited: ${hillfort.visited}"
+            itemView.hillfortRecycleItemVisited.text = "Visited: $isVisited"
+            itemView.hillfortRecycleItemRating.rating = hillfort.rating.toFloat()
+            if (hillfort.isFavourite) {
+                itemView.hillfortRecycleItemFavouriteIcon.setBackgroundResource(
+                    R.drawable.ic_favorite
+                )
+            }
+
             if(hillfort.images.size !=0) {
                 Glide.with(itemView.context).load(hillfort.images[0].uri)
                     .into(itemView.hillfortRecycleItemImageIcon)
-
             }
             else {
                 itemView.hillfortRecycleItemImageIcon.setImageResource(R.drawable.placeholder)

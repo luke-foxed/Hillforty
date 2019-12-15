@@ -29,6 +29,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     private var images: ArrayList<ImageModel> = arrayListOf()
 
     private var edit = false
+    private var isFavourited = false
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
@@ -39,17 +40,15 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     init {
         if (view.intent.hasExtra("hillfort_edit")) {
-            edit = true
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
-            doAsync {
+            notes = hillfort.notes
+            images = hillfort.images
 
-                notes = hillfort.notes
-                images = hillfort.images
+            view.showHillfort(hillfort)
 
-                uiThread {
-                    view.showHillfort(hillfort)
-                }
-            }
+            edit = true
+            isFavourited = app.hillforts.findOneFavourite(hillfort)
+
 
         } else {
             if (checkLocationPermissions(view)) {
@@ -81,12 +80,24 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         view?.alert("${noteModel.title}\n\n${noteModel.content}")?.show()
     }
 
+    fun doFavourite() {
+        hillfort.isFavourite = !hillfort.isFavourite
+        app.hillforts.updateHillfort(hillfort)
+        app.hillforts.toggleFavourite(hillfort)
+        if (hillfort.isFavourite) {
+            view?.toast("Added to Favourites - Don't forget to Save!")
+        } else {
+            view?.toast("Removed from Favourites - Don't forget to Save!")
+        }
+    }
+
     fun doAddOrSave(tempHillfort: HillfortModel) {
         hillfort.name = tempHillfort.name
         hillfort.description = tempHillfort.description
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
         hillfort.images = images
+        hillfort.rating = tempHillfort.rating
 
         doAsync {
             if (edit) {
@@ -100,10 +111,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                 view?.navigateTo(VIEW.LIST)
             }
         }
-    }
-
-    fun doCancel() {
-        view?.finish()
     }
 
     fun doDelete() {
