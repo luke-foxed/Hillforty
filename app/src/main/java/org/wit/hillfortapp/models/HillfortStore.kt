@@ -4,6 +4,7 @@ interface HillfortStore {
 
     fun findAllHillforts(): List<HillfortModel>?
     fun findOneHillfort(hillfortID: Int): HillfortModel?
+    fun findHillfortsByName(name:String): ArrayList<HillfortModel>?
     fun createHillfort(hillfort: HillfortModel)
     fun updateHillfort(hillfort: HillfortModel)
     fun deleteHillfort(hillfort: HillfortModel)

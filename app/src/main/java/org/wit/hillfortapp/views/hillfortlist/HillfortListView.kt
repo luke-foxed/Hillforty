@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.views.BaseView
+
 
 class HillfortListView : BaseView(),
     HillfortListener {
@@ -40,6 +42,30 @@ class HillfortListView : BaseView(),
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_hillfort_list, menu)
         toolbar.overflowIcon = getDrawable(R.drawable.ic_filter)
+
+        val item = menu!!.findItem(R.id.action_search)
+        val searchView: SearchView = item.actionView as SearchView
+
+        searchView.isSubmitButtonEnabled = true
+        searchView.queryHint = "Enter A Name..."
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextChange(currentText: String): Boolean {
+                presenter.doSearch(currentText)
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                presenter.doSearch(query)
+                return true
+            }
+        })
+
+        searchView.setOnCloseListener {
+            presenter.loadHillforts()
+            true
+        }
+
         return super.onCreateOptionsMenu(menu)
     }
 

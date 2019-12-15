@@ -37,6 +37,14 @@ class HillfortListPresenter(view: BaseView) : BasePresenter(view) {
         view?.showHillforts(favourites as List<HillfortModel>)
     }
 
+    fun doSearch(query: String) {
+        val foundHillforts = app.hillforts.findHillfortsByName(query)
+        view?.info(foundHillforts)
+        if (foundHillforts != null) {
+            view?.showHillforts(foundHillforts as List<HillfortModel>)
+        }
+    }
+
     // TODO --> Refactor 'show all hillforts map' to contain only active user hillforts on map
 
 }

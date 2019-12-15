@@ -31,6 +31,19 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         return hillforts.find { p -> p.id == hillfortID }
     }
 
+    override fun findHillfortsByName(name: String): ArrayList<HillfortModel>? {
+        val foundHillforts: ArrayList<HillfortModel>? = arrayListOf()
+        hillforts.forEach {
+            if (it.name.toLowerCase().contains(name.toLowerCase())) {
+                info("FOUND $name")
+                foundHillforts?.add(it)
+            }
+        }
+        info("RETURNING HILLFORTS:")
+        info(foundHillforts)
+        return foundHillforts
+    }
+
     override fun createHillfort(hillfort: HillfortModel) {
         val key = db.child("users").child(userId).child("hillforts").push().key
 
