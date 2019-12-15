@@ -63,11 +63,7 @@ class HillfortView : BaseView(),
             showDatePickerDialog()
         }
 
-//
-//        hillfortCancelFAB.setOnClickListener {
-//            finish()
-//        }
-
+        // Source: https://medium.com/@shubham_nikam/easy-way-to-add-minimal-expandable-floating-action-button-fab-menu-dd8e6e011f52
         fabMore.setOnClickListener {
 
             val fabOpen = AnimationUtils.loadAnimation(applicationContext, R.anim.fab_menu_open)
@@ -134,7 +130,6 @@ class HillfortView : BaseView(),
                 tempHillfort.dateVisited = hillfortDateVisited.text.toString().trim()
                 tempHillfort.location = location
                 tempHillfort.rating = hillfortRatingBar.rating.toInt()
-                info(hillfortRatingBar.rating)
 
                 presenter.doAddOrSave(tempHillfort)
             }
