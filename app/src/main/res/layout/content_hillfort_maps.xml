@@ -10,6 +10,7 @@
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
+        android:background="@drawable/map_border"
         android:layout_width="361dp"
         android:layout_height="451dp"
         android:layout_marginStart="8dp"

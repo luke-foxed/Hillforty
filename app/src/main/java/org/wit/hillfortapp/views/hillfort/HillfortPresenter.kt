@@ -117,6 +117,12 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
+    fun doNavigation(): Boolean {
+        view?.finish()
+        view?.navigateTo(VIEW.NAVIGATOR, 0, "hillfort", hillfort)
+        return true
+    }
+
     fun doDelete() {
         doAsync {
             app.hillforts.deleteHillfort(hillfort)

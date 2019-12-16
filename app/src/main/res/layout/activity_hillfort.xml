@@ -290,17 +290,36 @@
                 android:background="@drawable/map_border"
                 android:clickable="false" />
 
-            <Button
-                android:id="@+id/hillfortLocationBtn"
-                style="?android:attr/buttonBarStyle"
-                android:layout_width="140dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_button"
-                android:backgroundTint="@color/colorAccent"
-                android:text="@string/hillfortEditLocationButton"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/hillfortLocationBtn"
+                    style="?android:attr/buttonBarStyle"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/hillfortEditLocationButton"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/hillfortNavigateButton"
+                    style="?android:attr/buttonBarStyle"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="Show Route"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

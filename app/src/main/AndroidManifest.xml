@@ -81,6 +81,10 @@
             android:name=".views.map.HillfortMapsView"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".views.navigator.NavigatorView"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
