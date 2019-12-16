@@ -192,7 +192,6 @@ class HillfortView : BaseView(),
         }
 
         hillfortNavigateButton.setOnClickListener {
-            toast("Clicked")
             presenter.doNavigation()
         }
     }

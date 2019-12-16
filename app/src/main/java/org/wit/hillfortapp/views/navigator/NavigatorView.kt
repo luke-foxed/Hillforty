@@ -1,22 +1,21 @@
 package org.wit.hillfortapp.views.navigator
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.model.TravelMode
 import kotlinx.android.synthetic.main.activity_navigator.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.views.BaseView
 
 class NavigatorView : BaseView() {
 
     private lateinit var presenter: NavigatorPresenter
     private lateinit var map: GoogleMap
-
-    private var hillfortLocation: LatLng = LatLng(0.0, 0.0)
     private var myLocation: LatLng = LatLng(0.0, 0.0)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,18 +24,40 @@ class NavigatorView : BaseView() {
 
         presenter = initPresenter(NavigatorPresenter(this)) as NavigatorPresenter
 
-        if (intent.hasExtra("hillfort")) {
-            val hillfort: HillfortModel = intent.extras?.getParcelable("hillfort")!!
-            hillfortLocation = LatLng(hillfort.location.lat, hillfort.location.lng)
-        }
-
         navigatorMap.onCreate(savedInstanceState)
         navigatorMap.getMapAsync {
             map = it
             myLocation = presenter.getCurrentLocation()
-            presenter.populateMap(map, myLocation, hillfortLocation)
-
+            presenter.populateMap(map, myLocation, TravelMode.DRIVING)
         }
+
+        drivingRadioButton.isChecked = true
+
+        walkingRadioButton.setOnClickListener {
+            walkingRadioButton.isChecked = true
+            map.clear()
+            presenter.populateMap(map, myLocation, TravelMode.WALKING)
+        }
+
+        drivingRadioButton.setOnClickListener {
+            drivingRadioButton.isChecked = true
+            map.clear()
+            presenter.populateMap(map, myLocation, TravelMode.DRIVING)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_navigator, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.navigatorMenuBack -> {
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

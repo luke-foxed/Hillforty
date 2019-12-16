@@ -14,10 +14,13 @@ import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import com.google.maps.model.DirectionsRoute
 import com.google.maps.model.TravelMode
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.toast
 import org.joda.time.DateTime
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.helpers.checkLocationPermissions
 import org.wit.hillfortapp.helpers.isPermissionGranted
+import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
 import java.io.IOException
@@ -31,21 +34,33 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
     private lateinit var myLocation: LatLng
     private val overview = 0
 
+    private var hillfort = HillfortModel()
+    private var hillfortLocation = LatLng(0.0, 0.0)
+
     init {
         if (checkLocationPermissions(view)) {
             doSetCurrentLocation()
         }
+        if (view.intent.hasExtra("hillfort")) {
+            hillfort = view.intent.extras?.getParcelable("hillfort")!!
+            hillfortLocation = LatLng(hillfort.location.lat, hillfort.location.lng)
+        }
     }
 
-    fun populateMap(map: GoogleMap, myLocation: LatLng, hillfortLocation: LatLng) {
-        map.uiSettings.isZoomControlsEnabled = true
-        val myLocationOptions = MarkerOptions().title("My Location").position(myLocation)
-        map.addMarker(myLocationOptions).tag = "My Location"
-        val directions = getDirectionsDetails(myLocation, hillfortLocation, TravelMode.DRIVING)
-        if (directions != null) {
-            addPolyline(directions, map)
-            positionCamera(directions.routes[overview], map)
-            addMarkersToMap(directions, map)
+    fun populateMap(map: GoogleMap, myLocation: LatLng, mode: TravelMode) {
+        if (myLocation == hillfortLocation) {
+            view?.alert("Hillfort location is set to current location!")
+                ?.show()
+        } else {
+            map.uiSettings.isZoomControlsEnabled = true
+            val myLocationOptions = MarkerOptions().title("My Location").position(myLocation)
+            map.addMarker(myLocationOptions).tag = "My Location"
+            val directions = getDirectionsDetails(myLocation, hillfortLocation, mode)
+            if (directions != null) {
+                addPolyline(directions, map)
+                positionCamera(directions.routes[overview], map)
+                addMarkersToMap(directions, map)
+            }
         }
     }
 
@@ -69,6 +84,7 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
         return myLocation
     }
 
+    // below section taken from the following source (with changes made)
     // source: https://android.jlelse.eu/google-maps-directions-api-5b2e11dee9b0
     private fun getGeoContext(): GeoApiContext? {
         val geoApiContext = GeoApiContext()
@@ -94,26 +110,25 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
                 .departureTime(now)
                 .await()
         } catch (e: ApiException) {
-            e.printStackTrace()
+            view?.toast("API Error: ${e.message}")
             null
         } catch (e: InterruptedException) {
-            e.printStackTrace()
+            view?.toast("Interrupt Error: ${e.message}")
             null
         } catch (e: IOException) {
-            e.printStackTrace()
+            view?.toast("IO Error: ${e.message}")
             null
         }
     }
 
     private fun addMarkersToMap(results: DirectionsResult, mMap: GoogleMap) {
-
         mMap.addMarker(
             MarkerOptions().position(
                 LatLng(
                     results.routes[overview].legs[overview].endLocation.lat,
                     results.routes[overview].legs[overview].endLocation.lng
                 )
-            ).title("Hillfort ").snippet(
+            ).title(hillfort.name).snippet(
                 getEndLocationTitle(results)
             )
         )
@@ -137,6 +152,6 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     private fun getEndLocationTitle(results: DirectionsResult): String? {
-        return "Time :" + results.routes[overview].legs[overview].duration.humanReadable + " Distance :" + results.routes[overview].legs[overview].distance.humanReadable
+        return "Time: " + results.routes[overview].legs[overview].duration.humanReadable + " Distance: " + results.routes[overview].legs[overview].distance.humanReadable
     }
 }
