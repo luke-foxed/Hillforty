@@ -183,4 +183,8 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
     override fun sortByVisit(): List<HillfortModel>? {
         return hillforts.sortedWith(compareBy { it.visited }).asReversed()
     }
+
+    override fun logout() {
+        hillforts.clear()
+    }
 }

@@ -37,17 +37,6 @@
         app:layout_constraintVertical_bias="0.797">
 
         <EditText
-            android:id="@+id/signUpUsernameInput"
-            android:layout_width="238dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:ems="10"
-            android:hint="@string/signUpUsernameField"
-            android:inputType="text"
-            android:textColor="@color/colorPrimary"
-            android:textColorHint="@color/fontHint" />
-
-        <EditText
             android:id="@+id/signUpEmailInput"
             android:layout_width="238dp"
             android:layout_height="wrap_content"

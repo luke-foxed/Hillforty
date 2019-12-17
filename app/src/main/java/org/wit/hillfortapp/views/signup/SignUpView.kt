@@ -15,7 +15,6 @@ class SignUpView : BaseView(), AnkoLogger {
     private var user = UserModel()
     private lateinit var presenter: SignUpPresenter
 
-    private var username: EditText? = null
     private var email: EditText? = null
     private var password: EditText? = null
     private var password2: EditText? = null
@@ -25,7 +24,6 @@ class SignUpView : BaseView(), AnkoLogger {
         setContentView(R.layout.activity_signup)
         presenter = SignUpPresenter(this)
 
-        username = findViewById(R.id.signUpUsernameInput)
         email = findViewById(R.id.signUpEmailInput)
         password = findViewById(R.id.signUpPasswordInput)
         password2 = findViewById(R.id.signUpPasswordInput2)
@@ -34,13 +32,11 @@ class SignUpView : BaseView(), AnkoLogger {
     }
 
     private fun signUp() {
-        val usernameText = username?.text.toString().trim()
         val emailText = email?.text.toString().trim()
         val password1Text = password?.text.toString().trim()
         val password2Text = password2?.text.toString().trim()
 
-        if (!validationCheck(usernameText, emailText, password1Text, password2Text)) {
-            user.username = usernameText
+        if (!validationCheck(emailText, password1Text, password2Text)) {
             user.email = emailText
             user.password = password1Text
             user.id = Random.nextInt()
@@ -50,7 +46,6 @@ class SignUpView : BaseView(), AnkoLogger {
     }
 
     private fun validationCheck(
-        usernameText: String,
         emailText: String,
         password1Text: String,
         password2Text: String
@@ -59,17 +54,12 @@ class SignUpView : BaseView(), AnkoLogger {
         var hasErrors = false
 
         when {
-            listOf(emailText, password1Text, password2Text, usernameText).contains("") -> {
+            listOf(emailText, password1Text, password2Text).contains("") -> {
                 toast("Please fill out all fields")
                 hasErrors = true
             }
             password1Text != password2Text -> {
                 toast("Passwords do not match")
-                hasErrors = true
-            }
-
-            presenter.doFindUsername(usernameText) -> {
-                toast("This username already exists")
                 hasErrors = true
             }
 

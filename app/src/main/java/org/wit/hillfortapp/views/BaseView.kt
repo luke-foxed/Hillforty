@@ -3,6 +3,7 @@ package org.wit.hillfortapp.views
 import android.content.Intent
 import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseUser
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.helpers.constructEmailTemplate
 import org.wit.hillfortapp.models.HillfortModel
@@ -87,7 +88,7 @@ abstract class BaseView : MainView(), AnkoLogger {
     open fun showNotes(notes: ArrayList<NoteModel>?) {}
     open fun showImages(images: ArrayList<ImageModel>) {}
     open fun showUpdatedMap(latLng: LatLng) {}
-    open fun showAccount(user: UserModel) {}
+    open fun showAccount(user: FirebaseUser) {}
     open fun showProgress() {}
     open fun hideProgress() {}
 

@@ -14,5 +14,6 @@ interface HillfortStore {
     fun sortedByFavourite(): List<HillfortModel>?
     fun sortByRating(): List<HillfortModel>?
     fun sortByVisit(): List<HillfortModel>?
+    fun logout()
 
 }

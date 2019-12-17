@@ -42,7 +42,7 @@
     <string name="signUpUsernameField">Enter a Username…</string>
     <string name="signUpEmailField">Enter an Email…</string>
     <string name="signUpPasswordField">Enter a Password…</string>
-    <string name="signUpPassword2Field">Re-enter Password…</string>
+    <string name="signUpPassword2Field">Confirm Password…</string>
     <string name="signUpButton">Sign Up</string>
 
     <!--STATS ACTIVITY-->
