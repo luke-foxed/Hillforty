@@ -19,6 +19,22 @@ class AccountPresenter(view: BaseView) : BasePresenter(view) {
                     app.hillforts.logout()
                     app.activeUser = null
                     view?.navigateTo(VIEW.LOGIN)
+                } else {
+                    view?.toast("Email Change Failed: ${task.exception?.message}")
+                }
+            }
+    }
+
+    fun doUpdatePassword(password: String) {
+        app.activeUser?.updatePassword(password)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    view?.toast("User password updated.")
+                    app.hillforts.logout()
+                    app.activeUser = null
+                    view?.navigateTo(VIEW.LOGIN)
+                } else {
+                    view?.toast("Password Change Failed: ${task.exception?.message}")
                 }
             }
     }
