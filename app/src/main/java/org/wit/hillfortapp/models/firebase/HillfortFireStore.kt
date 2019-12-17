@@ -1,8 +1,11 @@
 package org.wit.hillfortapp.models.firebase
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -206,5 +209,19 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         }.addOnFailureListener { exception ->
             info("Error deleting photos: $exception")
         }
+    }
+
+    override fun deleteUser(user: FirebaseUser) {
+        // delete hillfort related information
+        db.child("users").child(userId).removeValue()
+        deleteUserImages()
+        deleteAllHillforts()
+        
+        user.delete()
+            .addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.d(TAG, "Error deleting user: " + task.exception)
+                }
+            }
     }
 }

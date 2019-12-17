@@ -1,5 +1,7 @@
 package org.wit.hillfortapp.models
 
+import com.google.firebase.auth.FirebaseUser
+
 interface HillfortStore {
 
     fun findAllHillforts(): List<HillfortModel>?
@@ -14,6 +16,8 @@ interface HillfortStore {
     fun sortedByFavourite(): List<HillfortModel>?
     fun sortByRating(): List<HillfortModel>?
     fun sortByVisit(): List<HillfortModel>?
+
+    fun deleteUser(user:FirebaseUser)
     fun logout()
 
 }
