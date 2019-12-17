@@ -190,6 +190,10 @@ class HillfortView : BaseView(),
         hillfortLocationBtn.setOnClickListener {
             presenter.doSetLocation()
         }
+
+        hillfortNavigateButton.setOnClickListener {
+            presenter.doNavigation()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
