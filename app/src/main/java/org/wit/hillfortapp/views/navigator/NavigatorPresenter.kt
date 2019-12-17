@@ -1,5 +1,7 @@
 package org.wit.hillfortapp.views.navigator
 
+import android.content.Intent
+import android.net.Uri
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -153,5 +155,14 @@ class NavigatorPresenter(view: BaseView) : BasePresenter(view) {
 
     private fun getEndLocationTitle(results: DirectionsResult): String? {
         return "Time: " + results.routes[overview].legs[overview].duration.humanReadable + " Distance: " + results.routes[overview].legs[overview].distance.humanReadable
+    }
+
+    fun doOpenMaps() {
+        val intent =
+            Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("geo:${myLocation.latitude},${myLocation.longitude}?q=${hillfortLocation.latitude},${hillfortLocation.longitude}(Label+Name)")
+            )
+        view?.startActivity(intent)
     }
 }

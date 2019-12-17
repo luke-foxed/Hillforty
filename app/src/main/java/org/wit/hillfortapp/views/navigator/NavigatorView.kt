@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.drawer_main.*
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.views.BaseView
 
+
 class NavigatorView : BaseView() {
 
     private lateinit var presenter: NavigatorPresenter
@@ -43,6 +44,10 @@ class NavigatorView : BaseView() {
             drivingRadioButton.isChecked = true
             map.clear()
             presenter.populateMap(map, myLocation, TravelMode.DRIVING)
+        }
+
+        openInMapsButton.setOnClickListener {
+            presenter.doOpenMaps()
         }
     }
 

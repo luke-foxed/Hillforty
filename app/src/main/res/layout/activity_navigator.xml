@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="300dp"
         android:layout_height="80dp"
@@ -31,20 +31,26 @@
         app:layout_constraintVertical_bias="0.91">
 
         <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:gravity="center">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
             <RadioButton
                 android:id="@+id/walkingRadioButton"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:checked="false"
+                android:text="Walking"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:text="Walking">
-            </RadioButton>
+                android:textSize="16sp" />
 
             <RadioButton
                 android:id="@+id/drivingRadioButton"
@@ -52,10 +58,24 @@
                 android:layout_height="50dp"
                 android:text="Driving"
                 android:textColor="@android:color/white"
-                android:textSize="16sp">
-            </RadioButton>
+                android:textSize="16sp" />
         </RadioGroup>
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/openInMapsButton"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            android:text="Open In Maps"
+            android:drawableLeft="@drawable/ic_open"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
