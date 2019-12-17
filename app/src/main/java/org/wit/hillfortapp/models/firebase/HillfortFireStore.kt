@@ -75,24 +75,20 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     override fun deleteHillfort(hillfort: HillfortModel) {
         db.child("users").child(userId).child("hillforts").child(hillfort.fbId).removeValue()
-        hillforts.remove(hillfort)
-
         // remove images
-        val images = st.child(userId)
-        images.listAll().addOnSuccessListener {
-            it.items.forEach { item ->
-                item.delete()
-            }
-        }.addOnFailureListener {
-            info("Error deleting photos: $it")
-        }
+        deleteHillfortImages(hillfort.fbId)
 
         // remove from user favourites
         db.child("users").child(userId).child("favourites").child(hillfort.fbId).removeValue()
+
+        hillforts.remove(hillfort)
     }
 
-    override fun deleteAllHillforts(activeUserID: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun deleteAllHillforts() {
+        db.child("users").child(userId).child("hillforts").removeValue()
+        db.child("users").child(userId).child("favourites").removeValue()
+        deleteUserImages()
+        hillforts.clear()
     }
 
     private fun updateImage(hillfort: HillfortModel) {
@@ -100,7 +96,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         hillfort.images.forEach { image ->
             val fileName = File(image.uri)
             val imageName = fileName.name
-            val imageRef = st.child("$userId/$imageName")
+            val imageRef = st.child("$userId/${hillfort.fbId}/$imageName")
             val baos = ByteArrayOutputStream()
             val bitmap = readImageFromPath(context, image.uri)
 
@@ -186,5 +182,29 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     override fun logout() {
         hillforts.clear()
+    }
+
+    private fun deleteUserImages() {
+        hillforts.forEach {
+            val images = st.child(userId).child(it.fbId)
+            images.listAll().addOnSuccessListener { folder ->
+                folder.items.forEach { item ->
+                    item.delete()
+                }
+            }.addOnFailureListener { exception ->
+                info("Error deleting photos: $exception")
+            }
+        }
+    }
+
+    private fun deleteHillfortImages(hillfortFBID: String) {
+        val images = st.child(userId).child(hillfortFBID)
+        images.listAll().addOnSuccessListener { folder ->
+            folder.items.forEach { item ->
+                item.delete()
+            }
+        }.addOnFailureListener { exception ->
+            info("Error deleting photos: $exception")
+        }
     }
 }

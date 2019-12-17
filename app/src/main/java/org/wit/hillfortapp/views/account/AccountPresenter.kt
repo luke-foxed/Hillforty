@@ -40,12 +40,11 @@ class AccountPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doDelete() {
-       // app.users.deleteUser(app.activeUser)
         view?.navigateTo(VIEW.LOGIN)
     }
 
     fun doDeleteHillforts() {
-       // app.users.deleteAllHillforts(app.activeUser.id)
+        app.hillforts.deleteAllHillforts()
     }
 }
 
