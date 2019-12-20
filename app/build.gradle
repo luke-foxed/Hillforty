@@ -62,7 +62,7 @@ dependencies {
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'androidx.room:room-runtime:2.2.2'
-
+    implementation 'com.google.android.material:material:1.2.0-alpha03'
     implementation 'com.google.maps:google-maps-services:0.1.20'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 

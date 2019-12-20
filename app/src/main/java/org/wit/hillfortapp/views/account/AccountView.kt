@@ -19,7 +19,7 @@ class AccountView : BaseView(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        content_frame.removeAllViews()
+        //content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_account, content_frame)
 
         presenter = AccountPresenter(this)
