@@ -24,19 +24,15 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
         view?.showProgress()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
             if (task.isSuccessful) {
-                app.activeUser = email
+                app.activeUser = auth.currentUser!!
                 view?.info(fireStore)
                 if (fireStore != null) {
                     doAsync {
                         fireStore!!.fetchHillforts {
                             fireStore!!.fetchFavourites()
                             view?.hideProgress()
-                            view?.navigateTo(VIEW.MAIN)
+                            view?.navigateTo(VIEW.MAIN, 0, "user", auth.currentUser)
                         }
-//                        uiThread {
-//                            view?.hideProgress()
-//                            view?.navigateTo(VIEW.MAIN)
-//                        }
                     }
                 } else {
                     view?.hideProgress()

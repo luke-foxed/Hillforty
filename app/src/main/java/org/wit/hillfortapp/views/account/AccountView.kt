@@ -1,19 +1,17 @@
 package org.wit.hillfortapp.views.account
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.BaseView
-import org.wit.hillfortapp.views.login.LoginView
 
 class AccountView : BaseView(), AnkoLogger {
 
@@ -26,10 +24,10 @@ class AccountView : BaseView(), AnkoLogger {
 
         presenter = AccountPresenter(this)
 
-        accountEditBtn.setOnClickListener{
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_account, null)
+        accountChangeEmail.setOnClickListener {
+            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_account_email, null)
             val builder = AlertDialog.Builder(this)
-            builder.setMessage("Enter new account details: ")
+            builder.setMessage("Enter A New Email (You Will Be Logged Out): ")
             builder.setView(mDialogView)
 
             val dialog: AlertDialog = builder.create()
@@ -37,31 +35,56 @@ class AccountView : BaseView(), AnkoLogger {
 
             val updateBtn = dialog.findViewById(R.id.accountDialogUpdate) as Button
             val cancelBtn = dialog.findViewById(R.id.accountDialogCancel) as Button
-            val usernameField = dialog.findViewById(R.id.accountDialogUsername) as? EditText
             val emailField = dialog.findViewById(R.id.accountDialogEmail) as? EditText
-            val passwordField = dialog.findViewById(R.id.accountDialogPassword) as? EditText
 
             updateBtn.setOnClickListener {
                 when {
-                    listOf(emailField?.text.toString(), passwordField?.text.toString())
-                        .contains("") -> toast("Please fill out all fields")
+                    emailField?.text.toString() == "" -> toast("Please fill out all fields")
                     !isEmailValid(emailField?.text.toString()) -> toast("Please enter a valid email")
                     else -> {
-//                        val editedUser = UserModel(
-//                            app.activeUser.id,
-//                            usernameField?.text.toString(),
-//                            emailField?.text.toString(),
-//                            passwordField?.text.toString(),
-//                            app.activeUser.hillforts
-//                        )
-//                        presenter.doUpdate(editedUser)
-//                        dialog.dismiss()
+                        presenter.doUpdateEmail(emailField?.text.toString())
                     }
                 }
             }
             cancelBtn.setOnClickListener {
                 dialog.dismiss()
             }
+        }
+
+        accountChangePassword.setOnClickListener {
+            val mDialogView =
+                LayoutInflater.from(this).inflate(R.layout.dialog_account_password, null)
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Enter A New Password (You Will Be Logged Out): ")
+            builder.setView(mDialogView)
+
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+
+            val updateBtn = dialog.findViewById(R.id.accountDialogPasswordUpdate) as Button
+            val cancelBtn = dialog.findViewById(R.id.accountDialogPasswordCancel) as Button
+            val password = dialog.findViewById(R.id.accountDialogPassword) as? EditText
+            val passwordConfirm =
+                dialog.findViewById(R.id.accountDialogPasswordConfirm) as? EditText
+
+            updateBtn.setOnClickListener {
+                when {
+                    listOf(
+                        password?.text.toString(),
+                        passwordConfirm?.text.toString()
+                    ).contains(
+                        ""
+                    ) -> toast("Please fill out all fields")
+                    password!!.text.toString() != passwordConfirm!!.text.toString() -> toast("Passwords do not match")
+                    else -> {
+                        presenter.doUpdatePassword(password.text.toString())
+                    }
+                }
+            }
+            cancelBtn.setOnClickListener {
+                dialog.dismiss()
+            }
+
         }
 
         accountDeleteBtn.setOnClickListener {
@@ -93,13 +116,12 @@ class AccountView : BaseView(), AnkoLogger {
         }
     }
 
-    override fun showAccount(user: UserModel) {
-        accountUsername.text = user.username
+    override fun showAccount(user: FirebaseUser) {
         accountEmail.text = user.email
-        accountPassword.text = user.password
     }
 
     private fun isEmailValid(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
+
 }

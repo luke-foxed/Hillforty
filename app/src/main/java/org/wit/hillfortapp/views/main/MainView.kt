@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
@@ -44,19 +45,16 @@ open class MainView : AppCompatActivity(), AnkoLogger {
             setHomeAsUpIndicator(R.drawable.ic_menu)
         }
 
-//        if (intent.hasExtra("user")) {
-//            val user: UserModel = intent.extras?.getParcelable("user")!!
-//            mainActivityUsernameText.text = user.username
-//        }
-        val userName = app.activeUser.split('@')[0]
-        mainActivityUsernameText.text = userName
+        if (intent.hasExtra("user")) {
+            val user: FirebaseUser = intent.extras?.getParcelable("user")!!
+            mainActivityUsernameText.text = user.email!!.split('@')[0]
+        }
 
         mDrawerLayout = findViewById(R.id.drawer_layout)
         val navigationView: NavigationView = findViewById(R.id.nav_view)
 
         // remove icon default color
         navigationView.itemIconTintList = null
-
 
         // credit: https://tutorial.eyehunts.com/android/android-navigation-drawer-example-kotlin/
         navigationView.setNavigationItemSelectedListener { menuItem ->
@@ -93,7 +91,8 @@ open class MainView : AppCompatActivity(), AnkoLogger {
                 }
 
                 R.id.nav_logout -> {
-//                    app.activeUser = UserModel()
+                    app.hillforts.logout()
+                    app.activeUser = null
                     startActivity(Intent(this@MainView, LoginView::class.java))
                 }
             }

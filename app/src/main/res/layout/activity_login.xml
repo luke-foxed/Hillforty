@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="0.698" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/loginDividerText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

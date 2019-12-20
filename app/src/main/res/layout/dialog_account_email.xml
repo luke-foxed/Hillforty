@@ -1,0 +1,68 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/accountDialogEmail"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="148dp"
+        android:hint="@string/accountDialogEmailField"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/accountDialogEmail">
+
+        <Button
+            android:id="@+id/accountDialogUpdate"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/accountDialogUpdateButton"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="57dp"
+            tools:layout_editor_absoluteY="298dp" />
+
+        <Button
+            android:id="@+id/accountDialogCancel"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/accountDialogCancelButton"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            tools:layout_editor_absoluteX="213dp"
+            tools:layout_editor_absoluteY="298dp" />
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
