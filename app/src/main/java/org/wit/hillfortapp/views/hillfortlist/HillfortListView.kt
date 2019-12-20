@@ -32,7 +32,6 @@ class HillfortListView : BaseView(),
         presenter.loadHillforts()
 
         hillfortListFloatingBtn.setOnClickListener {
-            toast("CLICKED")
             presenter.doAddHillfort()
         }
     }

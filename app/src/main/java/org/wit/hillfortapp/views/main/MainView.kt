@@ -3,10 +3,9 @@ package org.wit.hillfortapp.views.main
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,9 +13,11 @@ import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.views.BaseView
+import org.wit.hillfortapp.views.VIEW
 
 
-open class MainView : AppCompatActivity(), AnkoLogger {
+open class MainView : BaseView(), AnkoLogger {
 
     private lateinit var bottomNavBar: BottomNavigationView
     private lateinit var viewPager: ViewPager
@@ -42,6 +43,7 @@ open class MainView : AppCompatActivity(), AnkoLogger {
         viewPager = findViewById<View>(R.id.content_frame) as ViewPager
         viewPager.adapter = CustomPagerAdapter(this)
 
+
         bottomNavBar.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_home -> {
@@ -58,12 +60,30 @@ open class MainView : AppCompatActivity(), AnkoLogger {
                 }
                 R.id.navigation_account -> {
                     item.isChecked = true
-                    viewPager.setCurrentItem(3, true)
+                    //viewPager.setCurrentItem(3, true)
                 }
             }
             true
         }
 
+        viewPager.addOnPageChangeListener(object : OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) { // your code here
+                when (position) {
+                    0 -> navigateTo(VIEW.MAIN)
+                    1 -> navigateTo(VIEW.LIST)
+                }
+
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -77,7 +97,4 @@ open class MainView : AppCompatActivity(), AnkoLogger {
         return true
     }
 
-    override fun onAttachFragment(fragment: Fragment) {
-        super.onAttachFragment(fragment)
-    }
 }

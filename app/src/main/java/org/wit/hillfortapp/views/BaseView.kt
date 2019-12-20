@@ -2,6 +2,7 @@ package org.wit.hillfortapp.views
 
 import android.content.Intent
 import android.os.Parcelable
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
 import org.jetbrains.anko.AnkoLogger
@@ -27,7 +28,7 @@ enum class VIEW {
     LOCATION, HILLFORT, MAPS, LIST, SIGNUP, MAIN, LOGIN, NAVIGATOR
 }
 
-abstract class BaseView : MainView(), AnkoLogger {
+abstract class BaseView : AppCompatActivity(), AnkoLogger {
 
     private var basePresenter: BasePresenter? = null
 

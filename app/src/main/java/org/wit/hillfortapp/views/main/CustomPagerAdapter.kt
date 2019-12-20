@@ -5,18 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import org.wit.hillfortapp.R
 
 // source: https://www.bignerdranch.com/blog/viewpager-without-fragments/
 class CustomPagerAdapter(context: Context) : PagerAdapter() {
+
+    val layouts: Array<Int> = arrayOf(
+        R.layout.activity_main, R.layout.activity_hillfort_list,
+        R.layout.activity_hillfort_maps, R.layout.activity_account
+    )
     private val mContext: Context = context
-    override fun instantiateItem(collection: ViewGroup, position: Int): Any {
-        val customPagerEnum = CustomPagerEnum.values()[position]
-        val inflater = LayoutInflater.from(mContext)
-        val layout =
-            inflater.inflate(customPagerEnum.layoutResId, collection, false) as ViewGroup
-        collection.addView(layout)
-        return layout
-    }
+
+    override fun instantiateItem(viewGroup: ViewGroup, position: Int): Any =
+        LayoutInflater.from(viewGroup.context).inflate(layouts[position], viewGroup, false).also {
+            viewGroup.addView(it)
+        }
 
     override fun destroyItem(
         collection: ViewGroup,
@@ -38,5 +41,6 @@ class CustomPagerAdapter(context: Context) : PagerAdapter() {
         val customPagerEnum = CustomPagerEnum.values()[position]
         return mContext.getString(customPagerEnum.titleResId)
     }
+
 
 }
