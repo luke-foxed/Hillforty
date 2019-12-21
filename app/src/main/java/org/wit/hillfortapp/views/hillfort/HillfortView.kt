@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_hillfort.*
 import kotlinx.android.synthetic.main.content_hillfort_fab.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.models.HillfortModel
@@ -109,6 +108,12 @@ class HillfortView : BaseView(),
         }
 
         fabMoreFavourite.setOnClickListener {
+            it.startAnimation(
+                AnimationUtils.loadAnimation(
+                    this,
+                    R.anim.fab_favourite_click
+                )
+            )
             presenter.doFavourite()
         }
 
@@ -117,7 +122,17 @@ class HillfortView : BaseView(),
         }
 
         fabMoreDelete.setOnClickListener {
-            presenter.doDelete()
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Are you sure you want to delete this Hillfort?")
+            builder.setPositiveButton("Yes") { dialog, _ ->
+                presenter.doDelete()
+                dialog.dismiss()
+            }
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
         }
 
         hillfortSaveFAB.setOnClickListener {
@@ -205,20 +220,6 @@ class HillfortView : BaseView(),
         when (item.itemId) {
             R.id.popupCancel -> {
                 finish()
-            }
-
-            R.id.popupDelete -> {
-                val builder = AlertDialog.Builder(this)
-                builder.setMessage("Are you sure you want to delete this Hillfort?")
-                builder.setPositiveButton("Yes") { dialog, _ ->
-                    presenter.doDelete()
-                    dialog.dismiss()
-                }
-                builder.setNegativeButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                val dialog: AlertDialog = builder.create()
-                dialog.show()
             }
 
             R.id.popupNext -> {

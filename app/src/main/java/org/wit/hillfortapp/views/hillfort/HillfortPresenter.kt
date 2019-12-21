@@ -2,9 +2,11 @@ package org.wit.hillfortapp.views.hillfort
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.android.synthetic.main.content_hillfort_fab.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
@@ -29,7 +31,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     private var images: ArrayList<ImageModel> = arrayListOf()
 
     private var edit = false
-    private var isFavourited = false
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
@@ -47,8 +48,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             view.showHillfort(hillfort)
 
             edit = true
-            isFavourited = app.hillforts.findOneFavourite(hillfort)
 
+            if(hillfort.isFavourite) {
+                view.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 116, 216))
+            }
 
         } else {
             if (checkLocationPermissions(view)) {
@@ -85,9 +88,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         app.hillforts.updateHillfort(hillfort)
         app.hillforts.toggleFavourite(hillfort)
         if (hillfort.isFavourite) {
+            view?.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 116, 216))
             view?.toast("Added to Favourites - Don't forget to Save!")
         } else {
             view?.toast("Removed from Favourites - Don't forget to Save!")
+            view?.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 255, 255))
         }
     }
 
@@ -184,13 +189,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             }
         }
     }
-
-    fun doDeleteNote(noteModel: NoteModel) {
-        hillfort.notes.remove(noteModel)
-        app.hillforts.updateHillfort(hillfort)
-    }
-
-
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
