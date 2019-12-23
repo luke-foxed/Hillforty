@@ -1,6 +1,7 @@
 package org.wit.hillfortapp.views.hillfort
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Color
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -235,7 +236,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                 val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
                 view?.showUpdatedMap(latLng)
             }
-            IMAGE_CAPTURE_REQUEST -> {
+            IMAGE_CAPTURE_REQUEST-> {
 
                 val path = getCurrentImagePath()
                 if (path != null) {
@@ -243,14 +244,16 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                     if (hillfort.images.size >= 4) {
                         view?.toast("Only 4 images allowed!")
                     } else {
-
+                        
                         val newImage = ImageModel()
                         newImage.uri = path
                         newImage.fbID = hillfort.fbId
                         newImage.id = Random().nextInt()
 
-                        hillfort.images.add(newImage)
-                        view?.showImages(hillfort.images)
+                        if(resultCode == RESULT_OK) {
+                            hillfort.images.add(newImage)
+                            view?.showImages(hillfort.images)
+                        }
                     }
                 }
 
