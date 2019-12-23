@@ -1,5 +1,6 @@
 package org.wit.hillfortapp.models.firebase
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Bitmap
@@ -17,6 +18,7 @@ import org.wit.hillfortapp.models.HillfortStore
 import java.io.ByteArrayOutputStream
 import java.io.File
 
+
 class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
 
     val hillforts = ArrayList<HillfortModel>()
@@ -26,6 +28,10 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
     lateinit var db: DatabaseReference
     lateinit var st: StorageReference
 
+    /********************************
+     **** HILLFORT FUNCTIONALITY ****
+     *******************************/
+
     override fun findAllHillforts(): ArrayList<HillfortModel>? {
         return hillforts
     }
@@ -34,6 +40,7 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         return hillforts.find { p -> p.id == hillfortID }
     }
 
+    @SuppressLint("DefaultLocale")
     override fun findHillfortsByName(name: String): ArrayList<HillfortModel>? {
         val foundHillforts: ArrayList<HillfortModel>? = arrayListOf()
         hillforts.forEach {
@@ -42,8 +49,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                 foundHillforts?.add(it)
             }
         }
-        info("RETURNING HILLFORTS:")
-        info(foundHillforts)
         return foundHillforts
     }
 
@@ -94,6 +99,17 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         hillforts.clear()
     }
 
+    private fun deleteHillfortImages(hillfortFBID: String) {
+        val images = st.child(userId).child(hillfortFBID)
+        images.listAll().addOnSuccessListener { folder ->
+            folder.items.forEach { item ->
+                item.delete()
+            }
+        }.addOnFailureListener { exception ->
+            info("Error deleting photos: $exception")
+        }
+    }
+
     private fun updateImage(hillfort: HillfortModel) {
 
         hillfort.images.forEach { image ->
@@ -132,9 +148,29 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         }
     }
 
-    override fun findOneFavourite(hillfort: HillfortModel): Boolean {
-        return favouriteHillforts.contains(hillfort.fbId)
+    override fun sortedByFavourite(): List<HillfortModel>? {
+        return hillforts.sortedWith(compareBy { it.isFavourite }).asReversed()
     }
+
+    override fun sortByRating(): List<HillfortModel>? {
+        return hillforts.sortedWith(compareBy { it.rating }).asReversed()
+    }
+
+    override fun sortByVisit(): List<HillfortModel>? {
+        return hillforts.sortedWith(compareBy { it.visited }).asReversed()
+    }
+
+    private fun getAllImages(): Int {
+        var images = 0
+        hillforts.forEach{
+            images += it.images.size
+        }
+        return images
+    }
+
+    /***************************
+     **** USER FUNCTIONALITY ****
+     ***************************/
 
     fun fetchHillforts(hillfortsReady: () -> Unit) {
         val valueEventListener = object : ValueEventListener {
@@ -171,18 +207,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             })
     }
 
-    override fun sortedByFavourite(): List<HillfortModel>? {
-        return hillforts.sortedWith(compareBy { it.isFavourite }).asReversed()
-    }
-
-    override fun sortByRating(): List<HillfortModel>? {
-        return hillforts.sortedWith(compareBy { it.rating }).asReversed()
-    }
-
-    override fun sortByVisit(): List<HillfortModel>? {
-        return hillforts.sortedWith(compareBy { it.visited }).asReversed()
-    }
-
     override fun logout() {
         hillforts.clear()
     }
@@ -200,17 +224,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         }
     }
 
-    private fun deleteHillfortImages(hillfortFBID: String) {
-        val images = st.child(userId).child(hillfortFBID)
-        images.listAll().addOnSuccessListener { folder ->
-            folder.items.forEach { item ->
-                item.delete()
-            }
-        }.addOnFailureListener { exception ->
-            info("Error deleting photos: $exception")
-        }
-    }
-
     override fun deleteUser(user: FirebaseUser) {
         // delete hillfort related information
         db.child("users").child(userId).removeValue()
@@ -224,4 +237,8 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
                 }
             }
     }
+
+    /********************************
+     **** STATS FUNCTIONALITY ****
+     *******************************/
 }
