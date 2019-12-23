@@ -60,6 +60,10 @@ class HillfortView : BaseView(),
             }
         }
 
+        hillfortTakePicture.setOnClickListener {
+            presenter.doTakePicture()
+        }
+
         hillfortDateVisited.setOnClickListener {
             showDatePickerDialog()
         }
@@ -231,13 +235,6 @@ class HillfortView : BaseView(),
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (data != null) {
-            presenter.doActivityResult(requestCode, resultCode, data)
-        }
     }
 
     override fun onNoteClick(noteModel: NoteModel) {

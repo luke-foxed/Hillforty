@@ -11,9 +11,7 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
-import org.wit.hillfortapp.helpers.checkLocationPermissions
-import org.wit.hillfortapp.helpers.isPermissionGranted
-import org.wit.hillfortapp.helpers.showImagePicker
+import org.wit.hillfortapp.helpers.*
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.Location
@@ -21,6 +19,7 @@ import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.VIEW
+import java.io.File
 import java.util.*
 
 class HillfortPresenter(view: BaseView) : BasePresenter(view) {
@@ -34,6 +33,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
+    private val IMAGE_CAPTURE_REQUEST = 3
 
     var locationService: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(view)
@@ -163,6 +163,13 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
+    fun doTakePicture() {
+        if (checkCameraAndStoragePermissions(view!!))
+            view?.let {
+                takePicture(view!!, IMAGE_CAPTURE_REQUEST)
+            }
+    }
+
     fun doSetLocation() {
         view?.navigateTo(
             VIEW.LOCATION,
@@ -227,6 +234,28 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                 hillfort.location = location
                 val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
                 view?.showUpdatedMap(latLng)
+            }
+            IMAGE_CAPTURE_REQUEST -> {
+
+                val path = getCurrentImagePath()
+                if (path != null) {
+
+                    if (hillfort.images.size >= 4) {
+                        view?.toast("Only 4 images allowed!")
+                    } else {
+
+                        val newImage = ImageModel()
+                        newImage.uri = path
+                        newImage.fbID = hillfort.fbId
+                        newImage.id = Random().nextInt()
+
+                        hillfort.images.add(newImage)
+                        view?.showImages(hillfort.images)
+                    }
+                }
+
+//                var bitmap: Bitmap = BitmapFactory.decodeFile(imagePath)
+//                images.add(bitmap)
             }
         }
     }
