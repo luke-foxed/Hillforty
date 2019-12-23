@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
@@ -58,6 +57,14 @@ class HillfortView : BaseView(),
             getMapAsync {
                 MapsInitializer.initialize(applicationContext)
             }
+        }
+
+        hillfortTakePicture.setOnClickListener {
+            presenter.doTakePicture()
+        }
+
+        hillfortChooseCoverBtn.setOnClickListener {
+            presenter.doChooseCover(viewPager.currentItem)
         }
 
         hillfortDateVisited.setOnClickListener {
@@ -231,13 +238,6 @@ class HillfortView : BaseView(),
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (data != null) {
-            presenter.doActivityResult(requestCode, resultCode, data)
-        }
     }
 
     override fun onNoteClick(noteModel: NoteModel) {
