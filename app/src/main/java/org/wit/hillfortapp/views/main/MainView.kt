@@ -1,5 +1,6 @@
 package org.wit.hillfortapp.views.main
-import org.wit.hillfortapp.views.hillfort.HillfortView
+
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -13,13 +14,11 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.toast
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.about.AboutView
 import org.wit.hillfortapp.views.account.AccountView
+import org.wit.hillfortapp.views.hillfort.HillfortView
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 import org.wit.hillfortapp.views.login.LoginView
 import org.wit.hillfortapp.views.map.HillfortMapsView
@@ -64,36 +63,60 @@ open class MainView : AppCompatActivity(), AnkoLogger {
             when (menuItem.itemId) {
 
                 R.id.nav_home -> {
-                    startActivity(Intent(this@MainView, MainView::class.java))
+                    startActivity(
+                        Intent(this@MainView, MainView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 }
                 R.id.nav_hillforts -> {
-                    startActivity(Intent(this@MainView, HillfortListView::class.java))
+                    startActivity(
+                        Intent(this@MainView, HillfortListView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 }
 
                 R.id.nav_hillfort_maps -> {
-                    startActivity(Intent(this@MainView, HillfortMapsView::class.java))
+                    startActivity(
+                        Intent(this@MainView, HillfortMapsView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 }
 
                 R.id.nav_add -> {
-                    startActivity(Intent(this@MainView, HillfortView::class.java))
+                    startActivity(
+                        Intent(this@MainView, HillfortView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 }
 
                 R.id.nav_account -> {
-                    startActivity(Intent(this@MainView, AccountView::class.java))
+                    startActivity(
+                        Intent(this@MainView, AccountView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 }
 
                 R.id.nav_stats -> {
-                    startActivity(Intent(this@MainView, StatsView::class.java))
+                    startActivity(
+                        Intent(this@MainView, StatsView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 }
 
                 R.id.nav_about -> {
-                    startActivity(Intent(this@MainView, AboutView::class.java))
+                    startActivity(
+                        Intent(this@MainView, AboutView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 }
 
                 R.id.nav_logout -> {
                     app.hillforts.logout()
                     app.activeUser = null
-                    startActivity(Intent(this@MainView, LoginView::class.java))
+                    startActivity(
+                        Intent(this@MainView, LoginView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+                    )
                 }
             }
 

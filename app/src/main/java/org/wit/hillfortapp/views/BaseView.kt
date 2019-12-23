@@ -1,5 +1,6 @@
 package org.wit.hillfortapp.views
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Parcelable
 import com.google.android.gms.maps.model.LatLng
@@ -9,7 +10,6 @@ import org.wit.hillfortapp.helpers.constructEmailTemplate
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.NoteModel
-import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.editlocation.EditLocationView
 import org.wit.hillfortapp.views.hillfort.HillfortView
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
@@ -45,7 +45,12 @@ abstract class BaseView : MainView(), AnkoLogger {
         if (key != "") {
             intent.putExtra(key, value)
         }
-        startActivityForResult(intent, code)
+
+        startActivityForResult(
+            intent,
+            code,
+            ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+        )
     }
 
     fun initPresenter(presenter: BasePresenter): BasePresenter {

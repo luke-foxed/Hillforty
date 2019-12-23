@@ -14,10 +14,6 @@
             android:title="Cancel" />
 
         <item
-            android:id="@+id/popupDelete"
-            android:title="Delete" />
-
-        <item
             android:id="@+id/popupNext"
             android:title="Next" />
 
