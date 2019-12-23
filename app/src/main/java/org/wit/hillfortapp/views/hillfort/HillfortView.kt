@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
@@ -62,6 +61,10 @@ class HillfortView : BaseView(),
 
         hillfortTakePicture.setOnClickListener {
             presenter.doTakePicture()
+        }
+
+        hillfortChooseCoverBtn.setOnClickListener {
+            presenter.doChooseCover(viewPager.currentItem)
         }
 
         hillfortDateVisited.setOnClickListener {

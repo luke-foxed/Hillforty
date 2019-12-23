@@ -20,7 +20,6 @@ import org.wit.hillfortapp.models.NoteModel
 import org.wit.hillfortapp.views.BasePresenter
 import org.wit.hillfortapp.views.BaseView
 import org.wit.hillfortapp.views.VIEW
-import java.io.File
 import java.util.*
 
 class HillfortPresenter(view: BaseView) : BasePresenter(view) {
@@ -45,7 +44,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
             notes = hillfort.notes
             images = hillfort.images
-
             view.showHillfort(hillfort)
 
             edit = true
@@ -85,15 +83,19 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doFavourite() {
-        hillfort.isFavourite = !hillfort.isFavourite
-        app.hillforts.updateHillfort(hillfort)
-        app.hillforts.toggleFavourite(hillfort)
-        if (hillfort.isFavourite) {
-            view?.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 116, 216))
-            view?.toast("Added to Favourites - Don't forget to Save!")
+        if (hillfort.fbId == "") {
+            view?.toast("Please Finish Creating The Hillfort")
         } else {
-            view?.toast("Removed from Favourites - Don't forget to Save!")
-            view?.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 255, 255))
+            hillfort.isFavourite = !hillfort.isFavourite
+            app.hillforts.updateHillfort(hillfort)
+            app.hillforts.toggleFavourite(hillfort)
+            if (hillfort.isFavourite) {
+                view?.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 116, 216))
+                view?.toast("Added to Favourites - Don't forget to Save!")
+            } else {
+                view?.toast("Removed from Favourites - Don't forget to Save!")
+                view?.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 255, 255))
+            }
         }
     }
 
@@ -162,6 +164,26 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         view?.let {
             showImagePicker(view!!, IMAGE_REQUEST)
         }
+    }
+
+    fun doChooseCover(index: Int) {
+        when {
+            hillfort.images.size == 0 -> {
+                view?.toast("No Images Exist!")
+            }
+            !edit -> {
+                view?.toast("Please Save The Hillfort First")
+            }
+            else -> {
+                // swap indexes so chosen image appears in recycle-view (i.e. cover image)
+                hillfort.images[0] =
+                    hillfort.images[index].also { hillfort.images[index] = hillfort.images[0] }
+                doAddOrSave(hillfort)
+                view?.showImages(hillfort.images)
+                view?.toast("Above Image Selected As Cover")
+            }
+        }
+
     }
 
     fun doTakePicture() {

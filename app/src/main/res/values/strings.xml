@@ -26,7 +26,7 @@
     <string name="hillfortRatingLabel">Rating: </string>
     <string name="hillfortEditLocationButton">Edit Location</string>
     <string name="hillfortAddNoteButton">Add Note</string>
-    <string name="hillfortEditImageButton">Edit Images</string>
+    <string name="hillfortEditImageButton">Select Images</string>
 
     <!--LOGIN ACTIVITY-->
     <string name="loginEmailField">Email…</string>
