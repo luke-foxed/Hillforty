@@ -178,9 +178,8 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                 // swap indexes so chosen image appears in recycle-view (i.e. cover image)
                 hillfort.images[0] =
                     hillfort.images[index].also { hillfort.images[index] = hillfort.images[0] }
-                doAddOrSave(hillfort)
                 view?.showImages(hillfort.images)
-                view?.toast("Above Image Selected As Cover")
+                view?.toast("Above Image Selected As Cover - Don't Forget To Save!")
             }
         }
 
