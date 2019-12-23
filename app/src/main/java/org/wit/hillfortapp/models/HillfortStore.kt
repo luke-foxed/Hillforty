@@ -12,12 +12,12 @@ interface HillfortStore {
     fun deleteHillfort(hillfort: HillfortModel)
     fun deleteAllHillforts()
     fun toggleFavourite(hillfort: HillfortModel)
-    fun findOneFavourite(hillfort: HillfortModel): Boolean
     fun sortedByFavourite(): List<HillfortModel>?
     fun sortByRating(): List<HillfortModel>?
     fun sortByVisit(): List<HillfortModel>?
 
     fun deleteUser(user:FirebaseUser)
     fun logout()
+
 
 }

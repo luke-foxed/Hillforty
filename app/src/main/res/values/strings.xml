@@ -46,13 +46,13 @@
     <string name="signUpButton">Sign Up</string>
 
     <!--STATS ACTIVITY-->
-    <string name="statsHeader">Global Statistics</string>
-    <string name="statsTotalUsersField">Number Of Users: </string>
+    <string name="statsHeader">User Statistics</string>
+    <string name="statsAverageRatingField">Average Hillfort Rating: </string>
     <string name="statsTotalHillfortsField">Number Of Hillforts: </string>
     <string name="statsTotalImagesField">Number Of Images: </string>
     <string name="statsTotalVisitsField">Number Of Visits: </string>
     <string name="statsTotalNotesField">Number Of Notes: </string>
-    <string name="statsTopUserField">Most Active User: </string>
+    <string name="statsTopUserField">Number Of Favourites: </string>
 
     <!--ACCOUNT DIALOG-->
     <string name="accountDialogUsernameField">New Username…</string>

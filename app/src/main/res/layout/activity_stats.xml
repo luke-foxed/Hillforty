@@ -41,18 +41,18 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_menu_account"
-                android:tint="@color/colorAccent"></ImageView>
+                android:src="@drawable/ic_star"
+                android:tint="@color/colorAccent" />
 
             <TextView
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:gravity="center_vertical"
-                android:text="@string/statsTotalUsersField"
+                android:text="@string/statsAverageRatingField"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/statsUsersNumber"
+                android:id="@+id/statsHillfortRating"
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:layout_marginStart="20dp"
@@ -70,9 +70,8 @@
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_menu_castle"></ImageView>
+                android:src="@drawable/ic_menu_castle" />
 
             <TextView
                 android:layout_height="match_parent"
@@ -186,7 +185,8 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_top_user"></ImageView>
+                android:tint="@color/colorPrimary"
+                android:src="@drawable/ic_favorite" />
 
             <TextView
                 android:layout_height="match_parent"
@@ -196,7 +196,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/statsTopUser"
+                android:id="@+id/statsFavourites"
                 android:layout_height="match_parent"
                 android:layout_column="2"
                 android:layout_marginStart="20dp"
