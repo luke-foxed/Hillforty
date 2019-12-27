@@ -1,13 +1,26 @@
 package org.wit.hillfortapp.helpers
 
+import android.Manifest.permission.CAMERA
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
+import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+
+private var mCurrentPhotoPath: String? = null
+val REQUEST_CAMERA_PERMISSIONS_REQUEST_CODE = 35
+
 
 fun showImagePicker(parent: Activity, id: Int) {
     val intent = Intent()
@@ -51,3 +64,58 @@ fun readImageFromPath(context: Context, path: String): Bitmap? {
     }
     return bitmap
 }
+
+// Source: http://www.kotlincodes.com/kotlin/camera-intent-with-kotlin-android/
+fun takePicture(parent: Activity, id: Int) {
+
+    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    val file: File = createFile(parent)
+
+    val uri: Uri = FileProvider.getUriForFile(
+        parent,
+        "com.example.android.fileprovider",
+        file
+    )
+    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+    parent.startActivityForResult(intent, id)
+}
+
+@Throws(IOException::class)
+private fun createFile(parent: Activity): File {
+    // Create an image file name
+    val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val storageDir: File = parent.getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
+    return File.createTempFile(
+        "JPEG_${timeStamp}_", /* prefix */
+        ".jpg", /* suffix */
+        storageDir /* directory */
+    ).apply {
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = absolutePath
+    }
+}
+
+fun checkCameraAndStoragePermissions(activity: Activity): Boolean {
+    return if (ActivityCompat.checkSelfPermission(
+            activity,
+            CAMERA
+        ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            activity,
+            READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
+        true
+    } else {
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(READ_EXTERNAL_STORAGE, CAMERA),
+            REQUEST_CAMERA_PERMISSIONS_REQUEST_CODE
+        )
+        false
+    }
+}
+
+fun getCurrentImagePath(): String? {
+    return mCurrentPhotoPath
+}
+

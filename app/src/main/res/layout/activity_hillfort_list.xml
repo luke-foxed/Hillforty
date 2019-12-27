@@ -7,6 +7,7 @@
     tools:context=".views.hillfortlist.HillfortListView">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layoutAnimation="@anim/layout_fall_down"
         android:id="@+id/hillfortRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

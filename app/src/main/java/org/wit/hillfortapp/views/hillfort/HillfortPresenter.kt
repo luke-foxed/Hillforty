@@ -1,17 +1,18 @@
 package org.wit.hillfortapp.views.hillfort
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.graphics.Color
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.android.synthetic.main.content_hillfort_fab.*
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
-import org.wit.hillfortapp.helpers.checkLocationPermissions
-import org.wit.hillfortapp.helpers.isPermissionGranted
-import org.wit.hillfortapp.helpers.showImagePicker
+import org.wit.hillfortapp.helpers.*
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.Location
@@ -29,10 +30,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     private var images: ArrayList<ImageModel> = arrayListOf()
 
     private var edit = false
-    private var isFavourited = false
 
     private val IMAGE_REQUEST = 1
     private val LOCATION_REQUEST = 2
+    private val IMAGE_CAPTURE_REQUEST = 3
 
     var locationService: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(view)
@@ -43,12 +44,13 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             hillfort = view.intent.extras?.getParcelable("hillfort_edit")!!
             notes = hillfort.notes
             images = hillfort.images
-
             view.showHillfort(hillfort)
 
             edit = true
-            isFavourited = app.hillforts.findOneFavourite(hillfort)
 
+            if(hillfort.isFavourite) {
+                view.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 116, 216))
+            }
 
         } else {
             if (checkLocationPermissions(view)) {
@@ -81,13 +83,19 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doFavourite() {
-        hillfort.isFavourite = !hillfort.isFavourite
-        app.hillforts.updateHillfort(hillfort)
-        app.hillforts.toggleFavourite(hillfort)
-        if (hillfort.isFavourite) {
-            view?.toast("Added to Favourites - Don't forget to Save!")
+        if (hillfort.fbId == "") {
+            view?.toast("Please Finish Creating The Hillfort")
         } else {
-            view?.toast("Removed from Favourites - Don't forget to Save!")
+            hillfort.isFavourite = !hillfort.isFavourite
+            app.hillforts.updateHillfort(hillfort)
+            app.hillforts.toggleFavourite(hillfort)
+            if (hillfort.isFavourite) {
+                view?.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 116, 216))
+                view?.toast("Added to Favourites - Don't forget to Save!")
+            } else {
+                view?.toast("Removed from Favourites - Don't forget to Save!")
+                view?.fabMoreFavourite!!.setColorFilter(Color.rgb(255, 255, 255))
+            }
         }
     }
 
@@ -158,6 +166,32 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         }
     }
 
+    fun doChooseCover(index: Int) {
+        when {
+            hillfort.images.size == 0 -> {
+                view?.toast("No Images Exist!")
+            }
+            !edit -> {
+                view?.toast("Please Save The Hillfort First")
+            }
+            else -> {
+                // swap indexes so chosen image appears in recycle-view (i.e. cover image)
+                hillfort.images[0] =
+                    hillfort.images[index].also { hillfort.images[index] = hillfort.images[0] }
+                view?.showImages(hillfort.images)
+                view?.toast("Above Image Selected As Cover - Don't Forget To Save!")
+            }
+        }
+
+    }
+
+    fun doTakePicture() {
+        if (checkCameraAndStoragePermissions(view!!))
+            view?.let {
+                takePicture(view!!, IMAGE_CAPTURE_REQUEST)
+            }
+    }
+
     fun doSetLocation() {
         view?.navigateTo(
             VIEW.LOCATION,
@@ -184,13 +218,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             }
         }
     }
-
-    fun doDeleteNote(noteModel: NoteModel) {
-        hillfort.notes.remove(noteModel)
-        app.hillforts.updateHillfort(hillfort)
-    }
-
-
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
@@ -229,6 +256,30 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                 hillfort.location = location
                 val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
                 view?.showUpdatedMap(latLng)
+            }
+            IMAGE_CAPTURE_REQUEST-> {
+
+                val path = getCurrentImagePath()
+                if (path != null) {
+
+                    if (hillfort.images.size >= 4) {
+                        view?.toast("Only 4 images allowed!")
+                    } else {
+                        
+                        val newImage = ImageModel()
+                        newImage.uri = path
+                        newImage.fbID = hillfort.fbId
+                        newImage.id = Random().nextInt()
+
+                        if(resultCode == RESULT_OK) {
+                            hillfort.images.add(newImage)
+                            view?.showImages(hillfort.images)
+                        }
+                    }
+                }
+
+//                var bitmap: Bitmap = BitmapFactory.decodeFile(imagePath)
+//                images.add(bitmap)
             }
         }
     }

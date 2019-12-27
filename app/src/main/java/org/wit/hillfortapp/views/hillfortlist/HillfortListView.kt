@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_hillfort_list.*
@@ -37,8 +37,14 @@ class HillfortListView : BaseView(),
     }
 
     override fun showHillforts(hillforts: List<HillfortModel>) {
+        val context = hillfortRecyclerView.context
+        val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_fall_down)
+
+        hillfortRecyclerView.layoutAnimation = controller
+
         hillfortRecyclerView.adapter = HillfortListAdapter(hillforts, this)
         hillfortRecyclerView.adapter?.notifyDataSetChanged()
+        hillfortRecyclerView.scheduleLayoutAnimation()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

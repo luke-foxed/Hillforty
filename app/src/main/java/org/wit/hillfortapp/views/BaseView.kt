@@ -1,5 +1,6 @@
 package org.wit.hillfortapp.views
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +11,6 @@ import org.wit.hillfortapp.helpers.constructEmailTemplate
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.ImageModel
 import org.wit.hillfortapp.models.NoteModel
-import org.wit.hillfortapp.models.UserModel
 import org.wit.hillfortapp.views.editlocation.EditLocationView
 import org.wit.hillfortapp.views.hillfort.HillfortView
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
@@ -28,7 +28,7 @@ enum class VIEW {
     LOCATION, HILLFORT, MAPS, LIST, SIGNUP, MAIN, LOGIN, NAVIGATOR
 }
 
-abstract class BaseView : AppCompatActivity(), AnkoLogger {
+abstract class BaseView : MainView(), AnkoLogger {
 
     private var basePresenter: BasePresenter? = null
 
@@ -46,7 +46,12 @@ abstract class BaseView : AppCompatActivity(), AnkoLogger {
         if (key != "") {
             intent.putExtra(key, value)
         }
-        startActivityForResult(intent, code)
+
+        startActivityForResult(
+            intent,
+            code,
+            ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
+        )
     }
 
     fun initPresenter(presenter: BasePresenter): BasePresenter {

@@ -1,11 +1,12 @@
 package org.wit.hillfortapp.views.main
 
+import android.app.ActivityOptions
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
@@ -13,11 +14,12 @@ import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.views.BaseView
-import org.wit.hillfortapp.views.VIEW
+import org.wit.hillfortapp.views.account.AccountView
+import org.wit.hillfortapp.views.hillfortlist.HillfortListView
+import org.wit.hillfortapp.views.map.HillfortMapsView
 
 
-open class MainView : BaseView(), AnkoLogger {
+open class MainView : AppCompatActivity(), AnkoLogger {
 
     private lateinit var bottomNavBar: BottomNavigationView
     private lateinit var viewPager: ViewPager
@@ -39,51 +41,38 @@ open class MainView : BaseView(), AnkoLogger {
         }
 
         bottomNavBar = findViewById(R.id.bottom_navigation)
+        bottomNavBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        viewPager = findViewById<View>(R.id.content_frame) as ViewPager
-        viewPager.adapter = CustomPagerAdapter(this)
-
-
-        bottomNavBar.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.navigation_home -> {
-                    item.isChecked = true
-                    viewPager.setCurrentItem(0, true)
-                }
-                R.id.navigation_hillforts -> {
-                    item.isChecked = true
-                    viewPager.setCurrentItem(1, true)
-                }
-                R.id.navigation_map -> {
-                    item.isChecked = true
-                    viewPager.setCurrentItem(2, true)
-                }
-                R.id.navigation_account -> {
-                    item.isChecked = true
-                    //viewPager.setCurrentItem(3, true)
-                }
-            }
-            true
-        }
-
-        viewPager.addOnPageChangeListener(object : OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) { // your code here
-                when (position) {
-                    0 -> navigateTo(VIEW.MAIN)
-                    1 -> navigateTo(VIEW.LIST)
-                }
-
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {}
-        })
+//        bottomNavBar.setOnNavigationItemSelectedListener {
+//            when (it.itemId) {
+//                R.id.navigation_home -> {
+//                    startActivity(
+//                        Intent(this@MainView, MainView::class.java),
+//                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+//
+//                }
+//                R.id.navigation_hillforts -> {
+//
+//                    startActivity(
+//                        Intent(this@MainView, HillfortListView::class.java),
+//                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+//                }
+//                R.id.navigation_map -> {
+//                    it.isChecked = true
+////                    viewPager.setCurrentItem(2, true)
+//                    startActivity(
+//                        Intent(this@MainView, HillfortMapsView::class.java),
+//                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+//                }
+//                R.id.navigation_account -> {
+////                    viewPager.setCurrentItem(3, true)
+//                    startActivity(
+//                        Intent(this@MainView, AccountView::class.java),
+//                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+//                }
+//            }
+//            true
+//        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -95,6 +84,39 @@ open class MainView : BaseView(), AnkoLogger {
 //            else -> super.onOptionsItemSelected(item)
 //        }
         return true
+    }
+
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    startActivity(
+                        Intent(this@MainView, MainView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+                    item.isChecked = true
+                }
+                R.id.navigation_hillforts -> {
+
+                    startActivity(
+                        Intent(this@MainView, HillfortListView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+                    item.isChecked = true
+                }
+                R.id.navigation_map -> {
+//                    viewPager.setCurrentItem(2, true)
+                    startActivity(
+                        Intent(this@MainView, HillfortMapsView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+
+                }
+                R.id.navigation_account -> {
+//                    viewPager.setCurrentItem(3, true)
+                    startActivity(
+                        Intent(this@MainView, AccountView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+
+                }
+        }
+        true
     }
 
 }

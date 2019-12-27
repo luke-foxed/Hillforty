@@ -6,54 +6,51 @@ import org.wit.hillfortapp.views.BaseView
 
 class StatsPresenter(view: BaseView) : BasePresenter(view) {
 
-//    fun doGetNotes(): Int {
-//  return app.users.findAllHillfortNotes().size
-//    }
+    var hillforts: List<HillfortModel> = app.hillforts.findAllHillforts()!!
 
-    fun doGetMostActiveUser(): String {
-//        val users = app.users.findAll()
-        var hillfortsCount = 0
-        var topUser = ""
-
-//        for (user in users) {
-//            if (user.hillforts.size > hillfortsCount) {
-//                hillfortsCount = user.hillforts.size
-//                topUser = user.username
-//            }
-//        }
-        return topUser
+    fun getAverageRatings(): Double {
+        var average = 0.0
+        hillforts.forEach {
+            average += it.rating
+        }
+        average /= hillforts.size
+        return average
     }
-//
-//    fun doGetVisits(): Int {
-//        val hillforts: List<HillfortModel>? = app.users.findAllHillforts()
-//        var totalVisits = 0
-//        if (hillforts != null) {
-//            for (hillfort in hillforts) {
-//                if (hillfort.visited) {
-//                    totalVisits++
-//                }
-//            }
-//        }
-//        return totalVisits
-//    }
 
-//    fun doGetImages(): Int {
-//        val hillforts: List<HillfortModel>? = app.users.findAllHillforts()
-//        var totalImages = 0
-//        if (hillforts != null) {
-//            for (hillfort in hillforts) {
-//                totalImages += hillfort.images.size
-//            }
-//        }
-//        return totalImages
-//    }
+    fun getAllFavourites(): Int {
+        var favourites = 0
+        hillforts.forEach {
+            if (it.isFavourite) {
+                favourites++
+            }
+        }
+        return favourites
+    }
 
-//    fun doGetUsers(): Int {
-//        return app.users.findAll().size
-//    }
-//
-//    fun doGetHillforts(): Int? {
-//        return app.users.findAllHillforts()?.size
-//    }
+    fun getAllVisited(): Int {
+        var visited = 0
+        hillforts.forEach {
+            if (it.visited) {
+                visited++
+            }
+        }
+        return visited
+    }
+
+    fun getAllNotes(): Int {
+        var notes = 0
+        hillforts.forEach {
+            notes += it.notes.size
+        }
+        return notes
+    }
+
+    fun getAllImages(): Int {
+        var images = 0
+        hillforts.forEach {
+            images += it.images.size
+        }
+        return images
+    }
 
 }

@@ -42,5 +42,4 @@ class CustomPagerAdapter(context: Context) : PagerAdapter() {
         return mContext.getString(customPagerEnum.titleResId)
     }
 
-
 }
