@@ -34,6 +34,8 @@ class HillfortListView : BaseView(),
         hillfortListFloatingBtn.setOnClickListener {
             presenter.doAddHillfort()
         }
+
+        bottomNavBar.menu.findItem(R.id.navigation_hillforts).isChecked = true
     }
 
     override fun showHillforts(hillforts: List<HillfortModel>) {

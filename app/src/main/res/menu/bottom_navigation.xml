@@ -18,4 +18,9 @@
         android:id="@+id/navigation_account"
         android:icon="@drawable/ic_menu_account"
         android:title="My Account" />
+
+    <item
+        android:id="@+id/navigation_more"
+        android:icon="@drawable/ic_menu_plus"
+        android:title="More" />
 </menu>

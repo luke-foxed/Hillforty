@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
@@ -21,8 +20,7 @@ import org.wit.hillfortapp.views.map.HillfortMapsView
 
 open class MainView : AppCompatActivity(), AnkoLogger {
 
-    private lateinit var bottomNavBar: BottomNavigationView
-    private lateinit var viewPager: ViewPager
+    lateinit var bottomNavBar: BottomNavigationView
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,33 +88,33 @@ open class MainView : AppCompatActivity(), AnkoLogger {
             when (item.itemId) {
                 R.id.navigation_home -> {
                     startActivity(
-                        Intent(this@MainView, MainView::class.java),
+                        Intent(this, MainView::class.java),
                         ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-                    item.isChecked = true
+                    bottomNavBar.menu.findItem(R.id.navigation_home).isChecked = true
+
                 }
                 R.id.navigation_hillforts -> {
-
                     startActivity(
-                        Intent(this@MainView, HillfortListView::class.java),
+                        Intent(this, HillfortListView::class.java),
                         ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-                    item.isChecked = true
+                    //bottomNavBar.menu.findItem(R.id.navigation_hillforts).isChecked = true
                 }
                 R.id.navigation_map -> {
-//                    viewPager.setCurrentItem(2, true)
                     startActivity(
-                        Intent(this@MainView, HillfortMapsView::class.java),
+                        Intent(this, HillfortMapsView::class.java),
                         ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
 
                 }
                 R.id.navigation_account -> {
-//                    viewPager.setCurrentItem(3, true)
                     startActivity(
-                        Intent(this@MainView, AccountView::class.java),
+                        Intent(this, AccountView::class.java),
                         ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
 
                 }
         }
         true
     }
+
+    open fun setNavigationBarItem() {}
 
 }

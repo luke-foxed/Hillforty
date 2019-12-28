@@ -23,12 +23,14 @@ class HillfortMapsView : BaseView(), GoogleMap.OnMarkerClickListener {
 
         presenter = initPresenter(HillfortMapsPresenter(this)) as HillfortMapsPresenter
 
-        mapView.onCreate(savedInstanceState);
+        mapView.onCreate(savedInstanceState)
         mapView.getMapAsync {
             map = it
             map.setOnMarkerClickListener(this)
             presenter.loadHillforts()
         }
+
+        bottomNavBar.menu.findItem(R.id.navigation_hillforts).isChecked = true
     }
 
     override fun showHillfort(hillfort: HillfortModel) {

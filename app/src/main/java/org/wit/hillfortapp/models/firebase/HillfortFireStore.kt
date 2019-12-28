@@ -24,9 +24,9 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
     val hillforts = ArrayList<HillfortModel>()
     val favouriteHillforts = ArrayList<String>()
 
-    lateinit var userId: String
-    lateinit var db: DatabaseReference
-    lateinit var st: StorageReference
+    private lateinit var userId: String
+    private lateinit var db: DatabaseReference
+    private lateinit var st: StorageReference
 
     /********************************
      **** HILLFORT FUNCTIONALITY ****
@@ -160,13 +160,6 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
         return hillforts.sortedWith(compareBy { it.visited }).asReversed()
     }
 
-    private fun getAllImages(): Int {
-        var images = 0
-        hillforts.forEach{
-            images += it.images.size
-        }
-        return images
-    }
 
     /***************************
      **** USER FUNCTIONALITY ****
@@ -238,7 +231,4 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
             }
     }
 
-    /********************************
-     **** STATS FUNCTIONALITY ****
-     *******************************/
 }

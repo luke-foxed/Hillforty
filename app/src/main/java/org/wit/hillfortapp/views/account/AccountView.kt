@@ -19,10 +19,11 @@ class AccountView : BaseView(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_account, content_frame)
 
         presenter = AccountPresenter(this)
+
+        bottomNavBar.menu.findItem(R.id.navigation_hillforts).isChecked = true
 
         accountChangeEmail.setOnClickListener {
             val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_account_email, null)

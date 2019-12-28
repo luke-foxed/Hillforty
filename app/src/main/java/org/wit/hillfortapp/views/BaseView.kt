@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
 import org.jetbrains.anko.AnkoLogger
+import org.wit.hillfortapp.R
 import org.wit.hillfortapp.helpers.constructEmailTemplate
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.ImageModel
@@ -19,7 +20,6 @@ import org.wit.hillfortapp.views.main.MainView
 import org.wit.hillfortapp.views.map.HillfortMapsView
 import org.wit.hillfortapp.views.navigator.NavigatorView
 import org.wit.hillfortapp.views.signup.SignUpView
-
 
 val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
