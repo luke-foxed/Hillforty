@@ -144,11 +144,12 @@ class HillfortView : BaseView(),
         hillfortSaveFAB.setOnClickListener {
             if (listOf(
                     hillfortName.text.toString(),
-                    hillfortDescription.text.toString(),
-                    hillfortDateVisited.text.toString()
+                    hillfortDescription.text.toString()
                 ).contains("")
             ) {
                 toast("Please fill out all fields")
+            } else if (hillfortVisited.isChecked && hillfortDateVisited.text.toString() == "") {
+                toast("Hillfort is visited, please provide a date")
             } else {
                 val tempHillfort = HillfortModel()
                 tempHillfort.name = hillfortName.text.toString().trim()
@@ -159,6 +160,7 @@ class HillfortView : BaseView(),
                 tempHillfort.rating = hillfortRatingBar.rating.toInt()
 
                 presenter.doAddOrSave(tempHillfort)
+
             }
         }
 
