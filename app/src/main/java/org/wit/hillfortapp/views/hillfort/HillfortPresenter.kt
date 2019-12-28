@@ -100,7 +100,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doShare() {
-        view?.createShareIntent(hillfort)
+        if (edit) {
+            view?.createShareIntent(hillfort)
+        } else {
+            view?.toast("Please finish creating this Hillfort first!")
+        }
     }
 
     fun doAddOrSave(tempHillfort: HillfortModel) {
@@ -126,8 +130,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doNavigation(): Boolean {
-        view?.finish()
-        view?.navigateTo(VIEW.NAVIGATOR, 0, "hillfort", hillfort)
+        if (edit) {
+            view?.navigateTo(VIEW.NAVIGATOR, 0, "hillfort", hillfort)
+        } else {
+            view?.toast("Please finish creating this Hillfort first!")
+        }
         return true
     }
 
