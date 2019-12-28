@@ -32,13 +32,14 @@ open class MainView : AppCompatActivity(), AnkoLogger {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        if (intent.hasExtra("user")) {
-            val user: FirebaseUser = intent.extras?.getParcelable("user")!!
+        val user: FirebaseUser? = app.activeUser
+        if (user != null) {
             mainActivityUsernameText.text = user.email!!.split('@')[0]
         }
 
         bottomNavBar = findViewById(R.id.bottom_navigation)
         bottomNavBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        bottomNavBar.menu.findItem(R.id.navigation_home).isChecked = true
 
     }
 
@@ -48,7 +49,6 @@ open class MainView : AppCompatActivity(), AnkoLogger {
                     startActivity(
                         Intent(this, MainView::class.java),
                         ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-                    bottomNavBar.menu.findItem(R.id.navigation_home).isChecked = true
 
                 }
                 R.id.navigation_hillforts -> {
