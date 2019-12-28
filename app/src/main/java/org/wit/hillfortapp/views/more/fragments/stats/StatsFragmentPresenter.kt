@@ -57,4 +57,4 @@ class StatsFragmentPresenter(private val fragment: StatsFragment) :
         }
         return images
     }
-    }
+}

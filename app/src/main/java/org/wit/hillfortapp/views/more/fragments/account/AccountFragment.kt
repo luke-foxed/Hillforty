@@ -1,6 +1,7 @@
 package org.wit.hillfortapp.views.more.fragments.account
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_account.view.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
+import org.wit.hillfortapp.views.login.LoginView
 import org.wit.hillfortapp.views.more.fragments.BaseFragment
 
 class AccountFragment : BaseFragment(), AnkoLogger {

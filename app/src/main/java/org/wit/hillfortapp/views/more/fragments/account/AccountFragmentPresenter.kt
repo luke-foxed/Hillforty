@@ -1,9 +1,13 @@
 package org.wit.hillfortapp.views.more.fragments.account
 
+import android.app.PendingIntent.getActivity
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.FirebaseUser
-import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
+import org.wit.hillfortapp.views.login.LoginView
 import org.wit.hillfortapp.views.more.fragments.BaseFragmentPresenter
+
 
 class AccountFragmentPresenter(private val fragment: AccountFragment) :
     BaseFragmentPresenter(fragment) {
@@ -19,7 +23,7 @@ class AccountFragmentPresenter(private val fragment: AccountFragment) :
                     fragment.activity?.toast("User email address updated.")
                     app.hillforts.logout()
                     app.activeUser = null
-                    //fragment.startActivity()
+                    fragment.startActivity(Intent(fragment.activity, LoginView::class.java))
                 } else {
                     fragment.activity?.toast("Email Change Failed: ${task.exception?.message}")
                 }
@@ -33,7 +37,7 @@ class AccountFragmentPresenter(private val fragment: AccountFragment) :
                     fragment.activity?.toast("User password updated.")
                     app.hillforts.logout()
                     app.activeUser = null
-//                    fragment.activity?.navigateTo(VIEW.LOGIN)
+                    fragment.startActivity(Intent(fragment.activity, LoginView::class.java))
                 } else {
                     fragment.activity?.toast("Password Change Failed: ${task.exception?.message}")
                 }
@@ -42,7 +46,7 @@ class AccountFragmentPresenter(private val fragment: AccountFragment) :
 
     fun doDelete() {
         app.hillforts.deleteUser(app.activeUser!!)
-//        fragment.activity?.navigateTo(VIEW.LOGIN)
+        fragment.startActivity(Intent(fragment.activity, LoginView::class.java))
 
     }
 

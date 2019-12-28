@@ -22,6 +22,7 @@ class ExtraView : BaseView() {
 
         bottomNavBar.menu.findItem(R.id.navigation_more).isChecked = true
 
+        // Source: https://code.luasoftware.com/tutorials/android/setup-android-viewpager2-with-tablayout-and-fragment/
         val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         viewPager.adapter = object : FragmentStateAdapter(this) {
             override fun createFragment(position: Int): Fragment {
@@ -55,6 +56,5 @@ class ExtraView : BaseView() {
             }
         }.attach()
     }
-
 }
 
