@@ -14,5 +14,4 @@ abstract class BaseFragment : Fragment(), AnkoLogger {
         return presenter
     }
 
-    open fun showAccount(user: FirebaseUser) {}
 }
