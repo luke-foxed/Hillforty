@@ -35,7 +35,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     private val LOCATION_REQUEST = 2
     private val IMAGE_CAPTURE_REQUEST = 3
 
-    var locationService: FusedLocationProviderClient =
+    private var locationService: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(view)
     private var location = Location()
 
@@ -100,7 +100,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doShare() {
-        view?.createShareIntent(hillfort)
+        if (edit) {
+            view?.createShareIntent(hillfort)
+        } else {
+            view?.toast("Please finish creating this Hillfort first!")
+        }
     }
 
     fun doAddOrSave(tempHillfort: HillfortModel) {
@@ -126,8 +130,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doNavigation(): Boolean {
-        view?.finish()
-        view?.navigateTo(VIEW.NAVIGATOR, 0, "hillfort", hillfort)
+        if (edit) {
+            view?.navigateTo(VIEW.NAVIGATOR, 0, "hillfort", hillfort)
+        } else {
+            view?.toast("Please finish creating this Hillfort first!")
+        }
         return true
     }
 
@@ -270,16 +277,14 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                         newImage.uri = path
                         newImage.fbID = hillfort.fbId
                         newImage.id = Random().nextInt()
+                        images.add(newImage)
 
                         if(resultCode == RESULT_OK) {
-                            hillfort.images.add(newImage)
-                            view?.showImages(hillfort.images)
+                            hillfort.images = images
+                            view?.showImages(images)
                         }
                     }
                 }
-
-//                var bitmap: Bitmap = BitmapFactory.decodeFile(imagePath)
-//                images.add(bitmap)
             }
         }
     }

@@ -1,32 +1,44 @@
-package org.wit.hillfortapp.views.account
+package org.wit.hillfortapp.views.more.fragments.account
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.activity_account.*
-import kotlinx.android.synthetic.main.drawer_main.*
+import kotlinx.android.synthetic.main.fragment_account.view.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.R
-import org.wit.hillfortapp.views.BaseView
+import org.wit.hillfortapp.views.login.LoginView
+import org.wit.hillfortapp.views.more.fragments.BaseFragment
 
-class AccountView : BaseView(), AnkoLogger {
+class AccountFragment : BaseFragment(), AnkoLogger {
 
-    private lateinit var presenter: AccountPresenter
+    companion object {
+        fun newInstance() = AccountFragment()
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        content_frame.removeAllViews()
-        layoutInflater.inflate(R.layout.activity_account, content_frame)
+    private lateinit var presenter: AccountFragmentPresenter
 
-        presenter = AccountPresenter(this)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        accountChangeEmail.setOnClickListener {
-            val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_account_email, null)
-            val builder = AlertDialog.Builder(this)
+        val view = inflater.inflate(R.layout.fragment_account, container, false)
+        presenter = initPresenter(AccountFragmentPresenter(this)) as AccountFragmentPresenter
+
+        view?.accountEmail?.text = presenter.doGetUser()?.email
+
+        view.accountChangeEmail.setOnClickListener {
+            val mDialogView =
+                LayoutInflater.from(activity).inflate(R.layout.dialog_account_email, null)
+            val builder = AlertDialog.Builder(activity)
             builder.setMessage("Enter A New Email (You Will Be Logged Out): ")
             builder.setView(mDialogView)
 
@@ -39,8 +51,8 @@ class AccountView : BaseView(), AnkoLogger {
 
             updateBtn.setOnClickListener {
                 when {
-                    emailField?.text.toString() == "" -> toast("Please fill out all fields")
-                    !isEmailValid(emailField?.text.toString()) -> toast("Please enter a valid email")
+                    emailField?.text.toString() == "" -> activity?.toast("Please fill out all fields")
+                    !isEmailValid(emailField?.text.toString()) -> activity?.toast("Please enter a valid email")
                     else -> {
                         presenter.doUpdateEmail(emailField?.text.toString())
                     }
@@ -51,10 +63,10 @@ class AccountView : BaseView(), AnkoLogger {
             }
         }
 
-        accountChangePassword.setOnClickListener {
+        view.accountChangePassword.setOnClickListener {
             val mDialogView =
-                LayoutInflater.from(this).inflate(R.layout.dialog_account_password, null)
-            val builder = AlertDialog.Builder(this)
+                LayoutInflater.from(activity).inflate(R.layout.dialog_account_password, null)
+            val builder = AlertDialog.Builder(activity)
             builder.setMessage("Enter A New Password (You Will Be Logged Out): ")
             builder.setView(mDialogView)
 
@@ -74,8 +86,10 @@ class AccountView : BaseView(), AnkoLogger {
                         passwordConfirm?.text.toString()
                     ).contains(
                         ""
-                    ) -> toast("Please fill out all fields")
-                    password!!.text.toString() != passwordConfirm!!.text.toString() -> toast("Passwords do not match")
+                    ) -> activity?.toast("Please fill out all fields")
+                    password!!.text.toString() != passwordConfirm!!.text.toString() -> activity?.toast(
+                        "Passwords do not match"
+                    )
                     else -> {
                         presenter.doUpdatePassword(password.text.toString())
                     }
@@ -87,8 +101,8 @@ class AccountView : BaseView(), AnkoLogger {
 
         }
 
-        accountDeleteBtn.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
+        view.accountDeleteBtn.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
             builder.setMessage("Are you sure you want to delete your account?")
             builder.setPositiveButton("Yes") { dialog, _ ->
                 presenter.doDelete()
@@ -101,8 +115,8 @@ class AccountView : BaseView(), AnkoLogger {
             dialog.show()
         }
 
-        accountDeleteHillfortsBtn.setOnClickListener {
-            val builder = AlertDialog.Builder(this)
+        view.accountDeleteHillfortsBtn.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
             builder.setMessage("Are you sure you want to delete all your hillforts?")
             builder.setPositiveButton("Yes") { dialog, _ ->
                 presenter.doDeleteHillforts()
@@ -114,14 +128,13 @@ class AccountView : BaseView(), AnkoLogger {
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
-    }
-
-    override fun showAccount(user: FirebaseUser) {
-        accountEmail.text = user.email
+        return view
     }
 
     private fun isEmailValid(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
+
 }
+

@@ -1,19 +1,24 @@
-package org.wit.hillfortapp.views.stats
+package org.wit.hillfortapp.views.more.fragments.stats
 
 import org.wit.hillfortapp.models.HillfortModel
-import org.wit.hillfortapp.views.BasePresenter
-import org.wit.hillfortapp.views.BaseView
+import org.wit.hillfortapp.views.more.fragments.BaseFragmentPresenter
 
-class StatsPresenter(view: BaseView) : BasePresenter(view) {
+class StatsFragmentPresenter(private val fragment: StatsFragment) :
+    BaseFragmentPresenter(fragment) {
 
     var hillforts: List<HillfortModel> = app.hillforts.findAllHillforts()!!
 
     fun getAverageRatings(): Double {
         var average = 0.0
-        hillforts.forEach {
-            average += it.rating
+        if(hillforts.isEmpty()) {
+            average = 0.0
         }
-        average /= hillforts.size
+        else {
+            hillforts.forEach {
+                average += it.rating
+            }
+            average /= hillforts.size
+        }
         return average
     }
 
@@ -52,5 +57,4 @@ class StatsPresenter(view: BaseView) : BasePresenter(view) {
         }
         return images
     }
-
 }

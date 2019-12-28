@@ -44,7 +44,6 @@ class HillfortView : BaseView(),
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        content_frame.removeAllViews()
         layoutInflater.inflate(R.layout.activity_hillfort, content_frame)
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         val imageViewPager = findViewById<ViewPager>(R.id.viewPager)

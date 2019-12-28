@@ -36,25 +36,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.259" />
 
-
     <TextView
         android:id="@+id/accountEmail"
-        android:layout_width="240dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="76dp"
         android:layout_marginTop="52dp"
         android:layout_marginEnd="77dp"
         android:layout_marginBottom="99dp"
         android:fontFamily="sans-serif-thin"
-        android:gravity="center"
+        android:foregroundGravity="center_horizontal"
+        android:gravity="center_horizontal"
         android:textAlignment="center"
-        android:text="lukefox"
         android:textColor="@color/colorAccent"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
         app:layout_constraintVertical_bias="1.0" />
