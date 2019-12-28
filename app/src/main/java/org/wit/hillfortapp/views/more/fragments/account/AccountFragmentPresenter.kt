@@ -1,8 +1,6 @@
 package org.wit.hillfortapp.views.more.fragments.account
 
-import android.app.PendingIntent.getActivity
 import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.FirebaseUser
 import org.jetbrains.anko.toast
 import org.wit.hillfortapp.views.login.LoginView

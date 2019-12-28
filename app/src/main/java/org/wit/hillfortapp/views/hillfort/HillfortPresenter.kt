@@ -35,7 +35,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     private val LOCATION_REQUEST = 2
     private val IMAGE_CAPTURE_REQUEST = 3
 
-    var locationService: FusedLocationProviderClient =
+    private var locationService: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(view)
     private var location = Location()
 
@@ -270,16 +270,14 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
                         newImage.uri = path
                         newImage.fbID = hillfort.fbId
                         newImage.id = Random().nextInt()
+                        images.add(newImage)
 
                         if(resultCode == RESULT_OK) {
-                            hillfort.images.add(newImage)
-                            view?.showImages(hillfort.images)
+                            hillfort.images = images
+                            view?.showImages(images)
                         }
                     }
                 }
-
-//                var bitmap: Bitmap = BitmapFactory.decodeFile(imagePath)
-//                images.add(bitmap)
             }
         }
     }
