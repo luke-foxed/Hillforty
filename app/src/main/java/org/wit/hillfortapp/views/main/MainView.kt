@@ -14,6 +14,7 @@ import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.MainApp
 import org.wit.hillfortapp.R
 import org.wit.hillfortapp.views.account.AccountView
+import org.wit.hillfortapp.views.more.ExtraView
 import org.wit.hillfortapp.views.hillfortlist.HillfortListView
 import org.wit.hillfortapp.views.map.HillfortMapsView
 
@@ -110,6 +111,11 @@ open class MainView : AppCompatActivity(), AnkoLogger {
                         Intent(this, AccountView::class.java),
                         ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
 
+                }
+                R.id.navigation_more -> {
+                    startActivity(
+                        Intent(this, ExtraView::class.java),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
                 }
         }
         true

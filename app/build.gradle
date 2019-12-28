@@ -73,6 +73,7 @@ dependencies {
     implementation 'com.firebase:firebase-client-android:2.5.2'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
 }
 

@@ -1,7 +1,7 @@
 package org.wit.hillfortapp.views.stats
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_stats.*
+import kotlinx.android.synthetic.main.fragment_stats.*
 import kotlinx.android.synthetic.main.drawer_main.*
 import org.jetbrains.anko.AnkoLogger
 import org.wit.hillfortapp.R
@@ -14,7 +14,7 @@ class StatsView : BaseView(), AnkoLogger {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         content_frame.removeAllViews()
-        layoutInflater.inflate(R.layout.activity_stats, content_frame)
+        layoutInflater.inflate(R.layout.fragment_stats, content_frame)
 
         presenter = StatsPresenter(this)
 

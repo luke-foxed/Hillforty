@@ -12,7 +12,7 @@ class CustomPagerAdapter(context: Context) : PagerAdapter() {
 
     val layouts: Array<Int> = arrayOf(
         R.layout.activity_main, R.layout.activity_hillfort_list,
-        R.layout.activity_hillfort_maps, R.layout.activity_account
+        R.layout.activity_hillfort_maps, R.layout.fragment_account
     )
     private val mContext: Context = context
 
