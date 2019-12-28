@@ -26,7 +26,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     private var hillfort = HillfortModel()
 
-    private var notes: ArrayList<NoteModel>? = arrayListOf()
+    private var notes: ArrayList<NoteModel> = arrayListOf()
     private var images: ArrayList<ImageModel> = arrayListOf()
 
     private var edit = false
@@ -113,11 +113,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
         hillfort.images = images
+        hillfort.notes = notes
         hillfort.rating = tempHillfort.rating
 
         doAsync {
             if (edit) {
-                hillfort.notes = notes!!
                 app.hillforts.updateHillfort(hillfort)
             } else {
                 app.hillforts.createHillfort(hillfort)
@@ -209,19 +209,16 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doAddNote(title: String, content: String) {
-        if (!edit) {
-            view?.toast("Please create a hillfort before adding notes to it!")
-        } else {
-            val newNote = NoteModel()
-            newNote.title = title
-            newNote.content = content
-            newNote.id = notes?.size!!.plus(1)
-            newNote.fbId = hillfort.fbId
-            doAsync {
-                hillfort.notes.add(newNote)
-                uiThread {
-                    view?.showNotes(notes)
-                }
+        val newNote = NoteModel()
+        newNote.title = title
+        newNote.content = content
+        newNote.id = notes.size.plus(1)
+        newNote.fbId = hillfort.fbId
+        doAsync {
+            notes.add(newNote)
+            hillfort.notes = notes
+            uiThread {
+                view?.showNotes(notes)
             }
         }
     }
