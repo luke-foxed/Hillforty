@@ -15,12 +15,12 @@
         android:title="Map" />
 
     <item
-        android:id="@+id/navigation_account"
-        android:icon="@drawable/ic_menu_account"
-        android:title="My Account" />
+        android:id="@+id/navigation_more"
+        android:icon="@drawable/ic_menu_more"
+        android:title="More" />
 
     <item
-        android:id="@+id/navigation_more"
-        android:icon="@drawable/ic_menu_plus"
-        android:title="More" />
+        android:id="@+id/navigation_logout"
+        android:icon="@drawable/ic_menu_logout"
+        android:title="Log Out" />
 </menu>

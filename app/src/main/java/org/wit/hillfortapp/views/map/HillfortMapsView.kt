@@ -30,7 +30,7 @@ class HillfortMapsView : BaseView(), GoogleMap.OnMarkerClickListener {
             presenter.loadHillforts()
         }
 
-        bottomNavBar.menu.findItem(R.id.navigation_hillforts).isChecked = true
+        bottomNavBar.menu.findItem(R.id.navigation_map).isChecked = true
     }
 
     override fun showHillfort(hillfort: HillfortModel) {
