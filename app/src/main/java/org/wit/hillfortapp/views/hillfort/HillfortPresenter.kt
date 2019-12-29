@@ -87,7 +87,6 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     @SuppressLint("MissingPermission")
     fun doRestartLocationUpdates() {
-
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null) {
