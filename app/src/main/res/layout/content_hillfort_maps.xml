@@ -11,11 +11,9 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
         android:background="@drawable/map_border"
-        android:layout_width="361dp"
-        android:layout_height="451dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,8 +22,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="356dp"
-        android:layout_height="127dp"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
@@ -36,14 +34,14 @@
         app:layout_constraintTop_toBottomOf="@+id/mapView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/maps_current_hillfort"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/currentImage"
-                android:layout_width="121dp"
-                android:layout_height="98dp"
-                android:layout_marginEnd="16dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -51,23 +49,29 @@
 
             <TextView
                 android:id="@+id/currentTitle"
-                android:layout_width="175dp"
-                android:layout_height="30dp"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toTopOf="@+id/currentDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:fontFamily="sans-serif-thin"
+                android:textSize="34sp"
+                app:layout_constraintBottom_toTopOf="@+id/currentRating"
                 app:layout_constraintEnd_toStartOf="@+id/currentImage"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.722" />
+                app:layout_constraintVertical_bias="0.73" />
 
-            <TextView
-                android:id="@+id/currentDescription"
-                android:layout_width="173dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="24dp"
+            <RatingBar
+                android:id="@+id/currentRating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="36dp"
+                android:numStars="5"
+                android:backgroundTint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/currentImage"
-                app:layout_constraintHorizontal_bias="0.521"
+                app:layout_constraintHorizontal_bias="0.50"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ class HillfortMapsPresenter(view: BaseView) : BasePresenter(view) {
             map.addMarker(options).tag = it
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.location.zoom))
         }
+        view?.showHillfort(hillforts[0])
     }
 
     fun doMarkerSelected(marker: Marker) {
