@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
@@ -52,9 +51,10 @@ class HillfortView : BaseView(),
         presenter = initPresenter(HillfortPresenter(this)) as HillfortPresenter
 
         with(hillfortMapView) {
-            onCreate(null)
+            onCreate(savedInstanceState)
             getMapAsync {
-                MapsInitializer.initialize(applicationContext)
+                presenter.doConfigureMap(it)
+                it.setOnMapClickListener { presenter.doSetLocation() }
             }
         }
 
@@ -210,10 +210,6 @@ class HillfortView : BaseView(),
             dialog.show()
         }
 
-        hillfortLocationBtn.setOnClickListener {
-            presenter.doSetLocation()
-        }
-
         hillfortNavigateButton.setOnClickListener {
             presenter.doNavigation()
         }
@@ -254,11 +250,6 @@ class HillfortView : BaseView(),
 
         showNotes(hillfort.notes)
         showImages(hillfort.images)
-
-        val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
-        hillfortMapView.getMapAsync {
-            setMapLocation(it, latLng)
-        }
     }
 
     // Credit: https://tutorial.eyehunts.com/android/android-date-picker-dialog-example-kotlin/
@@ -294,7 +285,6 @@ class HillfortView : BaseView(),
     }
 
     override fun showNotes(notes: ArrayList<NoteModel>?) {
-
         val layoutManager = LinearLayoutManager(this)
         val recyclerNotes = findViewById<RecyclerView>(R.id.recyclerNotes)
         recyclerNotes.layoutManager = layoutManager
@@ -332,16 +322,22 @@ class HillfortView : BaseView(),
     }
 
     override fun showUpdatedMap(latLng: LatLng) {
+
+        hillfortCurrentLocationText.text =
+            "LAT: ${latLng.latitude}, LNG: ${latLng.longitude} "
+
         hillfortMapView.getMapAsync { it.clear() }
         hillfortMapView.getMapAsync {
             setMapLocation(it, latLng)
         }
     }
 
+
     // hillfortMapView  override methods
     public override fun onResume() {
-        hillfortMapView.onResume()
         super.onResume()
+        hillfortMapView.onResume()
+        presenter.doRestartLocationUpdates()
     }
 
     public override fun onPause() {
@@ -357,5 +353,10 @@ class HillfortView : BaseView(),
     override fun onLowMemory() {
         super.onLowMemory()
         hillfortMapView.onLowMemory()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        hillfortMapView.onSaveInstanceState(outState)
     }
 }

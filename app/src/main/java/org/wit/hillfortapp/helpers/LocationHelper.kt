@@ -1,10 +1,12 @@
 package org.wit.hillfortapp.helpers
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.LocationRequest
 
 val REQUEST_PERMISSIONS_REQUEST_CODE = 34
 
@@ -24,6 +26,16 @@ fun checkLocationPermissions(activity: Activity): Boolean {
         false
     }
 }
+
+@SuppressLint("RestrictedApi")
+fun createDefaultLocationRequest(): LocationRequest {
+    return LocationRequest().apply {
+        interval = 10000
+        fastestInterval = 5000
+        priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+    }
+}
+
 
 
 fun isPermissionGranted(code: Int, grantResults: IntArray): Boolean {

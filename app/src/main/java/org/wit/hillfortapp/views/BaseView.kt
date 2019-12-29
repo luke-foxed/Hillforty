@@ -94,7 +94,6 @@ abstract class BaseView : MainView(), AnkoLogger {
     open fun showNotes(notes: ArrayList<NoteModel>?) {}
     open fun showImages(images: ArrayList<ImageModel>) {}
     open fun showUpdatedMap(latLng: LatLng) {}
-    open fun showAccount(user: FirebaseUser) {}
     open fun showProgress() {}
     open fun hideProgress() {}
 
