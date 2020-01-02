@@ -324,7 +324,7 @@ class HillfortView : BaseView(),
     override fun showUpdatedMap(latLng: LatLng) {
 
         hillfortCurrentLocationText.text =
-            "LAT: ${latLng.latitude}, LNG: ${latLng.longitude} "
+            "LAT: ${"%.4f".format(latLng.latitude)} | LNG: ${"%.4f".format(latLng.longitude)}"
 
         hillfortMapView.getMapAsync { it.clear() }
         hillfortMapView.getMapAsync {

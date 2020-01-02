@@ -16,6 +16,7 @@ interface HillfortStore {
     fun sortByRating(): List<HillfortModel>?
     fun sortByVisit(): List<HillfortModel>?
 
+    // user functions
     fun deleteUser(user:FirebaseUser)
     fun logout()
 

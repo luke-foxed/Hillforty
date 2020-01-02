@@ -36,10 +36,8 @@ fun createDefaultLocationRequest(): LocationRequest {
     }
 }
 
-
-
 fun isPermissionGranted(code: Int, grantResults: IntArray): Boolean {
-    var permissionGranted = false;
+    var permissionGranted = false
     if (code == REQUEST_PERMISSIONS_REQUEST_CODE) {
         when {
             grantResults.isEmpty() -> Log.i("Location", "User interaction was cancelled.")
