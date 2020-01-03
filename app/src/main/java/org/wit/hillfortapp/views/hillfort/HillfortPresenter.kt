@@ -13,10 +13,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.content_hillfort_fab.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import org.wit.hillfortapp.helpers.*
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.ImageModel
@@ -79,8 +76,12 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     @SuppressLint("MissingPermission")
     fun doSetCurrentLocation() {
+
         locationService.lastLocation.addOnSuccessListener {
-            locationUpdate(it.latitude, it.longitude)
+            // uses google maps cache - if there is none location will return null
+            if (it !== null) {
+                locationUpdate(it.latitude, it.longitude)
+            }
         }
     }
 
@@ -253,6 +254,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     fun locationUpdate(lat: Double, lng: Double) {
 
+        print("LOCATION: $lat $lng")
         hillfort.location.lat = lat
         hillfort.location.lng = lng
         hillfort.location.zoom = 15f

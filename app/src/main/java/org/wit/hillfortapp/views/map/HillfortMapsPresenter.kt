@@ -13,13 +13,15 @@ class HillfortMapsPresenter(view: BaseView) : BasePresenter(view) {
 
     fun doPopulateMap(map: GoogleMap, hillforts: List<HillfortModel>) {
         map.uiSettings.isZoomControlsEnabled = true
-        hillforts.forEach {
-            val loc = LatLng(it.location.lat, it.location.lng)
-            val options = MarkerOptions().title(it.name).position(loc)
-            map.addMarker(options).tag = it
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.location.zoom))
+        if(hillforts.isNotEmpty()) {
+            hillforts.forEach {
+                val loc = LatLng(it.location.lat, it.location.lng)
+                val options = MarkerOptions().title(it.name).position(loc)
+                map.addMarker(options).tag = it
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.location.zoom))
+            }
+            view?.showHillfort(hillforts[0])
         }
-        view?.showHillfort(hillforts[0])
     }
 
     fun doMarkerSelected(marker: Marker) {
