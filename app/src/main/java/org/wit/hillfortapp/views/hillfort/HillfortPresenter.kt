@@ -316,11 +316,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
                 val path = getCurrentImagePath()
                 if (path != null) {
-
                     if (hillfort.images.size >= 4) {
                         view?.toast("Only 4 images allowed!")
                     } else {
-                        
+
                         val newImage = ImageModel()
                         newImage.uri = path
                         newImage.fbID = hillfort.fbId

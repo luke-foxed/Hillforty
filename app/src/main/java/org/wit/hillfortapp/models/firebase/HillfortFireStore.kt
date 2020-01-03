@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -113,21 +114,39 @@ class HillfortFireStore(val context: Context) : HillfortStore, AnkoLogger {
     private fun updateImage(hillfort: HillfortModel) {
 
         hillfort.images.forEach { image ->
+
+            var bitmap: Bitmap?
+
             val fileName = File(image.uri)
             val imageName = fileName.name
             val imageRef = st.child("$userId/${hillfort.fbId}/$imageName")
-            val baos = ByteArrayOutputStream()
-            val bitmap = readImageFromPath(context, image.uri)
+            val byteOutputStream = ByteArrayOutputStream()
+
+            // if image uri contains .jpg, it came from camera
+            if (image.uri.contains(".jpg")) {
+                bitmap = BitmapFactory.decodeFile(image.uri)
+                if (bitmap.height > 2000 || bitmap.width > 2000) {
+                    bitmap = Bitmap.createScaledBitmap(
+                        bitmap,
+                        bitmap.width / 2,
+                        bitmap.height / 2,
+                        false
+                    )
+                }
+            } else {
+                bitmap = readImageFromPath(context, image.uri)
+            }
 
             bitmap?.let {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val data = baos.toByteArray()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteOutputStream)
+                val data = byteOutputStream.toByteArray()
                 val uploadTask = imageRef.putBytes(data)
                 uploadTask.addOnFailureListener { failure ->
-                    println(failure.message)
+                    println("FAILURE: ${failure.message}")
                 }.addOnSuccessListener { taskSnapshot ->
                     taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener { uri ->
                         image.uri = uri.toString()
+                        image.fbID = hillfort.fbId
                         db.child("users").child(userId).child("hillforts").child(hillfort.fbId)
                             .setValue(hillfort)
                     }

@@ -38,8 +38,14 @@ class HillfortMapsView : BaseView(), GoogleMap.OnMarkerClickListener {
     override fun showHillfort(hillfort: HillfortModel) {
         currentTitle.text = hillfort.name
         currentRating.rating = hillfort.rating.toFloat()
-        Glide.with(currentImage.context).load(hillfort.images[0].uri).centerCrop()
-            .into(currentImage)
+        if(hillfort.images.isNotEmpty()) {
+            Glide.with(currentImage.context).load(hillfort.images[0].uri).centerCrop()
+                .into(currentImage)
+        }
+        else {
+            Glide.with(currentImage.context).load(R.drawable.placeholder).centerCrop()
+                .into(currentImage)
+        }
     }
 
     override fun showHillforts(hillforts: List<HillfortModel>) {

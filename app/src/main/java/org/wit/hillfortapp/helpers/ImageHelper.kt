@@ -58,7 +58,6 @@ fun readImageFromPath(context: Context, path: String): Bitmap? {
     }
     if (bitmap != null) {
         if (bitmap.height > 2000 || bitmap.width > 2000) {
-            println("RESIZING")
             bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.width / 2, bitmap.height / 2, false)
         }
     }
