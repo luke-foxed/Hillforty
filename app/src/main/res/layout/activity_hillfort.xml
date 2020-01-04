@@ -108,10 +108,9 @@
                     style="?android:attr/buttonBarStyle"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
-
                     android:background="@drawable/rounded_button"
                     android:backgroundTint="@color/colorAccent"
-                    android:text="Choose As Cover"
+                    android:text="@string/hillfortChooseCoverButton"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -291,36 +290,24 @@
                 android:background="@drawable/map_border"
                 android:clickable="false" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/hillfortCurrentLocationText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_marginBottom="20dp" />
 
-                <Button
-                    android:id="@+id/hillfortLocationBtn"
-                    style="?android:attr/buttonBarStyle"
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/rounded_button"
-                    android:backgroundTint="@color/colorAccent"
-                    android:text="@string/hillfortEditLocationButton"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-
-                <Button
-                    android:id="@+id/hillfortNavigateButton"
-                    style="?android:attr/buttonBarStyle"
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/rounded_button"
-                    android:backgroundTint="@color/colorAccent"
-                    android:text="Show Route"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/hillfortNavigateButton"
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/colorAccent"
+                android:gravity="center"
+                android:text="@string/hillfortShowRouteButton"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>

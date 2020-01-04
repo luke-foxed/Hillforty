@@ -80,19 +80,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".views.stats.StatsView"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".views.account.AccountView"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-
-        <activity
-            android:name=".views.about.AboutView"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
             android:name=".views.map.HillfortMapsView"
             android:theme="@style/AppTheme.NoActionBar" />
 

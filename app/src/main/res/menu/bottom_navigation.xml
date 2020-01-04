@@ -3,24 +3,24 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_menu_home"
-        android:title="Home" />
+        android:title="@string/hillfortNavigationBarHome" />
     <item
         android:id="@+id/navigation_hillforts"
         android:icon="@drawable/ic_menu_castle"
-        android:title="Hillforts" />
+        android:title="@string/hillfortNavigationBarHillforts" />
 
     <item
         android:id="@+id/navigation_map"
         android:icon="@drawable/ic_menu_map"
-        android:title="Map" />
+        android:title="@string/hillfortNavigationBarMap" />
 
     <item
         android:id="@+id/navigation_more"
         android:icon="@drawable/ic_menu_more"
-        android:title="More" />
+        android:title="@string/hillfortNavigationBarMore" />
 
     <item
         android:id="@+id/navigation_logout"
         android:icon="@drawable/ic_menu_logout"
-        android:title="Log Out" />
+        android:title="@string/hillfortNavigationBarLogout" />
 </menu>

@@ -3,54 +3,64 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="140dp"
     android:layout_marginBottom="8dp"
+
     android:elevation="24dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/hillfortRecycleItemImageIcon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginEnd="16dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
+            android:layout_marginStart="10dp"
             android:id="@+id/hillfortRecycleItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-thin"
+            android:gravity="center_vertical"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon"
-            android:text="HEEEE"
-            android:textSize="30sp" />
+            android:textSize="32sp" />
 
         <TextView
             android:id="@+id/hillfortRecycleItemLocation"
             android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon"
+            android:fontFamily="sans-serif-thin"
             android:layout_height="wrap_content"
             android:layout_below="@id/hillfortRecycleItemName"
-            android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon"
-            android:text="HOOOO" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/hillfortRecycleItemVisited"
             android:layout_width="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/hillfortRecycleItemLocation"
             android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon"
-            android:text="FIFO" />
+            android:fontFamily="sans-serif-thin"
+            android:layout_below="@id/hillfortRecycleItemLocation"
+            android:textSize="18sp" />
 
         <RatingBar
             android:id="@+id/hillfortRecycleItemRating"
             style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:numStars="5"
             android:layout_below="@id/hillfortRecycleItemVisited"
             android:layout_toEndOf="@+id/hillfortRecycleItemImageIcon" />
 
@@ -60,7 +70,8 @@
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="25dp"
             android:tint="#ff74d8"
             />
     </RelativeLayout>

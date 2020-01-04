@@ -12,6 +12,9 @@
     <string name="accountDeleteButton">Delete Account</string>
     <string name="accountDeleteHillfortsButton">Delete Hillforts</string>
     <string name="accountEditButton">Edit Account</string>
+    <string name="accountPasswordButton">Change Password</string>
+    <string name="accountEmailButton">Change Email</string>
+
 
     <!--HILLFORT ACTIVITY-->
     <string name="hillfortNameField">Name</string>
@@ -27,6 +30,12 @@
     <string name="hillfortEditLocationButton">Edit Location</string>
     <string name="hillfortAddNoteButton">Add Note</string>
     <string name="hillfortEditImageButton">Select Images</string>
+    <string name="hillfortChooseCoverButton">Choose As Cover</string>
+    <string name="hillfortShowRouteButton">Show Route</string>
+    <string name="hillfortFabShare">Share</string>
+    <string name="hillfortFabDelete">Delete</string>
+    <string name="hillfortFabFavourite">Favourite</string>
+    <string name="hillfortLocationSaveButton">Save</string>
 
     <!--LOGIN ACTIVITY-->
     <string name="loginEmailField">Email…</string>
@@ -81,6 +90,18 @@
     <string name="filterMenuSortRating">Sort by Rating</string>
     <string name="filterMenuSortVisit">Sort by Visits</string>
     <string name="filterMenuResetFilter">Reset Filters</string>
+
+    <!--NAVIGATOR-->
+    <string name="hillfortNavigatorWalkingButton">Walking</string>
+    <string name="hillfortNavigatorDrivingButton">Driving</string>
+    <string name="hillfortNavigatorMapButton">Open In Maps</string>
+    <string name="hillfortNavigatorBackButton">Back</string>
+
+    <string name="hillfortNavigationBarHillforts">Hillforts</string>
+    <string name="hillfortNavigationBarHome">Home</string>
+    <string name="hillfortNavigationBarMap">Map</string>
+    <string name="hillfortNavigationBarMore">More</string>
+    <string name="hillfortNavigationBarLogout">Logout</string>
 
 </resources>
 

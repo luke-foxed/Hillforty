@@ -5,13 +5,15 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Color
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.content_hillfort_fab.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
+import org.jetbrains.anko.*
 import org.wit.hillfortapp.helpers.*
 import org.wit.hillfortapp.models.HillfortModel
 import org.wit.hillfortapp.models.ImageModel
@@ -26,7 +28,10 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     private var hillfort = HillfortModel()
 
-    private var notes: ArrayList<NoteModel>? = arrayListOf()
+    var map: GoogleMap? = null
+    val locationRequest = createDefaultLocationRequest()
+
+    private var notes: ArrayList<NoteModel> = arrayListOf()
     private var images: ArrayList<ImageModel> = arrayListOf()
 
     private var edit = false
@@ -71,10 +76,28 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
 
     @SuppressLint("MissingPermission")
     fun doSetCurrentLocation() {
+
         locationService.lastLocation.addOnSuccessListener {
-            hillfort.location.lat = it.latitude
-            hillfort.location.lng = it.longitude
-            view?.showHillfort(hillfort)
+            // uses google maps cache - if there is none location will return null
+            if (it !== null) {
+                locationUpdate(it.latitude, it.longitude)
+            }
+        }
+    }
+
+
+    @SuppressLint("MissingPermission")
+    fun doRestartLocationUpdates() {
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                if (locationResult != null) {
+                    val l = locationResult.locations.last()
+                    locationUpdate(l.latitude, l.longitude)
+                }
+            }
+        }
+        if (!edit) {
+            locationService.requestLocationUpdates(locationRequest, locationCallback, null)
         }
     }
 
@@ -113,11 +136,11 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
         hillfort.visited = tempHillfort.visited
         hillfort.dateVisited = tempHillfort.dateVisited
         hillfort.images = images
+        hillfort.notes = notes
         hillfort.rating = tempHillfort.rating
 
         doAsync {
             if (edit) {
-                hillfort.notes = notes!!
                 app.hillforts.updateHillfort(hillfort)
             } else {
                 app.hillforts.createHillfort(hillfort)
@@ -200,6 +223,7 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doSetLocation() {
+
         view?.navigateTo(
             VIEW.LOCATION,
             LOCATION_REQUEST,
@@ -209,21 +233,46 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
     }
 
     fun doAddNote(title: String, content: String) {
-        if (!edit) {
-            view?.toast("Please create a hillfort before adding notes to it!")
-        } else {
-            val newNote = NoteModel()
-            newNote.title = title
-            newNote.content = content
-            newNote.id = notes?.size!!.plus(1)
-            newNote.fbId = hillfort.fbId
-            doAsync {
-                hillfort.notes.add(newNote)
-                uiThread {
-                    view?.showNotes(notes)
-                }
+        val newNote = NoteModel()
+        newNote.title = title
+        newNote.content = content
+        newNote.id = notes.size.plus(1)
+        newNote.fbId = hillfort.fbId
+        doAsync {
+            notes.add(newNote)
+            hillfort.notes = notes
+            uiThread {
+                view?.showNotes(notes)
             }
         }
+    }
+
+    fun doConfigureMap(m: GoogleMap) {
+        map = m
+        locationUpdate(hillfort.location.lat, hillfort.location.lng)
+    }
+
+    fun locationUpdate(lat: Double, lng: Double) {
+
+        print("LOCATION: $lat $lng")
+        hillfort.location.lat = lat
+        hillfort.location.lng = lng
+        hillfort.location.zoom = 15f
+
+        map?.clear()
+        map?.uiSettings?.isZoomControlsEnabled = true
+        val options = MarkerOptions().title(hillfort.name)
+            .position(LatLng(hillfort.location.lat, hillfort.location.lng))
+        map?.addMarker(options)
+        map?.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                    hillfort.location.lat,
+                    hillfort.location.lng
+                ), hillfort.location.zoom
+            )
+        )
+        view?.showUpdatedMap(LatLng(hillfort.location.lat, hillfort.location.lng))
     }
 
     override fun doActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
@@ -261,18 +310,16 @@ class HillfortPresenter(view: BaseView) : BasePresenter(view) {
             LOCATION_REQUEST -> {
                 location = data.extras?.getParcelable("location")!!
                 hillfort.location = location
-                val latLng = LatLng(hillfort.location.lat, hillfort.location.lng)
-                view?.showUpdatedMap(latLng)
+                locationUpdate(location.lat, location.lng)
             }
             IMAGE_CAPTURE_REQUEST-> {
 
                 val path = getCurrentImagePath()
                 if (path != null) {
-
                     if (hillfort.images.size >= 4) {
                         view?.toast("Only 4 images allowed!")
                     } else {
-                        
+
                         val newImage = ImageModel()
                         newImage.uri = path
                         newImage.fbID = hillfort.fbId

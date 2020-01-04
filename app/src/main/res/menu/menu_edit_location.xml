@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/navigatorMenuBack"
-        android:title="@string/hillfortNavigatorBackButton"
-        android:icon="@drawable/ic_back"
+        android:id="@+id/item_save"
+        android:title="@string/hillfortLocationSaveButton"
         app:showAsAction="always"/>
-
 </menu>
