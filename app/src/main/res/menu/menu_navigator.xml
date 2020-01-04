@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/navigatorMenuBack"
-        android:title="Back"
+        android:title="@string/hillfortNavigatorBackButton"
         android:icon="@drawable/ic_back"
         app:showAsAction="always"/>
 

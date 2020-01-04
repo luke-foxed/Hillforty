@@ -108,10 +108,9 @@
                     style="?android:attr/buttonBarStyle"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
-
                     android:background="@drawable/rounded_button"
                     android:backgroundTint="@color/colorAccent"
-                    android:text="Choose As Cover"
+                    android:text="@string/hillfortChooseCoverButton"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -306,7 +305,7 @@
                 android:background="@drawable/rounded_button"
                 android:backgroundTint="@color/colorAccent"
                 android:gravity="center"
-                android:text="Show Route"
+                android:text="@string/hillfortShowRouteButton"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 

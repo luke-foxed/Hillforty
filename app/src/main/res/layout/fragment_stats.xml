@@ -143,7 +143,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_visited"></ImageView>
+                android:src="@drawable/ic_visited" />
 
             <TextView
                 android:layout_height="match_parent"
@@ -172,7 +172,7 @@
                 android:layout_height="56dp"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_note"
-                android:tint="@color/colorAccent"></ImageView>
+                android:tint="@color/colorAccent" />
 
             <TextView
                 android:layout_height="match_parent"

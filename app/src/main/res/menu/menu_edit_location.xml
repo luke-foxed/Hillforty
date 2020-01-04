@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/item_save"
-        android:title="Save"
+        android:title="@string/hillfortLocationSaveButton"
         app:showAsAction="always"/>
 </menu>
